@@ -2,7 +2,10 @@ from django.db import models
 
 class User(models.Model):
     full_name = models.CharField(max_length=100)
-    email = models.EmailField(max_length=191)
+    email = models.EmailField(unique=True)
+    gender = models.CharField(max_length=10)  # Expanded to accommodate longer gender descriptions
+    nationality = models.CharField(max_length=50)  # Expanded to accommodate longer country names
+    dob = models.DateField()
     password = models.CharField(max_length=100)
     telephone = models.CharField(max_length=15)
     role_choices = [
