@@ -7,4 +7,5 @@ urlpatterns = [
     path('register/', views.register, name='registration'),
     path('choice_user_type/', views.choice_user_type, name='choice_user_type'),
     path('registration_success/', TemplateView.as_view(template_name='registration_success.html'), name='registration_success'),
+    path('mentor_registration/',views.mentor_registration, name='mentor_registration'),
 ]
