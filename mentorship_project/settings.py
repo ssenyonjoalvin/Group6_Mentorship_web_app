@@ -79,11 +79,18 @@ DATABASES = {
 
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'MENTORSHIP',
+        'NAME': 'mentorship',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',  # or your DB host
-        'PORT': '3300',       # default MySQL port
+        'PORT': '3306',  
+             
+             
+         'OPTIONS': {
+            'charset': 'utf8',
+            'use_unicode': True,
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES', innodb_strict_mode=1, NAMES 'utf8'",
+        },         # default MySQL port
              }
     }
 
