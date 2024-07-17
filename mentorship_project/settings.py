@@ -79,7 +79,7 @@ DATABASES = {
 
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'MENTORSHIP',
+        'NAME': 'mentorship',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',  # or your DB host

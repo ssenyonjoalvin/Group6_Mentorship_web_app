@@ -25,3 +25,4 @@ def choice_user_type(request):
 
 def mentor_registration(request):
     return render(request,'mentor_app/mentor_registration.html')
+
