@@ -1,0 +1,113 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Mentor.Social Registration</title>
+    <link rel="shortcut icon" href="{% static 'mentor_app/images/fav.png' %}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static 'mentor_app/images/fav.jpg' %}">
+    <link rel="stylesheet" href="{% static 'mentor_app/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'mentor_app/css/style.css' %}" />
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="container">
+            <div class="col-xl-10 col-lg-11 mx-auto login-container">
+                <div class="row">
+                    <div class="col-lg-5 col-md-6 no-padding">
+                        <div class="login-box">
+                            <h5>Create an Account</h5>
+                            <form method="POST" novalidate>
+                                {% csrf_token %}
+                                <!-- {{ form.as_p }} -->
+
+                                <div class="login-row row no-margin">
+                                    <label for="full-name"><i class="fas fa-user"></i> Full Name</label>
+                                    <input type="text" id="full-name" class="form-control form-control-sm" placeholder="Enter your full name">
+                                </div>
+
+                                <div class="login-row row no-margin">
+                                    <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
+                                    <input type="email" id="email" class="form-control form-control-sm" placeholder="Enter your email address">
+
+                                </div>
+
+                                <div class="login-row row no-margin">
+                                    <label for="date_of_birth"><i class="fas fa-unlock-alt"></i> Date of Birth </label>
+                                    <input type="date" id="date_of_birth" class="form-control form-control-sm" placeholder="Enter your Date of Birth">
+                                </div>
+
+                                <div class="login-row row no-margin">
+                                    <label for="gender"><i class="fas fa-unlock-alt"></i> Gender </label>
+                                    <input type="gender" id="gender" class="form-control form-control-sm" placeholder="Enter your gender">
+                                </div>
+
+                                <div class="login-row row no-margin">
+                                    <label for="nationality"><i class="fas fa-unlock-alt"></i> Nationality</label>
+                                    <input type="nationality" id="nationality" class="form-control form-control-sm" placeholder="Enter your nationality">
+                                </div>
+
+                                <div class="login-row row no-margin">
+                                    <label for="telephone"><i class="fas fa-unlock-alt"></i>Telephone </label>
+                                    <input type="tel" id="telephone" class="form-control form-control-sm" placeholder="Enter your phone number">
+                                </div>
+
+                                <div class="login-row row no-margin">
+                                    <label for="address"><i class="fas fa-unlock-alt"></i>Address </label>
+                                    <input type="text" id="address" class="form-control form-control-sm" placeholder="Enter your Address">
+                                </div>
+                                               
+                           
+                                <div class="login-row row no-margin">
+                                    <label for="password"><i class="fas fa-unlock-alt"></i> Password</label>
+                                    <input type="password" id="password" class="form-control form-control-sm" placeholder="Enter your password">
+                                </div>
+
+                                <div class="login-row row no-margin">
+                                    <label for="confirm-password"><i class="fas fa-unlock-alt"></i> Confirm Password</label>
+                                    <input type="password" id="confirm-password" class="form-control form-control-sm" placeholder="Confirm your password">
+                                </div>
+
+                                
+                                <div class="login-row row forrr no-margin">
+                                    <p> <input type="checkbox" id="show-password" onclick="togglePasswordVisibility()"> Show password</p>
+                                </div>
+
+                                <div class="login-row row no-margin">
+                                <button class="btn btn-success btn-sm">Register</button>
+                                </div>
+                           </form>
+                        </div>
+                    </div>
+
+                     <div class="col-lg-7 col-md-6 img-box">
+                        <img src="{% static 'mentor_app/images/sideimg.png' %}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'mentor_app/js/popper.min.js' %}"></script>
+    <script src="{% static 'mentor_app/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'mentor_app/js/script.js' %}"></script>
+    <script>
+        function togglePasswordVisibility() {
+            var passwordField = document.getElementById('password');
+            var confirmPasswordField = document.getElementById('confirm-password');
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                confirmPasswordField.type = 'text';
+            } else {
+                passwordField.type = 'password';
+                confirmPasswordField.type = 'password';
+            }
+        }
+    </script>
+</body>
+
+</html>
