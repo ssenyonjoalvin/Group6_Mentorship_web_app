@@ -22,3 +22,5 @@ def register(request):
 
 def choice_user_type(request):
    return render(request,'mentor_app/choice_user_type.html')
+def mentor_registration(request):
+    return render(request,'mentor_app/mentor_registration.html')
