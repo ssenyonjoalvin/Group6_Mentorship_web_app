@@ -84,7 +84,7 @@ DATABASES = {
         'PASSWORD': '',
         'HOST': 'localhost',  # or your DB host
         'PORT': '3306',       # default MySQL port
- }
+             }
     }
 
 
