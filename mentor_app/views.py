@@ -25,3 +25,9 @@ def choice_user_type(request):
 
 def mentor_registration(request):
     return render(request,'mentor_app/mentor_registration.html')
+ 
+def get_mentees(request):
+   return render(request,'mentor_app/mentee/get_mentees.html')
+
+def preview_mentee(request):
+   return render(request,'mentor_app/mentee/preview_mentee.html')

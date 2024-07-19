@@ -8,6 +8,7 @@ class User(models.Model):
     dob = models.DateField()
     password = models.CharField(max_length=100)
     telephone = models.CharField(max_length=15)
+    status = models.CharField(max_length=15)
     role_choices = [
         ('1', 'Admin'),
         ('2', 'Mentor'),

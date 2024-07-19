@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
+    <title>Mentees Page</title>
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="mb-4">Mentees  <span style="font-size: 20px;">/List</span>
+    </h2>
+    <div class="row mb-4">
+        <div class="col-md-6 d-flex align-items-start">
+            <select name="mentee_category" id="mentee_category" class="form-select" data-live-search="true">
+                <option data-tokens="pending">Pending</option>
+                <option data-tokens="completed">Completed</option>
+                <option data-tokens="request">Requesting</option>
+            </select>
+        </div>
+        <div class="col-md-5 d-flex justify-content-end align-items-end">
+            <input type="text" class="form-control me-2" name="search_mentees" id="search_mentees" placeholder="Search">
+        </div>
+        <div class="col-md-1 d-flex justify-content-end align-items-end">
+            <button class="btn btn-primary">
+                <i class="bi bi-search"></i>
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table table-hover table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Contact</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>John</td>
+                    <td>john@gmail.com</td>
+                    <td>Kampala</td>
+                    <td>+256 704665418</td>
+                    <td><button class="btn btn-sm btn-outline-primary align-items-centre">Preview</button></td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>John</td>
+                    <td>john@gmail.com</td>
+                    <td>Kampala</td>
+                    <td>+256 704665418</td>
+                    <td><button class="btn btn-sm btn-outline-primary align-items-centre">Preview</button></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Jane</td>
+                    <td>jane@example.com</td>
+                    <td>Nairobi</td>
+                    <td>+254 701234567</td>
+                    <td><button class="btn btn-sm btn-outline-primary align-items-centre">Preview</button></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Michael</td>
+                    <td>michael@example.com</td>
+                    <td>Lagos</td>
+                    <td>+234 8098765432</td>
+                    <td><button class="btn btn-sm btn-outline-primary align-items-centre">Preview</button></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Linda</td>
+                    <td>linda@example.com</td>
+                    <td>Cairo</td>
+                    <td>+20 1023456789</td>
+                    <td><button class="btn btn-sm btn-outline-primary align-items-centre">Preview</button></td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>David</td>
+                    <td>david@example.com</td>
+                    <td>Accra</td>
+                    <td>+233 543210987</td>
+                    <td><button class="btn btn-sm btn-outline-primary d-flex align-items-center">Preview</button></td>
+                </tr>
+            </tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+    <div class="container mt-5">
+    <h2 class="mb-4">Mentee  <span style="font-size: 20px;">/Preview</span></h2>
+
+        <div class="col">
+            <!-- Navigation Tabs -->
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true">Profile</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="goals-tab" data-bs-toggle="tab" href="#goals" role="tab" aria-controls="goals" aria-selected="false">Mentor's Goals</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="chat-tab" data-bs-toggle="tab" href="#chat" role="tab" aria-controls="chat" aria-selected="false">Chat</a>
+                </li>
+            </ul>
+            <!-- Tab Content -->
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="container mt-5">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <img src="https://via.placeholder.com/350x350" class="card-img-top" alt="Profile Image">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">Ahaabwe Derrick</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Mentee Details</h5>
+                                        <form>
+                                            <div class="row">
+                                                <div class="col-6 mb-1">
+                                                    <label for="name" class="form-label">Name</label>
+                                                    <input type="text" class="form-control" id="name" value="John Doe">
+                                                </div>
+                                                <div class="col-6 mb-1">
+                                                    <label for="email" class="form-label">Email</label>
+                                                    <input type="email" class="form-control" id="email" value="john.doe@example.com">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6 mb-1">
+                                                    <label for="address" class="form-label">Address</label>
+                                                    <input type="text" class="form-control" id="address" value="123 Main Street, Anytown">
+                                                </div>
+                                                <div class="col-6 mb-1">
+                                                    <label for="contact" class="form-label">Contact</label>
+                                                    <input type="tel" class="form-control" id="contact" value="+1234567890">
+                                                </div>
+                                            </div>
+                                            <div class="mb-1">
+                                                <label for="bio" class="form-label">Bio</label>
+                                                <textarea class="form-control" id="bio" rows="3">Short bio about the mentee.</textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="tab-pane fade" id="goals" role="tabpanel" aria-labelledby="goals-tab">
+                    <p>Mentor's goals content goes here.</p>
+                </div>
+                <div class="tab-pane fade" id="chat" role="tabpanel" aria-labelledby="chat-tab">
+                    <p>Chat content goes here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+
+<!-- Bootstrap and Bootstrap Select JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-mrcu6mWBnHsl1wEPpqe1FhrcofIyz1NkT3zVZp6Y+Ro5oDGLxD84anCnpI9gU8/N" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-mrcu6mWBnHsl1wEPpqe1FhrcofIyz1NkT3zVZp6Y+Ro5oDGLxD84anCnpI9gU8/N" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/i18n/defaults-en_US.min.js"></script>
+</body>
+</html>
