@@ -1,6 +1,8 @@
+import random
 from django.http import HttpResponse
 from django.shortcuts import render , redirect
 from .forms import UserRegistrationForm
+
 
 # Create your views here.
 def index(request):
@@ -25,4 +27,9 @@ def choice_user_type(request):
 
 def mentor_registration(request):
     return render(request,'mentor_app/mentor_registration.html')
+
+
+def schedule(request):
+    # Your logic here
+    return render(request, 'mentor_app/schedule.html')
 

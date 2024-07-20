@@ -2,8 +2,8 @@ from django.db import models
 
 class User(models.Model):
     full_name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    gender = models.CharField(max_length=10)  # Expanded to accommodate longer gender descriptions
+    email = models.EmailField(max_length=100)
+    gender = models.CharField(max_length=100)  # Expanded to accommodate longer gender descriptions
     nationality = models.CharField(max_length=50)  # Expanded to accommodate longer country names
     dob = models.DateField()
     password = models.CharField(max_length=100)
@@ -77,3 +77,4 @@ class Evaluation(models.Model):
     time_management = models.PositiveSmallIntegerField()
     team_collaboration = models.PositiveSmallIntegerField()
     comments = models.TextField(blank=True, null=True)
+
