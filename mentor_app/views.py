@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render , redirect
 from .forms import UserRegistrationForm
+from .models import mentee
 
 # Create your views here.
 def index(request):
@@ -25,3 +26,8 @@ def choice_user_type(request):
 
 def mentor_registration(request):
     return render(request,'mentor_app/mentor_registration.html')
+def evalution(request):
+    mentees = mentee.objects.filter(progress=100)
+    return render(request, "evaluation.html", {'mentees': mentees})
+def form(request):
+    return render(request, "evaluationform.html")

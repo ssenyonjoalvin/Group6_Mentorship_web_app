@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluation</title>
+    <link rel="stylesheet" href="{% static 'Mentorshipapp/evaluation.css' %}">
+    <style>
+        .name-link {
+            text-decoration: none;
+            color: black; /* Adjust the color to match your design */
+            cursor: pointer;
+        }
+
+        .name-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script src="{% static 'Mentorshipapp/mentorship.js' %}"></script>
+</head>
+<body>
+
+<h2>Evaluation of Mentees</h2>
+
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Name</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mentee in mentees %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ mentee.name }}</td>
+                    <td>{{ mentee.address }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
