@@ -18,10 +18,62 @@
       rel="stylesheet"
     />
     <title>Mentees Page</title>
+    <style>
+      .chat-window {
+        max-width: 600px;
+        margin: auto;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .chat-header {
+        padding: 10px;
+        font-size: 1.2rem;
+      }
+      .chat-body {
+        height: 400px;
+        overflow-y: auto;
+        padding: 15px;
+        background-color: #f8f7f6;
+      }
+      .chat-message {
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        max-width: 45%;
+      }
+      .message-sent {
+        background-color: #dcf8c6;
+        text-align: right;
+      }
+      .message-received {
+        background-color: white;
+        margin-left: 50%;
+        max-width: 45%;
+      }
+      .chat-footer {
+        padding: 10px;
+        display: flex;
+      }
+      .chat-footer input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .chat-footer button {
+        background-color: #075e54;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        margin-left: 10px;
+        border-radius: 5px;
+      }
+    </style>
   </head>
   <body>
-    <div class="container mt-5">
-      <div class="container row mt-5">
+    <div class="container mt-1">
+      <div class="container row mt-1">
         <h2 class="mb-4">
           Mentee <span style="font-size: 20px">/Preview</span>
         </h2>
@@ -42,7 +94,7 @@
             </li>
             <li class="nav-item" role="presentation">
               <a
-                class="nav-link active"
+                class="nav-link"
                 id="goals-tab"
                 data-bs-toggle="tab"
                 href="#goals"
@@ -54,7 +106,7 @@
             </li>
             <li class="nav-item" role="presentation">
               <a
-                class="nav-link"
+                class="nav-link active"
                 id="chat-tab"
                 data-bs-toggle="tab"
                 href="#chat"
@@ -103,9 +155,7 @@
                               />
                             </div>
                             <div class="col-6 mb-1">
-                              <label for="email" class="form-label"
-                                >Email</label
-                              >
+                              <label for="email" class="form-label">Email</label>
                               <input
                                 type="email"
                                 class="form-control"
@@ -116,9 +166,7 @@
                           </div>
                           <div class="row">
                             <div class="col-6 mb-1">
-                              <label for="gender" class="form-label"
-                                >Gender</label
-                              >
+                              <label for="gender" class="form-label">Gender</label>
                               <input
                                 type="text"
                                 class="form-control"
@@ -140,9 +188,7 @@
                           </div>
                           <div class="row">
                             <div class="col-6 mb-1">
-                              <label for="address" class="form-label"
-                                >Address</label
-                              >
+                              <label for="address" class="form-label">Address</label>
                               <input
                                 type="text"
                                 class="form-control"
@@ -151,9 +197,7 @@
                               />
                             </div>
                             <div class="col-6 mb-1">
-                              <label for="contact" class="form-label"
-                                >Contact</label
-                              >
+                              <label for="contact" class="form-label">Contact</label>
                               <input
                                 type="tel"
                                 class="form-control"
@@ -166,8 +210,7 @@
                             <label for="bio" class="form-label">Bio</label>
                             <textarea class="form-control" id="bio" rows="3">
 Short bio about the mentee.
-                                                </textarea
-                            >
+                            </textarea>
                           </div>
                         </form>
                       </div>
@@ -177,84 +220,107 @@ Short bio about the mentee.
               </div>
             </div>
             <div
-              class="tab-pane fade show active"
+              class="tab-pane fade"
               id="goals"
               role="tabpanel"
               aria-labelledby="goals-tab"
             >
               <div class="row">
                 <div class="col">
-                    <!-- <h4>Mentees Area Of Discussion</h4> -->
-                    <div class="list-group mt-2">
-                        <ul class="list-group-item list-group-item-primary ">
-                            <li class="list-unstyled">
-                                Mentee Goals
-                            </li>
-                        </ul>
-                        <ol class="list-group list-group-numbered">
-                            <li class="list-group-item  border-0">
-                                Goal 1
-                            </li>
-                            <li class="list-group-item  border-0">
-                                Goal 2
-                            </li>
-                            <li class="list-group-item  border-0">
-                                Goal 3
-                            </li>
-                            <li class="list-group-item  border-0">
-                                Goal 4
-                            </li>
-                            <li class="list-group-item  border-0">
-                                Goal 5
-                            </li>
-                        </ol>
-                    </div>
+                  <div class="list-group mt-2">
+                    <ul class="list-group-item list-group-item-primary">
+                      <li class="list-unstyled">Mentee Goals</li>
+                    </ul>
+                    <ol class="list-group list-group-numbered">
+                      <li class="list-group-item border-0">Goal 1</li>
+                      <li class="list-group-item border-0">Goal 2</li>
+                      <li class="list-group-item border-0">Goal 3</li>
+                      <li class="list-group-item border-0">Goal 4</li>
+                      <li class="list-group-item border-0">Goal 5</li>
+                    </ol>
+                  </div>
                 </div>
-                
                 <div class="col">
-                    <div class="list-group mt-2">
-                        <ul class="list-group-item list-group-item-primary d-flex justify-content-between align-items-center">
-                            <li class="list-unstyled">
-                                Mentors Measurable Achievement Goals
-
-                            </li>
-                        </ul>
-                        <ol class="list-group list-group-numbered">
-                            <li class="list-group-item d-flex justify-content-between align-items-center border-0">
-                                <div>
-                                    <input type="checkbox" class="me-2" />
-                                    Achieve Public Speaking
-                                </div>
-                                <span>
-                                    <button class="btn btn-sm btn-primary me-1">Edit</button>
-                                    <button class="btn btn-sm btn-danger">Delete</button>
-                                </span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center border-0">
-                                <div>
-                                    <input type="checkbox" class="me-2" />
-                                    Ability to read and write
-                                
-                                </div>
-                                <span>
-                                    <button class="btn btn-sm btn-primary me-1">Edit</button>
-                                    <button class="btn btn-sm btn-danger">Delete</button>
-                                </span>
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-                
+                  <div class="list-group mt-2">
+                    <ul
+                      class="list-group-item list-group-item-primary d-flex justify-content-between align-items-center"
+                    >
+                      <li class="list-unstyled">
+                        Mentors Measurable Achievement Goals
+                      </li>
+                    </ul>
+                    <ol class="list-group list-group-numbered">
+                      <li
+                        class="list-group-item d-flex justify-content-between align-items-center border-0"
+                      >
+                        <div>
+                          <input type="checkbox" class="me-2" />
+                          Achieve Public Speaking
+                        </div>
+                        <span>
+                          <button class="btn btn-sm btn-primary me-1">Edit</button>
+                          <button class="btn btn-sm btn-danger">Delete</button>
+                        </span>
+                      </li>
+                      <li
+                        class="list-group-item d-flex justify-content-between align-items-center border-0"
+                      >
+                        <div>
+                          <input type="checkbox" class="me-2" />
+                          Ability to read and write
+                        </div>
+                        <span>
+                          <button class="btn btn-sm btn-primary me-1">Edit</button>
+                          <button class="btn btn-sm btn-danger">Delete</button>
+                        </span>
+                      </li>
+                    </ol>
+                  </div>
                 </div>
               </div>
             </div>
             <div
-              class="tab-pane fade"
+              class="tab-pane fade show active"
               id="chat"
               role="tabpanel"
               aria-labelledby="chat-tab"
             >
-              <p>Chat content goes here.</p>
+              <div class="chat-window mt-3">
+                <div class="chat-header">Mentee Name</div>
+                <div class="chat-body">
+                  <div class="chat-message message-received">
+                    Hi! How are you?
+                  </div>
+                  <div class="chat-message message-sent">
+                    I'm good, thank you! How about you?
+                  </div>
+                  <div class="chat-message message-received">
+                    I'm doing well, thanks!
+                  </div>
+                  <div class="chat-message message-sent">
+                    I'm good, thank you! How about you?
+                  </div>
+                  <div class="chat-message message-received">
+                    I'm doing well, thanks!
+                  </div>
+                  <div class="chat-message message-sent">
+                    I'm good, thank you! How about you?
+                  </div>
+                  <div class="chat-message message-received">
+                    I'm doing well, thanks!
+                  </div>
+                  <div class="chat-message message-sent">
+                    I'm good, thank you! How about you?
+                  </div>
+                  <div class="chat-message message-received">
+                    I'm doing well, thanks!
+                  </div>
+                </div>
+                <div class="chat-footer">
+                  <input type="text" placeholder="Type a message" />
+                  <button>Send</button>
+                </div>
+              </div>
             </div>
           </div>
           <div class="row"></div>
