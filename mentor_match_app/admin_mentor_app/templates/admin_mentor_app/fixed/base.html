@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
+        <link
+      rel="stylesheet"
+      href="{% static 'admin_mentor_app/css/evaluation.css' %}"
+    />
+    <title>Mentor's Panel</title>
+
+    <style>
+        .sidebar-menu {
+            border: 1px solid red;
+            height: calc(100vh);
+            position: fixed;
+            /* text-wrap: ba; */
+        }
+
+        .menu-list {
+            list-style: none;
+            margin-left: 5px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .menu-list-items {
+            margin-top: 1rem;
+            text-decoration: none;
+        }
+
+        .menu-list-items:hover {
+            background-color: blue;
+        }
+
+        .listitem {
+            padding: 1rem 0;
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <div class="container-fluid" >
+        <div class="container-fluid" >
+            <!-- <div class="container"> -->
+            <div class="row mt-1">
+                <div class="col-md-6">
+                    <h2><strong>Mentor Match</strong></h2>
+                </div>
+                <div class="col-md-6">
+                    <div class="row g-3 justify-content-end align-items-center">
+                        <div class="col-auto ms-auto">
+                            <div class="text-end">
+                                <div class="img-case">
+                                    <img src="{% static 'admin_mentor_app/images/notifications.png' %}" alt="" class="img-fluid rounded-circle"
+                                        style="max-width: 20px;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="text-end">
+                                <div class="img-case">
+                                    <img src="{% static 'admin_mentor_app/images/settings.png' %}" alt="" class="img-fluid rounded-circle" style="max-width: 20px;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="text-end">
+                                <div class="img-case">
+                                    <img src="{% static 'admin_mentor_app/images/user.png' %}" alt="" class="img-fluid rounded-circle" style="max-width: 40px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- </div> -->
+        </div>
+        
+        <div class="row">
+            <div class="col-2 " style="border: 1px solid red; height: 90vh; background-color: #ADD8E6;">
+                <div class="">
+                    <div class="menu-list">
+                        <p class="menu-list-items"><a class="listitem" href="{% url 'dashboard' %}"><i
+                                    class="menu-list-items fas fa-box"></i>&nbsp; <span>Dashboard</span></a> </p>
+                        <p class="menu-list-items"><a class="listitem" href="{% url 'mentees' %}"><i
+                                    class="menu-list-items fas fa-id-badge"></i>&nbsp; <span>Mentees</span></a></p>
+                        <p class="menu-list-items"><a class="listitem" href="{% url 'schedule' %}"><i
+                                    class="menu-list-items fas fa-calendar-day"></i>&nbsp; <span>Schedule</span></a></p>
+                        <p class="menu-list-items"><a class="listitem href=" Reports.html"><i
+                                    class="menu-list-items fas fa-envelope-open-text"></i>&nbsp; <span>Reports</span></a>
+                        </p>
+                        <p class="menu-list-items"><a class="listitem href=" Evaluation.html"><i
+                                    class="menu-list-items fas fa-layer-group"></i>&nbsp; <span>Evaluation</span></a></p>
+        
+                    </div>
+                </div>
+            </div>
+            <div class="col-10">
+                <div class="container mt-2">
+                    <!-- Injections start here -->
+                    {% block content  %}
+                    {% endblock   %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap and Bootstrap Select JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-mrcu6mWBnHsl1wEPpqe1FhrcofIyz1NkT3zVZp6Y+Ro5oDGLxD84anCnpI9gU8/N" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-mrcu6mWBnHsl1wEPpqe1FhrcofIyz1NkT3zVZp6Y+Ro5oDGLxD84anCnpI9gU8/N" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/i18n/defaults-en_US.min.js"></script>
+</body>
+
+</html>

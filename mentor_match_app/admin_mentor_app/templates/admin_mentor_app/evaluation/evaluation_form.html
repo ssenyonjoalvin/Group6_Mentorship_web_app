@@ -1,0 +1,380 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Evaluation</title>
+    <link rel="stylesheet" href="{% static 'Mentorshipapp/form.css' %}" />
+    <script>
+      function onlyOne(checkbox) {
+        const checkboxes = document.getElementsByName(checkbox.name);
+        checkboxes.forEach((item) => {
+          if (item !== checkbox) item.checked = false;
+        });
+      }
+    </script>
+  </head>
+
+  <body>
+    <div>
+      <form
+        onsubmit="return handleData()"
+        method="post"
+        action="https://postman-echo.com/post"
+      >
+        <div>
+          <h2>Evaluation of Mentorship Program</h2>
+          <p>
+            Welcome! This form is designed to help us assess the effectiveness
+            of our mentorship program. Your feedback is invaluable in helping us
+            make improvements and ensure that the program meets your needs.
+            Please take a moment to provide your insights and suggestions.
+          </p>
+        </div>
+        <!-- <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br> -->
+        <h4>Please answer the following questions</h4>
+
+        <p>
+          How effectively did your mentor support you during the mentorship?
+        </p>
+        <div>
+          <input
+            type="checkbox"
+            name="support"
+            id="support-very-good"
+            value="Very Good"
+            onclick="onlyOne(this)"
+          />
+          <label for="support-very-good">Very Good</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="support"
+            id="support-good"
+            value="Good"
+            onclick="onlyOne(this)"
+          />
+          <label for="support-good">Good</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="support"
+            id="support-bad"
+            value="Bad"
+            onclick="onlyOne(this)"
+          />
+          <label for="support-bad">Bad</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="support"
+            id="support-very-bad"
+            value="Very Bad"
+            onclick="onlyOne(this)"
+          />
+          <label for="support-very-bad">Very Bad</label>
+        </div>
+
+        <p>How was the communication with your mentor?</p>
+        <div>
+          <input
+            type="checkbox"
+            name="communication"
+            id="communication-very-good"
+            value="Very Good"
+            onclick="onlyOne(this)"
+          />
+          <label for="communication-very-good">Very Good</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="communication"
+            id="communication-good"
+            value="Good"
+            onclick="onlyOne(this)"
+          />
+          <label for="communication-good">Good</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="communication"
+            id="communication-bad"
+            value="Bad"
+            onclick="onlyOne(this)"
+          />
+          <label for="communication-bad">Bad</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="communication"
+            id="communication-very-bad"
+            value="Very Bad"
+            onclick="onlyOne(this)"
+          />
+          <label for="communication-very-bad">Very Bad</label>
+        </div>
+
+        <p>
+          How did the mentorship help you improve your confidence and
+          decision-making abilities?
+        </p>
+        <div>
+          <input
+            type="checkbox"
+            name="confidence"
+            id="confidence-very-good"
+            value="Very Good"
+            onclick="onlyOne(this)"
+          />
+          <label for="confidence-very-good">Very Good</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="confidence"
+            id="confidence-good"
+            value="Good"
+            onclick="onlyOne(this)"
+          />
+          <label for="confidence-good">Good</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="confidence"
+            id="confidence-bad"
+            value="Bad"
+            onclick="onlyOne(this)"
+          />
+          <label for="confidence-bad">Bad</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="confidence"
+            id="confidence-very-bad"
+            value="Very Bad"
+            onclick="onlyOne(this)"
+          />
+          <label for="confidence-very-bad">Very Bad</label>
+        </div>
+
+        <p>
+          How has the mentorship influenced your career plans or trajectory?
+        </p>
+        <div>
+          <input
+            type="checkbox"
+            name="career"
+            id="career-very-good"
+            value="Very Good"
+            onclick="onlyOne(this)"
+          />
+          <label for="career-very-good">Very Good</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="career"
+            id="career-good"
+            value="Good"
+            onclick="onlyOne(this)"
+          />
+          <label for="career-good">Good</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="career"
+            id="career-bad"
+            value="Bad"
+            onclick="onlyOne(this)"
+          />
+          <label for="career-bad">Bad</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="career"
+            id="career-very-bad"
+            value="Very Bad"
+            onclick="onlyOne(this)"
+          />
+          <label for="career-very-bad">Very Bad</label>
+        </div>
+
+        <p>How did your understanding of your field or role improve?</p>
+        <div>
+          <input
+            type="checkbox"
+            name="understanding"
+            id="understanding-very-good"
+            value="Very Good"
+            onclick="onlyOne(this)"
+          />
+          <label for="understanding-very-good">Very Good</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="understanding"
+            id="understanding-good"
+            value="Good"
+            onclick="onlyOne(this)"
+          />
+          <label for="understanding-good">Good</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="understanding"
+            id="understanding-bad"
+            value="Bad"
+            onclick="onlyOne(this)"
+          />
+          <label for="understanding-bad">Bad</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="understanding"
+            id="understanding-very-bad"
+            value="Very Bad"
+            onclick="onlyOne(this)"
+          />
+          <label for="understanding-very-bad">Very Bad</label>
+        </div>
+
+        <p>
+          Did you feel comfortable discussing your challenges and progress with
+          your mentor?
+        </p>
+        <div>
+          <input
+            type="checkbox"
+            name="comfort"
+            id="comfort-yes"
+            value="Yes"
+            onclick="onlyOne(this)"
+          />
+          <label for="comfort-yes">Yes</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="comfort"
+            id="comfort-no"
+            value="No"
+            onclick="onlyOne(this)"
+          />
+          <label for="comfort-no">No</label>
+        </div>
+
+        <p>Were your initial goals and expectations for the mentorship met?</p>
+        <div>
+          <input
+            type="checkbox"
+            name="goals"
+            id="goals-yes"
+            value="Yes"
+            onclick="onlyOne(this)"
+          />
+          <label for="goals-yes">Yes</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="goals"
+            id="goals-no"
+            value="No"
+            onclick="onlyOne(this)"
+          />
+          <label for="goals-no">No</label>
+        </div>
+
+        <p>
+          Would you participate in the mentorship program again or recommend it
+          to others?
+        </p>
+        <div>
+          <input
+            type="checkbox"
+            name="recommend"
+            id="recommend-yes"
+            value="Yes"
+            onclick="onlyOne(this)"
+          />
+          <label for="recommend-yes">Yes</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="recommend"
+            id="recommend-no"
+            value="No"
+            onclick="onlyOne(this)"
+          />
+          <label for="recommend-no">No</label>
+        </div>
+
+        <p>
+          Were the resources and support provided during the mentorship
+          adequate?
+        </p>
+        <div>
+          <input
+            type="checkbox"
+            name="resources"
+            id="resources-yes"
+            value="Yes"
+            onclick="onlyOne(this)"
+          />
+          <label for="resources-yes">Yes</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="resources"
+            id="resources-no"
+            value="No"
+            onclick="onlyOne(this)"
+          />
+          <label for="resources-no">No</label>
+        </div>
+
+        <p>What additional resources or support would have been beneficial?</p>
+        <div>
+          <textarea
+            id="additional-resources"
+            name="additional-resources"
+          ></textarea
+          ><br /><br />
+        </div>
+
+        <p>
+          Is there anything else you would like to share about your mentorship
+          experience?
+        </p>
+        <div>
+          <textarea
+            id="additional-comments"
+            name="additional-comments"
+          ></textarea
+          ><br /><br />
+        </div>
+
+        <div>
+          <input type="submit" name="submit" value="Submit" />
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

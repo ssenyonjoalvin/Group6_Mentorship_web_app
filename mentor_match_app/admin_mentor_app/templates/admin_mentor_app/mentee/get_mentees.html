@@ -1,0 +1,52 @@
+{% extends 'admin_mentor_app/fixed/base.html'  %}
+{% block content  %}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Mentees  <span style="font-size: 20px;">/List</span>
+    </h2>
+    <div class="row mb-4">
+        <div class="col-md-6 d-flex align-items-start">
+            <select name="mentee_category" id="mentee_category" class="form-select" data-live-search="true">
+                <option data-tokens="pending">Pending</option>
+                <option data-tokens="completed">Completed</option>
+                <option data-tokens="request">Requesting</option>
+            </select>
+        </div>
+        <div class="col-md-5 d-flex justify-content-end align-items-end">
+            <input type="text" class="form-control me-2" name="search_mentees" id="search_mentees" placeholder="Search">
+        </div>
+        <div class="col-md-1 d-flex justify-content-end align-items-end">
+            <button class="btn btn-primary">
+                <i class="bi bi-search"></i>
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table table-hover table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Contact</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>John</td>
+                    <td>john@gmail.com</td>
+                    <td>Kampala</td>
+                    <td>+256 704665418</td>
+                    <td><a href="{% url 'preview_mentee' %}" class="btn btn-sm btn-outline-primary align-items-centre">Preview</a href="{% url 'login' %}"></td>
+                </tr>
+            </tbody>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+{% endblock content  %}
