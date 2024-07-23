@@ -48,7 +48,8 @@ def register(request):
 @login_required
 def dashboard(request):
     return render(request, "admin_mentor_app/dashboard/dashboard.html")
-
+def profile(request):
+    return render(request, "admin_mentor_app/dashboard/profile.html")
 # Mentee
 @login_required
 def get_mentees(request):
