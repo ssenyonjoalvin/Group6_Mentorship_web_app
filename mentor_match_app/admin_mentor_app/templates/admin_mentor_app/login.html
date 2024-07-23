@@ -108,20 +108,16 @@
             $("login_form").attr('display', "none");
         });
     </script> -->
-
-        <script>
-          function togglePasswordVisibility() {
-            var passwordField = document.getElementById('password');
-            var confirmPasswordField = document.getElementById('confirm-password');
-            if (passwordField.type === 'password') {
-              passwordField.type = 'text';
-              confirmPasswordField.type = 'text';
-            } else {
-              passwordField.type = 'password';
-              confirmPasswordField.type = 'password';
-            }
-          }
-        </script>
+<script>
+function togglePasswordVisibility() {
+  var passwordField = document.getElementById('password');
+  if (passwordField.type === 'password') {
+    passwordField.type = 'text';
+  } else {
+    passwordField.type = 'password';
+  }
+}
+</script>
     <!-- Bootstrap JS and dependencies (optional) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.1/dist/umd/popper.min.js"></script>
