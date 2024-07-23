@@ -8,6 +8,7 @@ urlpatterns = [
 
     #  Dashboard
     path('', views.dashboard, name='dashboard'),
+    path('profile/', views.profile, name='profile'),
 
     # Mentees
     path('my-mentees/', views.get_mentees, name='mentees'),
