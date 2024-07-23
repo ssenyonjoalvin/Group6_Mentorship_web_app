@@ -23,7 +23,7 @@ class UserRegisterForm(UserCreationForm):
     gender = forms.ChoiceField(choices=GENDER_CHOICES)
     telephone = forms.CharField(max_length=50)
     nationality = forms.CharField(max_length=50)
-    type_of_user = forms.CharField(max_length=50)  # Adjust as needed
+    type_of_user = forms.CharField(choices=TYPE_OF_USER)  # Adjust as needed
 
     class Meta:
         model = User
