@@ -19,6 +19,9 @@ urlpatterns = [
 
     # evaluation
     path('evaluation/', views.evaluation, name='evaluation'),
+
+    # reports
+    path('reports/', views.reports, name='reports'),
     
     
     ]
