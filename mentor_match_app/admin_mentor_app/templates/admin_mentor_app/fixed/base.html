@@ -58,13 +58,19 @@
             <!-- <div class="container"> -->
             <div class="row mt-1">
                 <div class="col-md-6">
-                    <h2><strong>Mentor Match</strong></h2>
+                  
+                    <h2><strong>Mentor Match</strong><span class="m-2 p-5 text-end">    Welcome {{user.username}}</span></h2>
+                
                 </div>
                 <div class="col-md-6">
                     <div class="row g-3 justify-content-end align-items-center">
                         <div class="col-auto ms-auto">
                             <div class="text-end">
-                                <div class="img-case"> <span class="m-2">Welcome {{user.username}}</span>
+
+
+                                <div class="img-case"> 
+                                   
+                                   {% comment %} <a href='{%url 'logout' %}'> <span class='p-4'>logout</span></a>  {% endcomment %}
                                     <img src="{% static 'admin_mentor_app/images/notifications.png' %}" alt="" class="img-fluid rounded-circle"
                                         style="max-width: 20px;">
                                 </div>
@@ -73,17 +79,31 @@
                         <div class="col-auto">
                             <div class="text-end">
                                 <div class="img-case">
-                                    <img src="{% static 'admin_mentor_app/images/settings.png' %}" alt="" class="img-fluid rounded-circle" style="max-width: 20px;">
+                                    <img src="{% static 'admin_mentor_app/images/status.png' %}" alt="" class="img-fluid rounded-circle" style="max-width: 20px;">
                                 </div>
                             </div>
                         </div>
                         <div class="col-auto">
                             <div class="text-end">
                                 <div class="img-case">
+                                    <a href="{% url 'profile' %}">
                                     <img src="{% static 'admin_mentor_app/images/user.png' %}" alt="" class="img-fluid rounded-circle" style="max-width: 40px;">
+                                </a>
+                                </div>
+                            </div>
+                           
+                        </div>
+                        <div class="col-auto">
+                            <div class="text-end">
+                                <div class="img-case">
+                                    <form method="post" action="{% url 'logout' %}">
+                                            {% csrf_token %}
+                                        <button type="submit">Logout</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>
@@ -106,6 +126,9 @@
                         <p class="menu-list-items"><a class="listitem" href=" Evaluation.html"><i
                                     class="menu-list-items fas fa-layer-group"></i>&nbsp; <span>Evaluation</span></a></p>
         
+                    </div>
+                    <div >
+
                     </div>
                 </div>
             </div>

@@ -1,14 +1,25 @@
 from django.db import models
+<<<<<<< HEAD
 
 class User(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
+=======
+from django.contrib.auth.models import User
+
+class User(models.Model):
+    full_name = models.CharField(max_length=100)
+>>>>>>> cb89d5ce2baa370050eb437a5e2a605b0b808163
     email = models.EmailField(unique=True)
     gender = models.CharField(max_length=10)  # Expanded to accommodate longer gender descriptions
     nationality = models.CharField(max_length=50)  # Expanded to accommodate longer country names
     dob = models.DateField()
     password = models.CharField(max_length=100)
     telephone = models.CharField(max_length=15)
+<<<<<<< HEAD
+=======
+    status = models.CharField(max_length=15)
+>>>>>>> cb89d5ce2baa370050eb437a5e2a605b0b808163
     role_choices = [
         ('1', 'Admin'),
         ('2', 'Mentor'),
@@ -78,3 +89,14 @@ class Evaluation(models.Model):
     time_management = models.PositiveSmallIntegerField()
     team_collaboration = models.PositiveSmallIntegerField()
     comments = models.TextField(blank=True, null=True)
+<<<<<<< HEAD
+=======
+    
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    image =models.ImageFeild(default='default.jpg',upload_to='profile_pics')
+    
+    def __str__(self):
+        return f'{self.user.username} Profile'
+    
+>>>>>>> cb89d5ce2baa370050eb437a5e2a605b0b808163
