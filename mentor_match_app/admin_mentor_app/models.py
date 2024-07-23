@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class User(models.Model):
     full_name = models.CharField(max_length=100)
@@ -78,3 +79,11 @@ class Evaluation(models.Model):
     time_management = models.PositiveSmallIntegerField()
     team_collaboration = models.PositiveSmallIntegerField()
     comments = models.TextField(blank=True, null=True)
+    
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    image =models.ImageFeild(default='default.jpg',upload_to='profile_pics')
+    
+    def __str__(self):
+        return f'{self.user.username} Profile'
+    
