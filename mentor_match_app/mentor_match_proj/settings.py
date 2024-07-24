@@ -32,15 +32,16 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "admin_mentor_app",
-    "django.contrib.admin",
-    "crispy_forms",
-    "crispy_bootstrap5",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
+    'admin_mentor_app',
+    'django.contrib.admin',
+    'crispy_forms',
+    'crispy_bootstrap5',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'mentees_app',
 ]
 
 MIDDLEWARE = [
@@ -57,8 +58,9 @@ ROOT_URLCONF = "mentor_match_proj.urls"
 
 TEMPLATES = [
     {
+
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, 'templates')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -66,6 +68,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "admin_mentor_app.context_processors.global_data",
             ],
         },
     },
@@ -133,4 +136,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 LOGIN_REDIRECT_URL = "dashboard"
 LOGIN_URL = "login"
-
+AUTH_USER_MODEL = "admin_mentor_app.User"
+AUTHENTICATION_BACKENDS = [
+    "admin_mentor_app.backends.EmailBackend",
+]
