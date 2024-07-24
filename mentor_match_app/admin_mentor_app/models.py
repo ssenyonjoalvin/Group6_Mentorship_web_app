@@ -80,10 +80,10 @@ class Evaluation(models.Model):
     team_collaboration = models.PositiveSmallIntegerField()
     comments = models.TextField(blank=True, null=True)
     
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image =models.ImageFeild(default='default.jpg',upload_to='profile_pics')
+# class Profile(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     image =models.ImageField(default='default.jpg',upload_to='profile_pics')
     
-    def __str__(self):
-        return f'{self.user.username} Profile'
+#     def __str__(self):
+#         return f'{self.user.username} Profile'
     
