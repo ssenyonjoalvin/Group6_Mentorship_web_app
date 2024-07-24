@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.hashers import make_password
+
 from faker import Faker
 from admin_mentor_app.models import User, MentorshipMatch, Message, Notification, Schedule, Progress, Evaluation
 
@@ -12,14 +13,14 @@ class Command(BaseCommand):
 
         # Create Users
         for _ in range(60):
-            user = User(
+            user = User.objects.create_user(
                 first_name=fake.first_name(),
                 last_name=fake.last_name(),
-                email=fake.email(),
+                email=fake.unique.email(),
                 gender=fake.random_element(['Male', 'Female']),
                 nationality=fake.country(),
                 dob=fake.date_of_birth(minimum_age=18, maximum_age=80),
-                password=make_password('defaultpassword'),  # Replace with a default password
+                password=make_password('test12345'),  # Default password
                 telephone=fake.phone_number(),
                 role=fake.random_element(['1', '2', '3']),
                 profile_picture=None  # No image
@@ -64,15 +65,17 @@ class Command(BaseCommand):
                 status=fake.random_element(['scheduled', 'confirmed', 'completed', 'canceled'])
             )
 
-        # Create Progress
         schedules = list(Schedule.objects.all())
+        mentors = list(User.objects.filter(role='2'))
+        mentees = list(User.objects.filter(role='3'))
+
         for _ in range(60):
             Progress.objects.create(
-                schedule=fake.random_element(schedules),
+                mentor=fake.random_element(mentors),
+                mentee=fake.random_element(mentees),
                 goal=fake.sentence(),
-                milestone=fake.sentence() if fake.boolean() else None,
-                feedback=fake.text(),
-                progress_date=fake.date_time_this_year()
+                status=fake.word(ext_word_list=['Not Started', 'In Progress', 'Completed']),
+                session_number=str(fake.random_int(min=1, max=10))
             )
 
         # Create Evaluations

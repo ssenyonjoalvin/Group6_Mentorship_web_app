@@ -133,4 +133,9 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 LOGIN_REDIRECT_URL = "dashboard"
 LOGIN_URL = "login"
+AUTH_USER_MODEL = 'admin_mentor_app.User'
+AUTHENTICATION_BACKENDS = [
+    'admin_mentor_app.backends.EmailBackend',
+]
+
 
