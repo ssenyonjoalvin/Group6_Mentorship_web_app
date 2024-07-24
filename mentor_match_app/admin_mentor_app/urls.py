@@ -24,5 +24,5 @@ urlpatterns = [
     # reports
     path('reports/', views.reports, name='reports'),
     
-    
+
     ]
