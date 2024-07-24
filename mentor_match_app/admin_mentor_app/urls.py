@@ -24,5 +24,6 @@ urlpatterns = [
     # reports
     path('reports/', views.reports, name='reports'),
     
-    
+     # reports
+    path('notifications/', views.notifications, name='notifications'),
     ]

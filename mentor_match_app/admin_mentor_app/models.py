@@ -61,7 +61,7 @@ class MentorshipMatch(models.Model):
     status = models.CharField(max_length=10, choices=status_choices, default="pending")
 
     def __str__(self):
-        return f"MentorshipMatch({self.mentor} -> {self.mentee}, {self.status})"
+        return f"({self.mentor} -> {self.mentee}, {self.status}, ID->{self.mentor})"
 
 
 class Message(models.Model):

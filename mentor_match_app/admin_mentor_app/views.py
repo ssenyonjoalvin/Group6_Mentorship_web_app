@@ -59,6 +59,8 @@ def register(request):
 # Dashboard
 @login_required
 def dashboard(request):
+    unread_notifications = Notification.objects.count()
+    # unread_notifications = Notification.objects.raw('SELECT *, count(*) as count FROM admin_mentor_app_notification where is_read =0')
     total_progress_count = Progress.objects.count()
     schedules = Schedule.objects.all()
 
@@ -70,7 +72,9 @@ def dashboard(request):
     )
     users = User.objects.all()
     progresses = Progress.objects.all()
-    print(schedules)
+    print(unread_notifications)
+    # for unread_notification in unread_notifications:
+    #     print(unread_notification.message)
 
     return render(
         request,
@@ -82,6 +86,7 @@ def dashboard(request):
             "total_progress_count": total_progress_count,
             "users": users,
             "schedules": schedules,
+            'unread_notifications':unread_notifications
         },
     )
 
@@ -93,7 +98,11 @@ def profile(request):
 # Mentee
 @login_required
 def get_mentees(request):
-    return render(request, "admin_mentor_app/mentee/get_mentees.html")
+    mentor_id = request.user.id 
+    my_mentees = MentorshipMatch.objects.raw("select * from admin_mentor_app_mentorshipmatch")
+    
+   
+    return render(request, "admin_mentor_app/mentee/get_mentees.html", {'my_mentees':my_mentees})
 
 
 def preview_mentees(request):
@@ -118,3 +127,5 @@ def reports(request):
     return render(
         request, "admin_mentor_app/reports/reports.html", {"chart_paths": chart_paths}
     )
+def notifications(request):
+    return render(request,"admin_mentor_app/notifications.html",{"notifications":notifications})

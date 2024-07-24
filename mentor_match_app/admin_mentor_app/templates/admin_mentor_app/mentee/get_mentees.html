@@ -34,14 +34,19 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>John</td>
-                    <td>john@gmail.com</td>
-                    <td>Kampala</td>
-                    <td>+256 704665418</td>
-                    <td><a href="{% url 'preview_mentee' %}" class="btn btn-sm btn-outline-primary align-items-centre">Preview</a href="{% url 'login' %}"></td>
-                </tr>
+                {%for mentee in my_mentees:%}
+                    {%if (mentee.mentor_id)==user.id:%}   
+                    <tr>
+                        <td>1</td>
+                        <td>John</td>
+                        <td>john@gmail.com</td>
+                        <td>Kampala</td>
+                        <td>+256 704665418</td>
+                        <td><a href="{% url 'preview_mentee' %}" class="btn btn-sm btn-outline-primary align-items-centre">Preview</a href="{% url 'login' %}"></td>
+                    </tr>
+                    {% endif %}         
+                {%endfor%}
+                
             </tbody>
             </tbody>
         </table>

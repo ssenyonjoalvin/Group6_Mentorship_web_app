@@ -9,6 +9,10 @@ def global_data(request):
     progress = Progress.objects.all()
     goals = Goals.objects.all()
     evaluations = Evaluation.objects.all()
+    unread_notifications = Notification.objects.count()
+    notifications = Notification.objects.all()
+
+    
     
     return {
         'global_users': users,
@@ -19,4 +23,6 @@ def global_data(request):
         'global_progress': progress,
         'global_goals': goals,
         'global_evaluations': evaluations,
+        'unread_notifications' : unread_notifications,
+        'notifications':notifications
     }
