@@ -9,6 +9,8 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
     />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -179,21 +181,23 @@
                     />
                     <ul class="dropdown-menu" aria-labelledby="userDropdown">
                       <li><a class="dropdown-item" href="#">Profile</a></li>
-                      <li><a class="dropdown-item" href="#">Logout</a></li>
+                      <li>
+                        <a class="dropdown-item" href="#" id="logout-link">Logout</a>
+                        <form id="logout-form" method="post" action="{% url 'logout' %}" style="display:none;">
+                          {% csrf_token %}
+                        </form>
+                      </li>
                     </ul>
                   </div>
                 </div>
               </div>
-              <div class="col-auto">
-                <div class="text-end">
-                  <div class="img-case">
-                    <form method="post" action="{% url 'logout' %}">
-                      {% csrf_token %}
-                      <button type="submit">Logout</button>
-                    </form>
-                  </div>
-                </div>
-              </div>
+              
+              <script>
+                document.getElementById('logout-link').addEventListener('click', function(event) {
+                  event.preventDefault(); // Prevent the default link behavior
+                  document.getElementById('logout-form').submit(); // Submit the form
+                });
+              </script>
             </div>
           </div>
         </div>
