@@ -1,9 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import (
-    AbstractBaseUser,
-    BaseUserManager,
-    PermissionsMixin,
-)
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils import timezone
 
 
@@ -30,7 +26,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     gender = models.CharField(max_length=10)
     nationality = models.CharField(max_length=50)
     dob = models.DateField()
-    password = models.CharField(max_length=100)
     telephone = models.CharField(max_length=15)
     role_choices = [
         ("1", "Admin"),
@@ -91,9 +86,7 @@ class Notification(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return (
-            f"Notification for {self.user}, read: {self.is_read}, at {self.created_at}"
-        )
+        return f"Notification for {self.user}, read: {self.is_read}, at {self.created_at}"
 
 
 class Schedule(models.Model):
@@ -119,20 +112,27 @@ class Schedule(models.Model):
 
 
 class Progress(models.Model):
-    mentor = models.ForeignKey(User, related_name="progress_mentor", on_delete=models.CASCADE)
-    mentee = models.ForeignKey(
-        User,
-        related_name="progress_mentee",
-        on_delete=models.CASCADE,
-        blank=True,
-        null=True,
+    session_number = models.AutoField(primary_key=True)
+    mentor = models.ForeignKey(
+        User, related_name="progress_mentor", on_delete=models.CASCADE
     )
-    goal = models.CharField(max_length=255)
-    status = models.CharField(max_length=255, blank=True, null=True)
-    session_number = models.CharField(max_length=255, blank=True, null=True)
+    mentee = models.ForeignKey(
+        User, related_name="progress_mentee", on_delete=models.CASCADE, blank=True, null=True
+    )
+    progress_percentage = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
-        return f"Progress: Goal - {self.goal}, Status - {self.status}, Mentee ID - {self.mentee.id if self.mentee else 'N/A'}, Mentor ID - {self.mentor.id}"
+        return f"{self.session_number}, {self.mentee.id if self.mentee else 'N/A'},{self.mentor.id}, progress_percentage:{self.progress_percentage}"
+
+
+class Goals(models.Model):
+    id = models.AutoField(primary_key=True)
+    goal_id = models.ForeignKey(Progress, related_name="session_goals", on_delete=models.CASCADE, blank=True, null=True)
+    goal = models.CharField(max_length=255)
+    status = models.CharField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return f"Goal: {self.goal}, Status: {self.status}, Session Number: {self.goal_id.session_number if self.goal_id else 'N/A'}"
 
 
 class Evaluation(models.Model):

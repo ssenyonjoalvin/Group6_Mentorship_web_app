@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth.hashers import make_password
 
 from faker import Faker
-from admin_mentor_app.models import User, MentorshipMatch, Message, Notification, Schedule, Progress, Evaluation
+from admin_mentor_app.models import User, MentorshipMatch, Message, Notification, Schedule, Progress, Evaluation, Goals
 
 class Command(BaseCommand):
     help = 'Populate database with fake data'
@@ -12,7 +12,7 @@ class Command(BaseCommand):
         Faker.seed(0)
 
         # Create Users
-        for _ in range(60):
+        for _ in range(10):
             user = User.objects.create_user(
                 first_name=fake.first_name(),
                 last_name=fake.last_name(),
@@ -30,7 +30,7 @@ class Command(BaseCommand):
         users = list(User.objects.all())
 
         # Create MentorshipMatches
-        for _ in range(60):
+        for _ in range(10):
             MentorshipMatch.objects.create(
                 mentor=fake.random_element(users),
                 mentee=fake.random_element(users),
@@ -38,7 +38,7 @@ class Command(BaseCommand):
             )
 
         # Create Messages
-        for _ in range(60):
+        for _ in range(10):
             Message.objects.create(
                 sender=fake.random_element(users),
                 receiver=fake.random_element(users),
@@ -48,7 +48,7 @@ class Command(BaseCommand):
             )
 
         # Create Notifications
-        for _ in range(60):
+        for _ in range(10):
             Notification.objects.create(
                 user=fake.random_element(users),
                 message=fake.text(),
@@ -57,7 +57,7 @@ class Command(BaseCommand):
             )
 
         # Create Schedules
-        for _ in range(60):
+        for _ in range(10):
             Schedule.objects.create(
                 mentor=fake.random_element(users),
                 mentee=fake.random_element(users),
@@ -65,22 +65,32 @@ class Command(BaseCommand):
                 status=fake.random_element(['scheduled', 'confirmed', 'completed', 'canceled'])
             )
 
-        schedules = list(Schedule.objects.all())
         mentors = list(User.objects.filter(role='2'))
         mentees = list(User.objects.filter(role='3'))
 
-        for _ in range(60):
-            Progress.objects.create(
+        # Create Progress
+        for _ in range(10):
+            progress = Progress.objects.create(
                 mentor=fake.random_element(mentors),
                 mentee=fake.random_element(mentees),
-                goal=fake.sentence(),
-                status=fake.word(ext_word_list=['Not Started', 'In Progress', 'Completed']),
-                session_number=str(fake.random_int(min=1, max=10))
+                progress_percentage=fake.random_element(['0%', '25%', '50%', '75%', '100%'])
             )
+            progress.save()
+
+        progresses = list(Progress.objects.all())
+
+        # Create Goals
+        for _ in range(10):
+            goal = Goals.objects.create(
+                goal_id=fake.random_element(progresses),
+                goal=fake.sentence(),
+                status=fake.random_element(['Not Started', 'In Progress', 'Completed'])
+            )
+            goal.save()
 
         # Create Evaluations
         matches = list(MentorshipMatch.objects.all())
-        for _ in range(60):
+        for _ in range(10):
             Evaluation.objects.create(
                 mentorship_match=fake.random_element(matches),
                 mentor=fake.random_element(users),

@@ -66,6 +66,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "admin_mentor_app.context_processors.global_data",
             ],
         },
     },
@@ -133,9 +134,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 LOGIN_REDIRECT_URL = "dashboard"
 LOGIN_URL = "login"
-AUTH_USER_MODEL = 'admin_mentor_app.User'
+AUTH_USER_MODEL = "admin_mentor_app.User"
 AUTHENTICATION_BACKENDS = [
-    'admin_mentor_app.backends.EmailBackend',
+    "admin_mentor_app.backends.EmailBackend",
 ]
-
-
