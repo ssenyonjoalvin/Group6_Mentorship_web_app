@@ -112,16 +112,6 @@ class Schedule(models.Model):
 
 
 class Progress(models.Model):
-<<<<<<< HEAD
-    mentorId = models.ForeignKey(User, related_name="progress", on_delete=models.CASCADE)
-    
-    mentee_id= models.CharField(max_length=255)
-    goal = models.CharField(max_length=255)
-    status = models.CharField(max_length=255, blank=True, null=True)  # Updated field
-
-    def __str__(self):
-        return f"Progress: Goal - {self.goal}, status - {self.status}, mentee - {self.mentee_id}"
-=======
     session_number = models.AutoField(primary_key=True)
     mentor = models.ForeignKey(
         User, related_name="progress_mentor", on_delete=models.CASCADE
@@ -144,7 +134,6 @@ class Goals(models.Model):
     def __str__(self):
         return f"Goal: {self.goal}, Status: {self.status}, Session Number: {self.goal_id.session_number if self.goal_id else 'N/A'}"
 
->>>>>>> main
 
 class Evaluation(models.Model):
     mentorship_match = models.ForeignKey(MentorshipMatch, on_delete=models.CASCADE)

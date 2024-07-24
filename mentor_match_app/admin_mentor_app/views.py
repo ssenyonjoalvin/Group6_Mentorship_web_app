@@ -5,20 +5,13 @@ from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth import logout as auth_logout
 from .forms import LoginForm, UserRegisterForm
 import matplotlib
-from .forms import UserRegisterForm,EvaluationForm
+from .forms import UserRegisterForm
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 import os
 from django.conf import settings
 import matplotlib.pyplot as plt
 import seaborn as sns
-<<<<<<< HEAD
-# from .models import Mentee
-# from .forms import EvaluationForm
-from .models import Evaluation
-from django.db.models import Count, F, Q
-from .models import Progress, User
-=======
 from .models import (
     User,
     MentorshipMatch,
@@ -35,7 +28,6 @@ def logout_view(request):
     auth_logout(request)
     return redirect("login")
 
->>>>>>> main
 
 
 
@@ -49,8 +41,6 @@ def login_view(request):
             user = authenticate(request, email=email, password=password)
             if user is not None:
                 auth_login(request, user)
-                # Redirect to a success page.
-                # if user.role==1 or user.role==2:
                 return redirect("dashboard")
 
             else:
