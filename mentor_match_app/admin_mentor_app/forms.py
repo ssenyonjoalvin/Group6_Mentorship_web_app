@@ -41,3 +41,54 @@ class UserRegisterForm(UserCreationForm):
         self.fields['nationality'].widget.attrs.update({'class': 'form-control'})
         self.fields['type_of_user'].widget.attrs.update({'class': 'form-control'})
        
+       
+class EvaluationForm(forms.Form):
+    first_name = forms.CharField(max_length=30, required=True)
+    last_name = forms.CharField(max_length=30, required=True)
+    support = forms.MultipleChoiceField(
+        choices=[('Very Good', 'Very Good'), ('Good', 'Good'), ('Bad', 'Bad'), ('Very Bad', 'Very Bad')],
+        widget=forms.CheckboxSelectMultiple,
+        required=True
+    )
+    communication = forms.MultipleChoiceField(
+        choices=[('Very Good', 'Very Good'), ('Good', 'Good'), ('Bad', 'Bad'), ('Very Bad', 'Very Bad')],
+        widget=forms.CheckboxSelectMultiple,
+        required=True
+    )
+    confidence = forms.MultipleChoiceField(
+        choices=[('Very Good', 'Very Good'), ('Good', 'Good'), ('Bad', 'Bad'), ('Very Bad', 'Very Bad')],
+        widget=forms.CheckboxSelectMultiple,
+        required=True
+    )
+    career = forms.MultipleChoiceField(
+        choices=[('Very Good', 'Very Good'), ('Good', 'Good'), ('Bad', 'Bad'), ('Very Bad', 'Very Bad')],
+        widget=forms.CheckboxSelectMultiple,
+        required=True
+    )
+    understanding = forms.MultipleChoiceField(
+        choices=[('Very Good', 'Very Good'), ('Good', 'Good'), ('Bad', 'Bad'), ('Very Bad', 'Very Bad')],
+        widget=forms.CheckboxSelectMultiple,
+        required=True
+    )
+    comfort = forms.MultipleChoiceField(
+        choices=[('Yes', 'Yes'), ('No', 'No')],
+        widget=forms.CheckboxSelectMultiple,
+        required=True
+    )
+    goals = forms.MultipleChoiceField(
+        choices=[('Yes', 'Yes'), ('No', 'No')],
+        widget=forms.CheckboxSelectMultiple,
+        required=True
+    )
+    recommend = forms.MultipleChoiceField(
+        choices=[('Yes', 'Yes'), ('No', 'No')],
+        widget=forms.CheckboxSelectMultiple,
+        required=True
+    )
+    resources = forms.MultipleChoiceField(
+        choices=[('Yes', 'Yes'), ('No', 'No')],
+        widget=forms.CheckboxSelectMultiple,
+        required=True
+    )
+    additional_resources = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}), required=False)
+    additional_comments = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}), required=False)

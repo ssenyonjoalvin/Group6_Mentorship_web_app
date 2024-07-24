@@ -22,30 +22,31 @@
   <table>
     <thead>
       <tr>
+        {% if users %}
         <th>No.</th>
-        <th>Name</th>
+        <th>First Name</th>
+        <th>Last Name</th>
         <th>Address</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>{{ forloop.counter }}</td>
-        <td>
-          <a class="name-link" href="{% url 'evaluation_list'  %}">tahia</a>
-        </td>
-        <td>kikoni</td>
-      </tr>
-      {% for mentee in mentees %}
+        {% for user in users %}
       <tr>
         <td>{{ forloop.counter }}</td>
         <td>
-          <a class="name-link" href="{% url 'evaluation_list'  %}">{{ mentee.name }}</a>
+          <a class="name-link" href="{% url 'evaluation_list' %}?first_name={{ user.first_name }}">{{ user.first_name }}</a>
         </td>
-        <td>{{ mentee.address }}</td>
+        <td>{{ user.last_name }}</td>
+        <td>{{ user.email }}</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
+  {% else %}
+  <p>No mentees have 100% goal completion.</p>
+  {% endif %}
 </div>
 
 {% endblock content %}
+

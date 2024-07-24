@@ -4,7 +4,6 @@
 {% load static %}
 <style>
     /* evaluation.css */
-
     body {
         font-family: Arial, sans-serif;
         display: flex;
@@ -73,133 +72,136 @@
 </style>
 
 <div>
-  <form method="post">
-    {% csrf_token %}
-    <div>
-      <h2>Evaluation of Mentorship Program</h2>
-      <p>Welcome! This form is designed to help us assess the effectiveness of our mentorship program. Your feedback is invaluable in helping us make improvements and ensure that the program meets your needs. Please take a moment to provide your insights and suggestions.</p>
-    </div>
+    <form method="post">
+        {% csrf_token %}
+        <div>
+            <h2>Evaluation of Mentorship Program</h2>
+            <p>Welcome! This form is designed to help us assess the effectiveness of our mentorship program. Your feedback is invaluable in helping us make improvements and ensure that the program meets your needs. Please take a moment to provide your insights and suggestions.</p>
+        </div>
+        <div>
+            <label for="fname">First name:</label>
+            <input type="text" id="fname" name="first_name" placeholder="Enter your First Name "><br>
+            <label for="lname">Last name:</label>
+            <input type="text" id="lname" name="last_name" placeholder="Enter your Last Name "><br>
+        </div>
 
-    <h4>Please answer the following questions</h4>
+        <h4>Please answer the following questions</h4>
 
-    <p>How effectively did your mentor support you during the mentorship?</p>
-    <div>
-      <input type="checkbox" name="support" id="support-very-good" value="Very Good" /> <label for="support-very-good">Very Good</label>
-    </div>
-    <div>
-      <input type="checkbox" name="support" id="support-good" value="Good" /> <label for="support-good">Good</label>
-    </div>
-    <div>
-      <input type="checkbox" name="support" id="support-bad" value="Bad" /> <label for="support-bad">Bad</label>
-    </div>
-    <div>
-      <input type="checkbox" name="support" id="support-very-bad" value="Very Bad" /> <label for="support-very-bad">Very Bad</label>
-    </div>
+        <p>How effectively did your mentor support you during the mentorship?</p>
+        <div>
+            <input type="checkbox" name="support" id="support-very-good" value="Very Good" /> <label for="support-very-good">Very Good</label>
+        </div>
+        <div>
+            <input type="checkbox" name="support" id="support-good" value="Good" /> <label for="support-good">Good</label>
+        </div>
+        <div>
+            <input type="checkbox" name="support" id="support-bad" value="Bad" /> <label for="support-bad">Bad</label>
+        </div>
+        <div>
+            <input type="checkbox" name="support" id="support-very-bad" value="Very Bad" /> <label for="support-very-bad">Very Bad</label>
+        </div>
 
-    <p>How was the communication with your mentor?</p>
-    <div>
-      <input type="checkbox" name="communication" id="communication-very-good" value="Very Good" /> <label for="communication-very-good">Very Good</label>
-    </div>
-    <div>
-      <input type="checkbox" name="communication" id="communication-good" value="Good" /> <label for="communication-good">Good</label>
-    </div>
-    <div>
-      <input type="checkbox" name="communication" id="communication-bad" value="Bad" /> <label for="communication-bad">Bad</label>
-    </div>
-    <div>
-      <input type="checkbox" name="communication" id="communication-very-bad" value="Very Bad" /> <label for="communication-very-bad">Very Bad</label>
-    </div>
+        <p>How was the communication with your mentor?</p>
+        <div>
+            <input type="checkbox" name="communication" id="communication-very-good" value="Very Good" /> <label for="communication-very-good">Very Good</label>
+        </div>
+        <div>
+            <input type="checkbox" name="communication" id="communication-good" value="Good" /> <label for="communication-good">Good</label>
+        </div>
+        <div>
+            <input type="checkbox" name="communication" id="communication-bad" value="Bad" /> <label for="communication-bad">Bad</label>
+        </div>
+        <div>
+            <input type="checkbox" name="communication" id="communication-very-bad" value="Very Bad" /> <label for="communication-very-bad">Very Bad</label>
+        </div>
 
-    <p>How did the mentorship help you improve your confidence and decision-making abilities?</p>
-    <div>
-      <input type="checkbox" name="confidence" id="confidence-very-good" value="Very Good" /> <label for="confidence-very-good">Very Good</label>
-    </div>
-    <div>
-      <input type="checkbox" name="confidence" id="confidence-good" value="Good" /> <label for="confidence-good">Good</label>
-    </div>
-    <div>
-      <input type="checkbox" name="confidence" id="confidence-bad" value="Bad" /> <label for="confidence-bad">Bad</label>
-    </div>
-    <div>
-      <input type="checkbox" name="confidence" id="confidence-very-bad" value="Very Bad" /> <label for="confidence-very-bad">Very Bad</label>
-    </div>
+        <p>How did the mentorship help you improve your confidence and decision-making abilities?</p>
+        <div>
+            <input type="checkbox" name="confidence" id="confidence-very-good" value="Very Good" /> <label for="confidence-very-good">Very Good</label>
+        </div>
+        <div>
+            <input type="checkbox" name="confidence" id="confidence-good" value="Good" /> <label for="confidence-good">Good</label>
+        </div>
+        <div>
+            <input type="checkbox" name="confidence" id="confidence-bad" value="Bad" /> <label for="confidence-bad">Bad</label>
+        </div>
+        <div>
+            <input type="checkbox" name="confidence" id="confidence-very-bad" value="Very Bad" /> <label for="confidence-very-bad">Very Bad</label>
+        </div>
 
-    <p>How has the mentorship influenced your career plans or trajectory?</p>
-    <div>
-      <input type="checkbox" name="career" id="career-very-good" value="Very Good" /> <label for="career-very-good">Very Good</label>
-    </div>
-    <div>
-      <input type="checkbox" name="career" id="career-good" value="Good" /> <label for="career-good">Good</label>
-    </div>
-    <div>
-      <input type="checkbox" name="career" id="career-bad" value="Bad" /> <label for="career-bad">Bad</label>
-    </div>
-    <div>
-      <input type="checkbox" name="career" id="career-very-bad" value="Very Bad" /> <label for="career-very-bad">Very Bad</label>
-    </div>
+        <p>How has the mentorship influenced your career plans or trajectory?</p>
+        <div>
+            <input type="checkbox" name="career" id="career-very-good" value="Very Good" /> <label for="career-very-good">Very Good</label>
+        </div>
+        <div>
+            <input type="checkbox" name="career" id="career-good" value="Good" /> <label for="career-good">Good</label>
+        </div>
+        <div>
+            <input type="checkbox" name="career" id="career-bad" value="Bad" /> <label for="career-bad">Bad</label>
+        </div>
+        <div>
+            <input type="checkbox" name="career" id="career-very-bad" value="Very Bad" /> <label for="career-very-bad">Very Bad</label>
+        </div>
 
-    <p>How did your understanding of your field or role improve?</p>
-    <div>
-      <input type="checkbox" name="understanding" id="understanding-very-good" value="Very Good" /> <label for="understanding-very-good">Very Good</label>
-    </div>
-    <div>
-      <input type="checkbox" name="understanding" id="understanding-good" value="Good" /> <label for="understanding-good">Good</label>
-    </div>
-    <div>
-      <input type="checkbox" name="understanding" id="understanding-bad" value="Bad" /> <label for="understanding-bad">Bad</label>
-    </div>
-    <div>
-      <input type="checkbox" name="understanding" id="understanding-very-bad" value="Very Bad" /> <label for="understanding-very-bad">Very Bad</label>
-    </div>
+        <p>How did your understanding of your field or role improve?</p>
+        <div>
+            <input type="checkbox" name="understanding" id="understanding-very-good" value="Very Good" /> <label for="understanding-very-good">Very Good</label>
+        </div>
+        <div>
+            <input type="checkbox" name="understanding" id="understanding-good" value="Good" /> <label for="understanding-good">Good</label>
+        </div>
+        <div>
+            <input type="checkbox" name="understanding" id="understanding-bad" value="Bad" /> <label for="understanding-bad">Bad</label>
+        </div>
+        <div>
+            <input type="checkbox" name="understanding" id="understanding-very-bad" value="Very Bad" /> <label for="understanding-very-bad">Very Bad</label>
+        </div>
 
-    <p>Did you feel comfortable discussing your challenges and progress with your mentor?</p>
-    <div>
-      <input type="checkbox" name="comfort" id="comfort-yes" value="Yes" /> <label for="comfort-yes">Yes</label>
-    </div>
-    <div>
-      <input type="checkbox" name="comfort" id="comfort-no" value="No" /> <label for="comfort-no">No</label>
-    </div>
+        <p>Did you feel comfortable discussing your challenges and progress with your mentor?</p>
+        <div>
+            <input type="checkbox" name="comfort" id="comfort-yes" value="Yes" /> <label for="comfort-yes">Yes</label>
+        </div>
+        <div>
+            <input type="checkbox" name="comfort" id="comfort-no" value="No" /> <label for="comfort-no">No</label>
+        </div>
 
-    <p>Were your initial goals and expectations for the mentorship met?</p>
-    <div>
-      <input type="checkbox" name="goals" id="goals-yes" value="Yes" /> <label for="goals-yes">Yes</label>
-    </div>
-    <div>
-      <input type="checkbox" name="goals" id="goals-no" value="No" /> <label for="goals-no">No</label>
-    </div>
+        <p>Were your initial goals and expectations for the mentorship met?</p>
+        <div>
+            <input type="checkbox" name="goals" id="goals-yes" value="Yes" /> <label for="goals-yes">Yes</label>
+        </div>
+        <div>
+            <input type="checkbox" name="goals" id="goals-no" value="No" /> <label for="goals-no">No</label>
+        </div>
 
-    <p>Would you participate in the mentorship program again or recommend it to others?</p>
-    <div>
-      <input type="checkbox" name="recommend" id="recommend-yes" value="Yes" /> <label for="recommend-yes">Yes</label>
-    </div>
-    <div>
-      <input type="checkbox" name="recommend" id="recommend-no" value="No" /> <label for="recommend-no">No</label>
-    </div>
+        <p>Would you participate in the mentorship program again or recommend it to others?</p>
+        <div>
+            <input type="checkbox" name="recommend" id="recommend-yes" value="Yes" /> <label for="recommend-yes">Yes</label>
+        </div>
+        <div>
+            <input type="checkbox" name="recommend" id="recommend-no" value="No" /> <label for="recommend-no">No</label>
+        </div>
 
-    <p>Were the resources and support provided during the mentorship adequate?</p>
-    <div>
-      <input type="checkbox" name="resources" id="resources-yes" value="Yes" /> <label for="resources-yes">Yes</label>
-    </div>
-    <div>
-      <input type="checkbox" name="resources" id="resources-no" value="No" /> <label for="resources-no">No</label>
-    </div>
+        <p>Were the resources and support provided during the mentorship adequate?</p>
+        <div>
+            <input type="checkbox" name="resources" id="resources-yes" value="Yes" /> <label for="resources-yes">Yes</label>
+        </div>
+        <div>
+            <input type="checkbox" name="resources" id="resources-no" value="No" /> <label for="resources-no">No</label>
+        </div>
 
-    <p>What additional resources or support would have been beneficial?</p>
-    <div>
-      <textarea id="additional-resources" name="additional_resources"></textarea>
-    </div>
+        <p>What additional resources or support would have been beneficial?</p>
+        <div>
+            <textarea id="additional-resources" name="additional_resources"></textarea>
+        </div>
 
-    <p>Is there anything else you would like to share about your mentorship experience?</p>
-    <div>
-      <textarea id="additional-comments" name="additional_comments"></textarea>
-    </div>
+        <p>Is there anything else you would like to share about your mentorship experience?</p>
+        <div>
+            <textarea id="additional-comments" name="additional_comments"></textarea>
+        </div>
 
-    <div>
-      <input type="submit" name="submit" value="Submit" />
-    </div>
-  </form>
+        <div>
+            <input type="submit" name="submit" value="Submit" />
+        </div>
+    </form>
 </div>
-
-
-
 {% endblock content %}

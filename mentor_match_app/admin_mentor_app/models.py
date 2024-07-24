@@ -21,7 +21,7 @@ class User(models.Model):
     id = models.AutoField(primary_key=True)
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}, {self.email}, {self.role}"
+        return f"{self.first_name} {self.last_name}, {self.email}, {self.role},{self.id}"
 
 class MentorshipMatch(models.Model):
     mentor = models.ForeignKey(User, related_name='mentor_matches', on_delete=models.CASCADE)
@@ -71,15 +71,16 @@ class Schedule(models.Model):
     def __str__(self):
         return f"Schedule: {self.mentor} with {self.mentee} on {self.session_date}, status: {self.status}"
 
+
 class Progress(models.Model):
-    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE)
+    mentorId = models.ForeignKey(User, related_name="progress", on_delete=models.CASCADE)
+    
+    mentee_id= models.CharField(max_length=255)
     goal = models.CharField(max_length=255)
-    milestone = models.CharField(max_length=255, blank=True, null=True)
-    feedback = models.TextField(blank=True, null=True)
-    progress_date = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=255, blank=True, null=True)  # Updated field
 
     def __str__(self):
-        return f"Progress: Goal - {self.goal}, Milestone - {self.milestone}, Date - {self.progress_date}"
+        return f"Progress: Goal - {self.goal}, status - {self.status}, mentee - {self.mentee_id}"
 
 class Evaluation(models.Model):
     mentorship_match = models.ForeignKey(MentorshipMatch, on_delete=models.CASCADE)

@@ -72,7 +72,7 @@
     }
 </style>
 
-{% for evaluation in evaluations %}
+{% if evaluation %}
 <div>
   <form method="post">
     {% csrf_token %}
@@ -196,5 +196,7 @@
     </div>
   </form>
 </div>
-{% endfor %}
+{% else %}
+<p>No evaluation found for this user.</p>
+{% endif %}
 {% endblock content %}

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 import matplotlib
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm,EvaluationForm
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 import os
@@ -8,8 +8,10 @@ from django.conf import settings
 import matplotlib.pyplot as plt
 import seaborn as sns
 # from .models import Mentee
-from .form import EvaluationForm
+# from .forms import EvaluationForm
 from .models import Evaluation
+from django.db.models import Count, F, Q
+from .models import Progress, User
 
 
 
@@ -122,18 +124,59 @@ def reports(request):
     return render(request, 'admin_mentor_app/reports/reports.html', {'chart_paths': chart_paths})
 
 #evaluation
+def calculate_progress_for_all(request):
+    mentee_ids = []
+    # Retrieve all unique mentee_ids from Progress
+    mentor_id = request.user.id
+
+# Get distinct mentee_ids where mentor_id equals the current logged-in user's ID
+ # Get the current logged-in user's ID
+    mentee_ids = Progress.objects.filter(mentorId=mentor_id).values_list('mentee_id', flat=True).distinct()
+
+    mentee_progress = []
+
+    for mentee_id in mentee_ids:
+        # Count distinct goals for each mentee_id
+        total_goals = Progress.objects.filter(mentee_id=mentee_id).values('goal').distinct().count()
+        completed_goals = Progress.objects.filter(mentee_id=mentee_id, status='complete').values('goal').distinct().count()
+
+        # Calculate the percentage of completed goals
+        if total_goals > 0:
+            percentage = (completed_goals / total_goals) * 100
+        else:
+            percentage = 0
+
+        # Add to list if the percentage is 100
+        if percentage == 100:
+            mentee_progress.append(mentee_id)
+
+    return mentee_progress
 
 def evaluation(request):
-    # mentees = Mentee.objects.filter(progress=100)
-    return render(request, "admin_mentor_app/evaluation/evaluation.html" )
+    # Get mentees with 100% progress
+    mentees_with_100_percent = calculate_progress_for_all(request)
+
+    if mentees_with_100_percent:
+        # Get user details from the User model for mentees with 100% progress
+        users = User.objects.filter(
+            id__in=mentees_with_100_percent
+        ).values('first_name', 'last_name', 'email')
+    else:
+        users = []
+
+    # Render the evaluation template with the user details
+    return render(request, "admin_mentor_app/evaluation/evaluation.html", {'users': users})
+
+# Evaluation form
 
 def evaluation1(request):
     if request.method == 'POST':
         form = EvaluationForm(request.POST)
         if form.is_valid():
-            # Create an Evaluation object from the form data
             evaluation = Evaluation(
-                support=form.cleaned_data.get('support')[0],  # Get the single selected checkbox value
+                first_name=form.cleaned_data.get('first_name'),
+                last_name=form.cleaned_data.get('last_name'),
+                support=form.cleaned_data.get('support')[0],
                 communication=form.cleaned_data.get('communication')[0],
                 confidence=form.cleaned_data.get('confidence')[0],
                 career=form.cleaned_data.get('career')[0],
@@ -151,16 +194,22 @@ def evaluation1(request):
         form = EvaluationForm()
 
     return render(request, 'admin_mentor_app/evaluation/evaluation_form.html', {'form': form})
+    return render(request, 'admin_mentor_app/evaluation/evaluation_form.html', {'form': form})
 
 def form(request):
     return render(request, "admin_mentor_app/evalution/thanks.html")
-def evaluation_list(request, evaluation_id=None):
-    evaluations = Evaluation.objects.all()
+def evaluation_list(request):
+    first_name = request.GET.get('first_name')
     evaluation = None
-    if evaluation_id:
-        evaluation = get_object_or_404(Evaluation, pk=evaluation_id)
+    
+    if first_name:
+        evaluations = Evaluation.objects.filter(first_name=first_name)
+        if evaluations.exists():
+            evaluation = evaluations.first()
+        else:
+            return HttpResponse("No evaluation found for this user.")
+
     return render(request, 'admin_mentor_app/evaluation/evaluation_list.html', {
-        'evaluations': evaluations,
         'evaluation': evaluation
     })
 
