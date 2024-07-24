@@ -80,7 +80,6 @@
       }
     </style>
   </head>
-
   <body>
     <div class="container-fluid">
       <div class="container-fluid">
@@ -93,7 +92,15 @@
               <div class="col-auto ms-auto">
                 <div class="text-end">
                   <div class="img-case dropdown">
-                    <span class="m-2">Welcome {{ user.email }}</span>
+                    <span class="m-2">Welcome {{ user.first_name }} {{ user.last_name }}</span>
+                  </div>
+                </div>
+              </div>
+
+              
+              <div class="col-auto ms-auto">
+                <div class="text-end">
+                  <div class="img-case">
                     <i
                       class="bi bi-bell"
                       style="{% if unread_notifications > 0 %} color:red;{% endif %}"
@@ -109,7 +116,9 @@
                       <li class="d-flex align-items-center py-2 border-bottom">
                         <i class="bi bi-person me-2 fs-5 text-primary"></i>
                         <div class="flex-grow-1">
-                          <span class="fw-bold">{{ notification.sender_name }}</span>
+                          <span class="fw-bold"
+                            >{{ notification.sender_name }}</span
+                          >
                           <span
                             class="text-truncate"
                             title="{{ notification.message }}"
@@ -118,11 +127,22 @@
                           </span>
                         </div>
                       </li>
-                      {% endfor %}
-                      {% if notifications.count == 0 %}
+                      {% endfor %} {% if notifications.count == 0 %}
                       <li class="text-center p-2">No notifications yet.</li>
                       {% endif %}
                     </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-auto">
+                <div class="text-end">
+                  <div class="img-case">
+                    <img
+                      src="{% static 'admin_mentor_app/images/status.png' %}"
+                      alt=""
+                      class="img-fluid rounded-circle"
+                      style="max-width: 20px"
+                    />
                   </div>
                 </div>
               </div>
@@ -130,10 +150,15 @@
               <div class="col-auto">
                 <div class="text-end">
                   <div class="img-case dropdown">
-                    <ul class="dropdown-menu" aria-labelledby="settingsDropdown">
+                    <ul
+                      class="dropdown-menu"
+                      aria-labelledby="settingsDropdown"
+                    >
                       <li><a class="dropdown-item" href="#">Settings</a></li>
                       <li><a class="dropdown-item" href="#">Profile</a></li>
-                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      <li>
+                        <a class="dropdown-item" href="#">Another action</a>
+                      </li>
                       <li><hr class="dropdown-divider" /></li>
                     </ul>
                   </div>
@@ -159,52 +184,71 @@
                   </div>
                 </div>
               </div>
+              <div class="col-auto">
+                <div class="text-end">
+                  <div class="img-case">
+                    <form method="post" action="{% url 'logout' %}">
+                      {% csrf_token %}
+                      <button type="submit">Logout</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="row">
-        <div
-          class="col-2"
-          style="border: 1px solid red; height: 90vh; background-color: #add8e6"
-        >
-          <div class="menu-list">
-            <p class="menu-list-items">
-              <a class="listitem" href="{% url 'dashboard' %}"
-                ><i class="fas fa-box"></i>&nbsp; <span>Dashboard</span></a
-              >
-            </p>
-            <p class="menu-list-items">
-              <a class="listitem" href="{% url 'mentees' %}"
-                ><i class="fas fa-id-badge"></i>&nbsp; <span>Mentees</span></a
-              >
-            </p>
-            <p class="menu-list-items">
-              <a class="listitem" href="{% url 'schedule' %}"
-                ><i class="fas fa-calendar-day"></i>&nbsp; <span>Schedule</span></a
-              >
-            </p>
-            <p class="menu-list-items">
-              <a class="listitem" href="#"
-                ><i class="fas fa-envelope-open-text"></i>&nbsp;
-                <span>Reports</span></a
-              >
-            </p>
-            <p class="menu-list-items">
-              <a class="listitem" href="#"
-                ><i class="fas fa-layer-group"></i>&nbsp; <span>Evaluation</span></a
-              >
-            </p>
-            <p class="menu-list-items">
-              <a class="listitem" href="{% url 'notifications' %}"
-                ><i class="fas fa-layer-group"></i>&nbsp; <span>Notifications</span></a
-              >
-            </p>
+        <div class="row">
+          <div
+            class="col-2"
+            style="
+              border: 1px solid red;
+              height: 90vh;
+              background-color: #add8e6;
+            "
+          >
+            <div class="">
+              <div class="menu-list">
+                <p class="menu-list-items">
+                  <a class="listitem" href="{% url 'dashboard' %}"
+                    ><i class="menu-list-items fas fa-box"></i>&nbsp;
+                    <span>Dashboard</span></a
+                  >
+                </p>
+                <p class="menu-list-items">
+                  <a class="listitem" href="{% url 'mentees' %}"
+                    ><i class="menu-list-items fas fa-id-badge"></i>&nbsp;
+                    <span>Mentees</span></a
+                  >
+                </p>
+                <p class="menu-list-items">
+                  <a class="listitem" href="{% url 'schedule' %}"
+                    ><i class="menu-list-items fas fa-calendar-day"></i>&nbsp;
+                    <span>Schedule</span></a
+                  >
+                </p>
+                <p class="menu-list-items">
+                  <a class="listitem" href="{% url 'reports' %}"
+                    ><i class="menu-list-items fas fa-envelope-open-text"></i
+                    >&nbsp; <span>Reports</span></a
+                  >
+                </p>
+                <p class="menu-list-items">
+                  <a class="listitem" href=" Evaluation.html"
+                    ><i class="menu-list-items fas fa-layer-group"></i>&nbsp;
+                    <span>Evaluation</span></a
+                  >
+                </p>
+              </div>
+              <div></div>
+            </div>
           </div>
-        </div>
-        <div class="col-10">
-          <div class="container mt-2">{% block content %} {% endblock %}</div>
+          <div class="col-10">
+            <div class="container mt-2">
+              <!-- Injections start here -->
+              {% block content %} {% endblock %}
+            </div>
+          </div>
         </div>
       </div>
     </div>

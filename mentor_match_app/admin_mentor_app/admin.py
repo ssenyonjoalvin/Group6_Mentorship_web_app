@@ -11,4 +11,3 @@ admin.site.register(Notification)
 admin.site.register(Schedule)
 admin.site.register(Progress)
 admin.site.register(Evaluation)
-

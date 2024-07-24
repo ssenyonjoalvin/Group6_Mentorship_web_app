@@ -1,0 +1,163 @@
+{% extends 'admin_mentor_app/fixed/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<style>
+    /* General Styles */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        width: 100%;
+        margin: auto;
+    }
+
+    .mt-4 {
+        margin-top: 1.5rem;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .my-4 {
+        margin: 1.5rem 0;
+    }
+
+
+
+
+    /* Chart Styles */
+    .graphBox {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .graphBox .box {
+        flex: 0 1 48%;
+        padding: 20px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        text-align: center;
+        background-color: #f9f9f9;
+    }
+
+    .graphBox .box img {
+        width: 100%;
+        height: auto;
+        max-width: 900px;
+    }
+
+
+
+
+    /* Table Styles */
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5rem 0;
+    }
+
+    .table th,
+    .table td {
+        border: 1px solid #ddd;
+        padding: 0.75rem;
+        text-align: left;
+    }
+
+    .table th {
+        background-color: #f4f4f4;
+    }
+
+    .table-striped tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    /* Button Styles */
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        color: #fff;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+
+<div class="container mt-4">
+    <h1 class="text-center">Mentor Reports</h1>
+
+    <!-- Histogram for Number of Mentees per Month -->
+    <div class="graphBox">
+        <div class="box">
+            <h3></h3>
+            <img src="{% static 'admin_mentor_app/charts/mentees_per_month.png' %}" alt="Number of Mentees per Month">
+        </div>
+
+        <!-- Bar Graph for Status and Progress -->
+        <div class="box">
+            <h3></h3>
+            <img src="{% static 'admin_mentor_app/charts/progress.png' %}" alt="Status and Progress of Mentees">
+        </div>
+    </div>
+
+    <!-- Table for Session Logs -->
+    <div class="my-4">
+        <h3>Session Logs</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Mentee</th>
+                    <th>Topic</th>
+                    <th>Duration</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Sample Data -->
+                <tr>
+                    <td>2023-07-01</td>
+                    <td>John Doe</td>
+                    <td>Python Basics</td>
+                    <td>1 hour</td>
+                </tr>
+                <tr>
+                    <td>2023-07-02</td>
+                    <td>Jane Smith</td>
+                    <td>Data Analysis</td>
+                    <td>1.5 hours</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Button to Generate Report -->
+    <div class="text-center my-4">
+        <button class="btn btn-primary" id="generateReportBtn">Generate PDF Report</button>
+    </div>
+</div>
+
+<script>
+    // Placeholder for Generate PDF Report
+    document.getElementById('generateReportBtn').addEventListener('click', function () {
+        alert('Generate PDF Report functionality will be implemented later.');
+    });
+</script>
+
+
+{% endblock content %}
