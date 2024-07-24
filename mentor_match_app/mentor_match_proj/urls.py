@@ -28,4 +28,6 @@ urlpatterns = [
     # path('logout/', auth_views.LogoutView.as_view(template_name='admin_mentor_app/login.html'), name='logout')
     path("login/", user_views.login_view, name="login"),
     path("logout/", user_views.logout_view, name="logout"),
+    path('mentees/', include('mentees_app.urls')),
+
 ]

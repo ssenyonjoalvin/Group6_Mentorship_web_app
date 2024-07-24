@@ -32,15 +32,16 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "admin_mentor_app",
-    "django.contrib.admin",
-    "crispy_forms",
-    "crispy_bootstrap5",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
+    'admin_mentor_app',
+    'django.contrib.admin',
+    'crispy_forms',
+    'crispy_bootstrap5',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'mentees_app',
 ]
 
 MIDDLEWARE = [
@@ -57,8 +58,9 @@ ROOT_URLCONF = "mentor_match_proj.urls"
 
 TEMPLATES = [
     {
+
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, 'templates')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
