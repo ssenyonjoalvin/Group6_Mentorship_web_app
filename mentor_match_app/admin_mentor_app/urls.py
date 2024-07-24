@@ -20,6 +20,9 @@ urlpatterns = [
 
     # evaluation
     path('evaluation/', views.evaluation, name='evaluation'),
+    path('evaluation1/', views.evaluation1, name='evaluation1'),
+    # path('evaluation/thanks/', views.form, name='evaluation_thanks'),
+    path('evaluation2', views.evaluation_list, name='evaluation_list'),
 
     # reports
     path('reports/', views.reports, name='reports'),

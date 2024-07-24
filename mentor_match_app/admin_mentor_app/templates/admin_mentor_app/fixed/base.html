@@ -13,9 +13,7 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
         <link
-      rel="stylesheet"
-      href="{% static 'admin_mentor_app/css/evaluation.css' %}"
-    />
+      rel="stylesheet"href="{% static 'admin_mentor_app/css/evaluation.css' %}"/>
     <title>Mentor's Panel</title>
 
     <style>
@@ -123,7 +121,7 @@
                         <p class="menu-list-items"><a class="listitem" href="{% url 'reports' %}"><i
                                     class="menu-list-items fas fa-envelope-open-text"></i>&nbsp; <span>Reports</span></a>
                         </p>
-                        <p class="menu-list-items"><a class="listitem" href=" Evaluation.html"><i
+                        <p class="menu-list-items"><a class="listitem" href=" {% url 'evaluation' %}"><i
                                     class="menu-list-items fas fa-layer-group"></i>&nbsp; <span>Evaluation</span></a></p>
         
                     </div>

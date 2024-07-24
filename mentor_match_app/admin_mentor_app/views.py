@@ -7,6 +7,9 @@ import os
 from django.conf import settings
 import matplotlib.pyplot as plt
 import seaborn as sns
+# from .models import Mentee
+from .form import EvaluationForm
+from .models import Evaluation
 
 
 
@@ -117,3 +120,48 @@ def generate_charts():
 def reports(request):
     chart_paths = generate_charts()
     return render(request, 'admin_mentor_app/reports/reports.html', {'chart_paths': chart_paths})
+
+#evaluation
+
+def evaluation(request):
+    # mentees = Mentee.objects.filter(progress=100)
+    return render(request, "admin_mentor_app/evaluation/evaluation.html" )
+
+def evaluation1(request):
+    if request.method == 'POST':
+        form = EvaluationForm(request.POST)
+        if form.is_valid():
+            # Create an Evaluation object from the form data
+            evaluation = Evaluation(
+                support=form.cleaned_data.get('support')[0],  # Get the single selected checkbox value
+                communication=form.cleaned_data.get('communication')[0],
+                confidence=form.cleaned_data.get('confidence')[0],
+                career=form.cleaned_data.get('career')[0],
+                understanding=form.cleaned_data.get('understanding')[0],
+                comfort=form.cleaned_data.get('comfort')[0],
+                goals=form.cleaned_data.get('goals')[0],
+                recommend=form.cleaned_data.get('recommend')[0],
+                resources=form.cleaned_data.get('resources')[0],
+                additional_resources=form.cleaned_data.get('additional_resources', ''),
+                additional_comments=form.cleaned_data.get('additional_comments', '')
+            )
+            evaluation.save()
+            return HttpResponse("Thank you for your feedback!")
+    else:
+        form = EvaluationForm()
+
+    return render(request, 'admin_mentor_app/evaluation/evaluation_form.html', {'form': form})
+
+def form(request):
+    return render(request, "admin_mentor_app/evalution/thanks.html")
+def evaluation_list(request, evaluation_id=None):
+    evaluations = Evaluation.objects.all()
+    evaluation = None
+    if evaluation_id:
+        evaluation = get_object_or_404(Evaluation, pk=evaluation_id)
+    return render(request, 'admin_mentor_app/evaluation/evaluation_list.html', {
+        'evaluations': evaluations,
+        'evaluation': evaluation
+    })
+
+ 
