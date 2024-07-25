@@ -180,7 +180,7 @@
                       aria-expanded="false"
                     />
                     <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                      <li><a class="dropdown-item" href="#">Profile</a></li>
+                      <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
                       <li>
                         <a class="dropdown-item" href="#" id="logout-link">Logout</a>
                         <form id="logout-form" method="post" action="{% url 'logout' %}" style="display:none;">

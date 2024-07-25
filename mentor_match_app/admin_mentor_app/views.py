@@ -9,7 +9,7 @@ import datetime
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth import logout as auth_logout
-from .forms import LoginForm, UserRegisterForm
+from .forms import LoginForm, UserRegisterForm,ProfileUpdateForm
 import matplotlib
 from django.db import transaction, connection
 import matplotlib.pyplot as plt
@@ -87,9 +87,18 @@ def dashboard(request):
         )
     finally:
         connection.close()
-
+@login_required        
 def profile(request):
-    return render(request, "admin_mentor_app/dashboard/profile.html")
+    user = request.user  # Get the currently logged-in user
+    if request.method == "POST":
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect("profile")
+    else:
+        form = ProfileUpdateForm(instance=user)
+
+    return render(request, "admin_mentor_app/dashboard/profile.html", {"form": form})
 
 @login_required
 @transaction.atomic
