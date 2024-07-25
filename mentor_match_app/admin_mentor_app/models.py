@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils import timezone
 
-
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -18,14 +17,15 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault("is_superuser", True)
         return self.create_user(email, password, **extra_fields)
 
-
 class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     gender = models.CharField(max_length=10)
     nationality = models.CharField(max_length=50)
+    bio = models.CharField(max_length=250, null=True)
     dob = models.DateField()
+    address = models.CharField(max_length=255)  # Added max_length
     telephone = models.CharField(max_length=15)
     role_choices = [
         ("1", "Admin"),
@@ -46,7 +46,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return f"{self.first_name} {self.last_name}, {self.email}, {self.role}"
 
-
 class MentorshipMatch(models.Model):
     mentor = models.ForeignKey(
         User, related_name="mentor_matches", on_delete=models.CASCADE
@@ -58,11 +57,11 @@ class MentorshipMatch(models.Model):
         ("accepted", "Accepted"),
         ("rejected", "Rejected"),
     ]
-    status = models.CharField(max_length=10, choices=status_choices, default="pending")
+    status = models.CharField(
+        max_length=10, choices=status_choices, default="pending")
 
     def __str__(self):
         return f"({self.mentor} -> {self.mentee}, {self.status}, ID->{self.mentor})"
-
 
 class Message(models.Model):
     sender = models.ForeignKey(
@@ -72,22 +71,25 @@ class Message(models.Model):
         User, related_name="received_messages", on_delete=models.CASCADE
     )
     content = models.TextField()
-    file = models.FileField(upload_to="message_files/", blank=True, null=True)
+    file = models.FileField(
+        upload_to="message_files/", blank=True, null=True)
     sent_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Message from {self.sender} to {self.receiver} at {self.sent_at}"
 
-
 class Notification(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    sent_by = models.ForeignKey(
+        User, related_name='notifications_sent', on_delete=models.CASCADE)  # Added related_name
+    received_by = models.ForeignKey(
+        # Added related_name
+        User, related_name='notifications_received', on_delete=models.CASCADE)
     message = models.TextField()
     is_read = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Notification for {self.user}, read: {self.is_read}, at {self.created_at}"
-
 
 class Schedule(models.Model):
     mentor = models.ForeignKey(
@@ -110,7 +112,6 @@ class Schedule(models.Model):
     def __str__(self):
         return f"Schedule: {self.mentor} with {self.mentee} on {self.session_date}, status: {self.status}"
 
-
 class Progress(models.Model):
     session_number = models.AutoField(primary_key=True)
     mentor = models.ForeignKey(
@@ -119,24 +120,25 @@ class Progress(models.Model):
     mentee = models.ForeignKey(
         User, related_name="progress_mentee", on_delete=models.CASCADE, blank=True, null=True
     )
-    progress_percentage = models.CharField(max_length=255, blank=True, null=True)
+    progress_percentage = models.CharField(
+        max_length=255, blank=True, null=True)
 
     def __str__(self):
         return f"{self.session_number}, {self.mentee.id if self.mentee else 'N/A'},{self.mentor.id}, progress_percentage:{self.progress_percentage}"
 
-
 class Goals(models.Model):
     id = models.AutoField(primary_key=True)
-    goal_id = models.ForeignKey(Progress, related_name="session_goals", on_delete=models.CASCADE, blank=True, null=True)
+    goal_id = models.ForeignKey(
+        Progress, related_name="session_goals", on_delete=models.CASCADE, blank=True, null=True)
     goal = models.CharField(max_length=255)
     status = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return f"Goal: {self.goal}, Status: {self.status}, Session Number: {self.goal_id.session_number if self.goal_id else 'N/A'}"
 
-
 class Evaluation(models.Model):
-    mentorship_match = models.ForeignKey(MentorshipMatch, on_delete=models.CASCADE)
+    mentorship_match = models.ForeignKey(
+        MentorshipMatch, on_delete=models.CASCADE)
     mentor = models.ForeignKey(
         User, related_name="mentor_evaluations", on_delete=models.CASCADE
     )
