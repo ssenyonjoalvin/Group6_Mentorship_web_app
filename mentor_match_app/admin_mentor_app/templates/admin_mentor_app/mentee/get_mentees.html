@@ -28,26 +28,29 @@
                     <th>#</th>
                     <th>Name</th>
                     <th>Email</th>
+                    <th>Gender</th>
                     <th>Address</th>
                     <th>Contact</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                {%for mentee in my_mentees:%}
-                    {%if (mentee.mentor_id)==user.id:%}   
+                {% for mentee in my_mentees %}
                     <tr>
-                        <td>1</td>
-                        <td>John</td>
-                        <td>john@gmail.com</td>
-                        <td>Kampala</td>
-                        <td>+256 704665418</td>
-                        <td><a href="{% url 'preview_mentee' %}" class="btn btn-sm btn-outline-primary align-items-centre">Preview</a href="{% url 'login' %}"></td>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ mentee.first_name }} {{ mentee.last_name }}</td>
+                        <td>{{ mentee.email }}</td>
+                        <td>{{ mentee.gender }}</td>
+                        <td>{{ mentee.nationality }}</td>
+                        <td>{{ mentee.telephone }}</td>
+                        <td>
+                            <a href="{% url 'preview_mentee' mentee.id %}" class="btn btn-sm btn-outline-primary align-items-centre">Preview</a>
+                        </td>
                     </tr>
-                    {% endif %}         
-                {%endfor%}
-                
+                {% endfor %}
             </tbody>
+            
+              
             </tbody>
         </table>
     </div>
