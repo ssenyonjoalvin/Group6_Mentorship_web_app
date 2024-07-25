@@ -1,5 +1,4 @@
 from django.core.management.base import BaseCommand
-from django.contrib.auth.hashers import make_password
 from django.db import transaction, OperationalError, IntegrityError
 from faker import Faker
 from admin_mentor_app.models import (
@@ -11,8 +10,8 @@ from admin_mentor_app.models import (
     Progress,
     Evaluation,
     Goals,
+    MenteeChallenge,
 )
-
 import time
 
 
@@ -39,16 +38,16 @@ class Command(BaseCommand):
                     time.sleep(1)
 
         # Create Users
-        for _ in range(70):
+        for _ in range(3):
             create_with_retry(
                 User,
                 first_name=fake.first_name(),
                 last_name=fake.last_name(),
-                email=fake.unique.email(),
+                email=fake.unique.email(),  # Ensure unique email
                 gender=fake.random_element(["Male", "Female"]),
                 nationality=fake.country(),
                 dob=fake.date_of_birth(minimum_age=18, maximum_age=80),
-                password=fake.random_element(range(12344,43215)),  # Default password
+                password=(fake.random_int(min=12344, max=43215)),  # Convert int to string and hash
                 telephone=fake.phone_number(),
                 role=fake.random_element(["1", "2", "3"]),
                 profile_picture=None,  # No image
@@ -59,7 +58,7 @@ class Command(BaseCommand):
         mentees = list(User.objects.filter(role="3"))
 
         # Create MentorshipMatches
-        for _ in range(70):
+        for _ in range(3):
             create_with_retry(
                 MentorshipMatch,
                 mentor=fake.random_element(mentors),
@@ -68,7 +67,7 @@ class Command(BaseCommand):
             )
 
         # Create Messages
-        for _ in range(70):
+        for _ in range(3):
             create_with_retry(
                 Message,
                 sender=fake.random_element(users),
@@ -79,7 +78,7 @@ class Command(BaseCommand):
             )
 
         # Create Notifications
-        for _ in range(70):
+        for _ in range(3):
             create_with_retry(
                 Notification,
                 sent_by=fake.random_element(users),
@@ -90,7 +89,7 @@ class Command(BaseCommand):
             )
 
         # Create Schedules
-        for _ in range(70):
+        for _ in range(3):
             create_with_retry(
                 Schedule,
                 mentor=fake.random_element(mentors),
@@ -102,7 +101,7 @@ class Command(BaseCommand):
             )
 
         # Create Progress
-        for _ in range(70):
+        for _ in range(3):
             create_with_retry(
                 Progress,
                 mentor=fake.random_element(mentors),
@@ -115,7 +114,7 @@ class Command(BaseCommand):
         progresses = list(Progress.objects.all())
 
         # Create Goals
-        for _ in range(70):
+        for _ in range(3):
             create_with_retry(
                 Goals,
                 goal_id=fake.random_element(progresses),
@@ -125,7 +124,7 @@ class Command(BaseCommand):
 
         # Create Evaluations
         matches = list(MentorshipMatch.objects.all())
-        for _ in range(70):
+        for _ in range(3):
             create_with_retry(
                 Evaluation,
                 mentorship_match=fake.random_element(matches),
@@ -139,6 +138,17 @@ class Command(BaseCommand):
                 team_collaboration=fake.random_int(min=1, max=10),
                 comments=fake.text() if fake.boolean() else None,
             )
+
+        # Create MenteeChallenges
+        for mentee in mentees:
+            for _ in range(3):  # Create 3 challenges per mentee
+                create_with_retry(
+                    MenteeChallenge,
+                    mentee=mentee,
+                    challenge=fake.sentence(),
+                    details=fake.text(),
+                    created_at=fake.date_time_this_year()
+                )
 
         self.stdout.write(
             self.style.SUCCESS("Successfully populated database with fake data")

@@ -89,7 +89,7 @@ class Notification(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Notification for {self.user}, read: {self.is_read}, at {self.created_at}"
+        return f"Notification for {self.received_by}, read: {self.is_read}, at {self.created_at}"
 
 class Schedule(models.Model):
     mentor = models.ForeignKey(
@@ -155,3 +155,14 @@ class Evaluation(models.Model):
 
     def __str__(self):
         return f"Evaluation: {self.mentor} evaluated {self.mentee} on {self.evaluation_date}"
+
+# New Model
+class MenteeChallenge(models.Model):
+    mentee = models.ForeignKey(User, on_delete=models.CASCADE)
+    challenge = models.CharField(max_length=255)
+    session_no = models.CharField(max_length=255)
+    details = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.mentee.username}: {self.challenge}"

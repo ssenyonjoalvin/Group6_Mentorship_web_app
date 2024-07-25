@@ -5,7 +5,6 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 import datetime
-
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth import logout as auth_logout
@@ -16,6 +15,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 from django.conf import settings
+from django import db
 from .models import (
     User,
     MentorshipMatch,
@@ -86,8 +86,9 @@ def dashboard(request):
             },
         )
     finally:
+        db.connections.close_all()
         connection.close()
-
+@login_required
 def profile(request):
     return render(request, "admin_mentor_app/dashboard/profile.html")
 
@@ -131,6 +132,7 @@ def preview_mentee(request, mentee_id):
             'messages': messages
         })
     finally:
+        db.connections.close_all()
         connection.close()
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -145,14 +147,14 @@ def send_message(request):
         receiver = User.objects.get(id=receiver_id)
         sent_at = datetime.datetime.now()
         
-        message = Message.objects.create(
+        message = Message(
             receiver_id=receiver_id,
             sender_id=sender_id,
             content=content,
             file=file,
             sent_at=sent_at
         )
-        if message:
+        if message.save():      
             print("Saved")
         
         return JsonResponse({'status': 'success', 'message': 'Message sent successfully.'})
@@ -171,6 +173,7 @@ def evaluation(request):
     try:
         return render(request, "admin_mentor_app/evaluation/evaluation.html")
     finally:
+        db.connections.close_all()
         connection.close()
 
 def generate_charts():

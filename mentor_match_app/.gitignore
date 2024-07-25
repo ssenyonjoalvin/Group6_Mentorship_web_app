@@ -1,6 +1,5 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
-<<<<<<< HEAD
 *.py[cod]
 *$py.class
 
@@ -126,27 +125,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-=======
-# Ignore Python compiled files
-*.py[cod]
-__pycache__/
-
-# Ignore virtual environment directories
-venv/
-env/
-
-# Ignore database files
-*.sqlite3
-
-# Ignore Django migration files
-*/migrations/*.py
-*/migrations/*.pyc
-
-# Ignore IDE/editor files
-.vscode/
-.idea/
-
-# Ignore system files
-.DS_Store
-Thumbs.db
->>>>>>> derrick_task2

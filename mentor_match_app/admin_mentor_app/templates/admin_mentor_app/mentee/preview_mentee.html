@@ -1,6 +1,5 @@
 {% extends 'admin_mentor_app/fixed/base.html' %} {% block content %} 
 {% load static %}
-
 <style>
   .chat-window {
     max-width: 800px;
@@ -9,10 +8,12 @@
     border-radius: 10px;
     overflow: hidden;
   }
+
   .chat-header {
     padding: 10px;
     font-size: 1.2rem;
   }
+
   .chat-body {
     height: 350px;
     max-height: 350px;
@@ -20,31 +21,37 @@
     padding: 10px;
     background-color: #f8f7f6;
   }
+
   .chat-message {
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 10px;
     max-width: 45%;
   }
+
   .message-sent {
     background-color: #dcf8c6;
     text-align: right;
+    margin-left: auto;
   }
+
   .message-received {
-    background-color: white;
-    margin-left: 50%;
-    max-width: 45%;
+    background-color: rgb(155, 187, 206);
+    margin-right: auto;
   }
+
   .chat-footer {
     padding: 10px;
     display: flex;
   }
+
   .chat-footer input {
     flex: 1;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
   }
+
   .chat-footer button {
     background-color: #075e54;
     color: white;
@@ -55,6 +62,7 @@
   }
 </style>
 
+
 <div class="container mt-1">
   <div class="container row mt-1">
     <h2 class="mb-1">Mentee <span style="font-size: 20px">/Preview</span></h2>
@@ -62,60 +70,23 @@
       <!-- Navigation Tabs -->
       <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-          <a
-            class="nav-link active"
-            id="profile-tab"
-            data-bs-toggle="tab"
-            href="#profile"
-            role="tab"
-            aria-controls="profile"
-            aria-selected="true"
-            >Profile</a
-          >
+          <a class="nav-link active" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true">Profile</a>
         </li>
         <li class="nav-item" role="presentation">
-          <a
-            class="nav-link"
-            id="goals-tab"
-            data-bs-toggle="tab"
-            href="#goals"
-            role="tab"
-            aria-controls="goals"
-            aria-selected="false"
-            >Mentor's Goals</a
-          >
+          <a class="nav-link" id="goals-tab" data-bs-toggle="tab" href="#goals" role="tab" aria-controls="goals" aria-selected="false">Mentor's Goals</a>
         </li>
         <li class="nav-item" role="presentation">
-          <a
-            class="nav-link"
-            id="chat-tab"
-            data-bs-toggle="tab"
-            href="#chat"
-            role="tab"
-            aria-controls="chat"
-            aria-selected="false"
-            >Chat</a
-          >
+          <a class="nav-link" id="chat-tab" data-bs-toggle="tab" href="#chat" role="tab" aria-controls="chat" aria-selected="false">Chat</a>
         </li>
       </ul>
       <!-- Tab Content -->
       <div class="tab-content" id="myTabContent">
-        <div
-          class="tab-pane fade show active"
-          id="profile"
-          role="tabpanel"
-          aria-labelledby="profile-tab"
-        >
+        <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
           <div class="container mt-5">
             <div class="row">
               <div class="col-md-4">
                 <div class="card">
-                  <img
-                    src="{% static 'admin_mentor_app/images/man-4123268_640.jpg' %}"
-                    class="card-img-top"
-                    height="380px"
-                    alt="Profile Image"
-                  />
+                  <img src="{% static 'admin_mentor_app/images/man-4123268_640.jpg' %}" class="card-img-top" height="380px" alt="Profile Image" />
                   <div class="card-body text-center">
                     <h5 class="card-title">
                       {{ mentee.first_name }} {{ mentee.last_name }}
@@ -131,85 +102,36 @@
                       <div class="row">
                         <div class="col-6 mb-1">
                           <label for="name" class="form-label">Name</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="name"
-                            readonly
-                            value="{{ mentee.first_name }} {{ mentee.last_name }}"
-                          />
+                          <input type="text" class="form-control" id="name" readonly value="{{ mentee.first_name }} {{ mentee.last_name }}" />
                         </div>
                         <div class="col-6 mb-1">
                           <label for="email" class="form-label">Email</label>
-                          <input
-                            type="email"
-                            class="form-control"
-                            id="email"
-                            readonly
-                            value="{{ mentee.email }}"
-                          />
+                          <input type="email" class="form-control" id="email" readonly value="{{ mentee.email }}" />
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-6 mb-1">
                           <label for="gender" class="form-label">Gender</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="gender"
-                            readonly
-                            value="{{ mentee.gender }}"
-                          />
+                          <input type="text" class="form-control" id="gender" readonly value="{{ mentee.gender }}" />
                         </div>
                         <div class="col-6 mb-1">
-                          <label for="birthdate" class="form-label"
-                            >Date Of Birth</label
-                          >
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="birthdate"
-                            readonly
-                            value="{{ mentee.dob }}"
-                          />
+                          <label for="birthdate" class="form-label">Date Of Birth</label>
+                          <input type="text" class="form-control" id="birthdate" readonly value="{{ mentee.dob }}" />
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-6 mb-1">
-                          <label for="address" class="form-label"
-                            >Address</label
-                          >
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="address"
-                            readonly
-                            value="{{ mentee.nationality }}"
-                          />
+                          <label for="address" class="form-label">Address</label>
+                          <input type="text" class="form-control" id="address" readonly value="{{ mentee.nationality }}" />
                         </div>
                         <div class="col-6 mb-1">
-                          <label for="contact" class="form-label"
-                            >Contact</label
-                          >
-                          <input
-                            type="tel"
-                            class="form-control"
-                            id="contact"
-                            readonly
-                            value="{{ mentee.telephone }}"
-                          />
+                          <label for="contact" class="form-label">Contact</label>
+                          <input type="tel" class="form-control" id="contact" readonly value="{{ mentee.telephone }}" />
                         </div>
                       </div>
                       <div class="mb-1">
                         <label for="bio" class="form-label">Bio</label>
-                        <textarea
-                          class="form-control"
-                          id="bio"
-                          rows="3"
-                          readonly
-                        >
-Short bio about the mentee.</textarea
-                        >
+                        <textarea class="form-control" id="bio" rows="3" readonly>Short bio about the mentee.</textarea>
                       </div>
                     </form>
                   </div>
@@ -218,12 +140,7 @@ Short bio about the mentee.</textarea
             </div>
           </div>
         </div>
-        <div
-          class="tab-pane fade"
-          id="goals"
-          role="tabpanel"
-          aria-labelledby="goals-tab"
-        >
+        <div class="tab-pane fade" id="goals" role="tabpanel" aria-labelledby="goals-tab">
           <div class="row">
             <div class="col">
               <div class="list-group mt-2">
@@ -241,17 +158,11 @@ Short bio about the mentee.</textarea
             </div>
             <div class="col">
               <div class="list-group mt-2">
-                <ul
-                  class="list-group-item list-group-item-primary d-flex justify-content-between align-items-center"
-                >
-                  <li class="list-unstyled">
-                    Mentors Measurable Achievement Goals
-                  </li>
+                <ul class="list-group-item list-group-item-primary d-flex justify-content-between align-items-center">
+                  <li class="list-unstyled">Mentors Measurable Achievement Goals</li>
                 </ul>
                 <ol class="list-group list-group-numbered">
-                  <li
-                    class="list-group-item d-flex justify-content-between align-items-center border-0"
-                  >
+                  <li class="list-group-item d-flex justify-content-between align-items-center border-0">
                     <div>
                       <input type="checkbox" class="me-2" />
                       Achieve Public Speaking
@@ -261,9 +172,7 @@ Short bio about the mentee.</textarea
                       <button class="btn btn-sm btn-danger">Delete</button>
                     </span>
                   </li>
-                  <li
-                    class="list-group-item d-flex justify-content-between align-items-center border-0"
-                  >
+                  <li class="list-group-item d-flex justify-content-between align-items-center border-0">
                     <div>
                       <input type="checkbox" class="me-2" />
                       Ability to read and write
@@ -278,21 +187,14 @@ Short bio about the mentee.</textarea
             </div>
           </div>
         </div>
-        <div
-          class="tab-pane fade"
-          id="chat"
-          role="tabpanel"
-          aria-labelledby="chat-tab"
-        >
+        <div class="tab-pane fade" id="chat" role="tabpanel" aria-labelledby="chat-tab">
           <div class="chat-window mt-3">
             <div class="chat-header">
               {{ mentee.first_name }} {{ mentee.last_name }}
             </div>
             <div class="chat-body">
               {% for message in messages %}
-              <div
-                class="chat-message {% if message.sender == request.user %}message-sent{% else %}message-received{% endif %}"
-              >
+              <div class="chat-message {% if message.sender == request.user %}message-sent{% else %}message-received{% endif %}">
                 {{ message.content }}
               </div>
               {% empty %}
@@ -300,20 +202,16 @@ Short bio about the mentee.</textarea
               {% endfor %}
             </div>
             <div class="chat-footer">
-              <input
-                type="text"
-                placeholder="Type a message"
-                id="message-input"
-              />
+              <input type="text" placeholder="Type a message" id="message-input" />
               <button id="send-message-btn">Send</button>
             </div>
           </div>
         </div>
       </div>
-      <div class="row"></div>
     </div>
   </div>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
@@ -327,16 +225,9 @@ Short bio about the mentee.</textarea
       $(".tab-pane").removeClass("show active");
       $($(e.target).attr("href")).addClass("show active");
     });
-  });
-</script>
-<script>
-  $(document).ready(function () {
-    console.log("Document is ready.");
 
     $("#send-message-btn").on("click", function () {
       var messageContent = $("#message-input").val();
-      console.log("Send Message Button Clicked");
-      console.log("Message Content: ", messageContent);
 
       if (messageContent.trim() !== "") {
         $.ajax({
@@ -348,7 +239,6 @@ Short bio about the mentee.</textarea
             csrfmiddlewaretoken: "{{ csrf_token }}",
           },
           success: function (response) {
-            console.log("AJAX Success Response: ", response);
             if (response.status === "success") {
               $(".chat-body").append(
                 `<div class="chat-message message-sent">${messageContent}</div>`
@@ -362,34 +252,8 @@ Short bio about the mentee.</textarea
             console.error("AJAX Error: ", status, error);
           },
         });
-        $.ajax({
-          type: "POST",
-          url: "{% url 'send_message' %}",
-          data: {
-            content: messageContent,
-            receiver_id: "{{ mentee.id }}",
-            csrfmiddlewaretoken: "{{ csrf_token }}",
-          },
-          success: function (response) {
-            console.log("AJAX Success Response: ", response);
-            if (response.status === "success") {
-              $(".chat-body").append(
-                `<div class="chat-message message-sent">${messageContent}</div>`
-              );
-              $("#message-input").val(""); // Clear the input field
-            } else {
-              alert(response.message); // Display an error message
-            }
-          },
-          error: function (xhr, status, error) {
-            console.error("AJAX Error: ", status, error);
-          },
-        });
-      } else {
-        console.log("Message content is empty.");
       }
     });
   });
 </script>
-
 {% endblock content %}
