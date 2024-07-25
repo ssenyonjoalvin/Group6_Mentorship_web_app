@@ -1,3 +1,4 @@
+from urllib import request
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -12,6 +13,11 @@ import os
 from django.conf import settings
 import matplotlib.pyplot as plt
 import seaborn as sns
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.dateparse import parse_datetime
+from django.utils.timezone import make_aware
+import pytz
+from django.http import JsonResponse
 from .models import (
     User,
     MentorshipMatch,
@@ -119,12 +125,50 @@ def preview_mentees(request):
     return render(request, "admin_mentor_app/mentee/preview_mentees.html")
 
 
-# Schedule
+# Schedule view
+@csrf_exempt
 @login_required
 def schedule(request):
-    return render(request, "admin_mentor_app/schedule/schedule.html")
+    if request.method == 'GET':
+        # Handle GET request: render the schedule page with the list of users
+        schedule_list = User.objects.all()
+        return render(request, "admin_mentor_app/schedule/schedule.html", {'schedule_list': schedule_list})
 
+    elif request.method == 'POST':
+        # Handle POST request: process the form submission for scheduling
+        mentee_id = request.POST.get('mentee_id')
+        appointment_date = request.POST.get('appointment_date')
+        appointment_time = request.POST.get('appointment_time')
 
+        # Combine date and time into a single datetime object
+        appointment_datetime_str = f"{appointment_date}T{appointment_time}:00"
+        appointment_datetime = parse_datetime(appointment_datetime_str)
+
+        # Ensure the datetime is timezone-aware
+        if appointment_datetime is not None:
+            appointment_datetime = make_aware(appointment_datetime, timezone=pytz.UTC)
+
+        # Find the relevant mentee and create/update the Schedule instance
+        try:
+            mentee = User.objects.get(id=mentee_id)
+        except User.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Mentee not found'})
+
+        # Check if there's already an existing schedule for this mentee
+        schedule, created = Schedule.objects.update_or_create(
+            mentee=mentee,
+            defaults={
+                'session_date': appointment_datetime,
+                'status': 'scheduled'  # Update status as needed
+            }
+        )
+
+        return JsonResponse({'status': 'success'})
+
+    # Handle other request methods
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
+ 
 # Evaluation
 @login_required
 def evaluation(request):
