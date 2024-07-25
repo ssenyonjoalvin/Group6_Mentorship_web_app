@@ -26,7 +26,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     bio = models.CharField(max_length=250, null=True)
     dob = models.DateField()
     address = models.CharField(max_length=255)  # Added max_length
-    telephone = models.CharField(max_length=15)
+    telephone = models.CharField(max_length=50)
+    expertise = models.CharField(max_length=255, null=True, blank=True)
+    availability = models.CharField(max_length=15, null=True, blank=True)
     role_choices = [
         ("1", "Admin"),
         ("2", "Mentor"),
