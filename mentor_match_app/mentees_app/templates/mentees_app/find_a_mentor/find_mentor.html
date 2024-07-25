@@ -1,0 +1,45 @@
+
+{% extends "mentees_app/fixed/base.html" %}
+
+{% block title %}Find a Mentor{% endblock %}
+
+{% block banner_title %}Find a Mentor{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <form method="get" action="">
+                <label for="search" class="form-label">Find mentor by name, interest or expertise</label>
+                <input type="text" name="search" placeholder="Search by name, interests, or expertise" value="{{ query }}" class="form-control" />
+                <button type="submit" class="btn btn-primary mt-2">Search</button>
+            </form>
+            <div class="mt-5">
+                <h3>Mentor Results</h3>
+                {% if mentors %}
+                    <div class="row">
+                        {% for mentor in mentors %}
+                            <div class="col-md-4 mt-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ mentor.name }}</h5>
+                                        <p class="card-text"><strong>Interests:</strong> {{ mentor.interests }}</p>
+                                        <p class="card-text"><strong>Expertise:</strong> {{ mentor.expertise }}</p>
+                                        <p class="card-text"><strong>Availability:</strong> {{ mentor.availability }}</p>
+                                        <form method="post" action="">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-success">Send Request</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>No mentors found matching your search criteria.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
