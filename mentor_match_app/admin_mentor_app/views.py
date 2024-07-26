@@ -1,14 +1,17 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from django.http import HttpResponse
 from django.db.models import Q
+import math
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from django.views.decorators.http import require_POST
 import datetime
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth import logout as auth_logout
 from .forms import LoginForm, UserRegisterForm
+
 import matplotlib
 from django.db import transaction, connection
 import matplotlib.pyplot as plt
@@ -25,6 +28,7 @@ from .models import (
     Progress,
     Goals,
     Evaluation,
+    MenteeChallenge
 )
 
 
@@ -97,45 +101,111 @@ def profile(request):
 def get_mentees(request):
     try:
         mentor_id = request.user.id
-        my_mentees = MentorshipMatch.objects.raw("SELECT * FROM admin_mentor_app_mentorshipmatch where mentor_id=1")
-        mentor_mentees_ids = []
-        for my_mentee in my_mentees:
-            mentor_mentees_ids.append(my_mentee.mentee.id)
-            print(mentor_mentees_ids)
-            
-        print(mentor_mentees_ids)
-        mentees = []
-        for mentor_mentees_id in mentor_mentees_ids:
-            mentee = User.objects.get(id=mentor_mentees_id)
-            mentees.append(mentee)
-        print(mentees)
-        my_mentees=mentees
+        # Fetch all MentorshipMatch records for the given mentor
+        mentorship_matches = MentorshipMatch.objects.filter(mentor_id=mentor_id).select_related('mentee')
 
-        return render(request, "admin_mentor_app/mentee/get_mentees.html", {'my_mentees': my_mentees})
+        # Extract mentee objects and mentorship match records
+        mentees_with_matches = []
+        for match in mentorship_matches:
+            mentees_with_matches.append({
+                'mentee': match.mentee,
+                'match': match
+            })
+
+        return render(request, "admin_mentor_app/mentee/get_mentees.html", {'mentees_with_matches': mentees_with_matches})
     finally:
         connection.close()
 @login_required
 @transaction.atomic
+def accept_mentee(request, match_id):
+    mentorship_match = get_object_or_404(MentorshipMatch, id=match_id)
+    mentorship_match.status = 'accepted'
+    mentorship_match.save()
+    return redirect('mentees')
+
+@login_required
+@transaction.atomic
+def reject_mentee(request, match_id):
+    mentorship_match = get_object_or_404(MentorshipMatch, id=match_id)
+    mentorship_match.status = 'rejected'
+    mentorship_match.save()
+    return redirect('mentees')
+    
+             
+@login_required
+@transaction.atomic
 def preview_mentee(request, mentee_id):
-    try:
-        logged_in_user = request.user.id
-        mentee = get_object_or_404(User, id=mentee_id)
+    logged_in_user = request.user.id
+    mentee = get_object_or_404(User, id=mentee_id)
+    
+    messages = Message.objects.filter(
+        (Q(sender_id=logged_in_user) & Q(receiver_id=mentee_id)) |
+        (Q(sender_id=mentee_id) & Q(receiver_id=logged_in_user))
+    ).order_by('sent_at')  # Order messages by sent time
+    
+    menteechallenges = MenteeChallenge.objects.filter(
+        mentee_id=mentee_id,
+        mentor_id=logged_in_user
+    )
 
-        # Get messages between logged_in_user and mentee
-        messages = Message.objects.filter(
-            (Q(sender_id=logged_in_user) & Q(receiver_id=mentee_id)) |
-            (Q(sender_id=mentee_id) & Q(receiver_id=logged_in_user))
-        ).order_by('sent_at')  # Order messages by sent time
-
-        return render(request, 'admin_mentor_app/mentee/preview_mentee.html', {
-            'mentee': mentee,
-            'messages': messages
+    mentor_progress_groups = Progress.objects.filter(
+        mentee_id=mentee_id,
+        mentor_id=logged_in_user
+    )
+    
+    progresses = []
+    for mentor_progress in mentor_progress_groups:
+        goals = Goals.objects.filter(
+            goal_id=mentor_progress
+        )
+        progresses.append({
+            'session_number': mentor_progress.session_number,
+            'progress_percentage': mentor_progress.progress_percentage,
+            'goals': goals,
+            # 'status': goals.status
         })
-    finally:
-        db.connections.close_all()
-        connection.close()
 
-@method_decorator(csrf_exempt, name='dispatch')
+    return render(request, 'admin_mentor_app/mentee/preview_mentee.html', {
+        'mentee': mentee,
+        'messages': messages,
+        'menteechallenges': menteechallenges,
+        'progresses': progresses
+    })
+
+@csrf_exempt
+@require_POST
+def add_goal(request):
+    goal_text = request.POST.get('newGoal')
+    progress_id = request.POST.get('progress_id')
+    
+    try:
+        progress = Progress.objects.get(session_number=progress_id)
+        new_goal = Goals.objects.create(
+            goal_id=progress,
+            goal=goal_text,
+            status='Pending'
+        )
+        new_goal.save()
+
+        # Calculate the progress percentage
+        total_goals = progress.session_goals.count()
+        completed_goals = progress.session_goals.filter(status='Completed').count()
+        
+        if total_goals == 0:
+            progress_percentage = 0
+        else:
+            progress_percentage = (completed_goals / total_goals) * 100
+        
+        progress.progress_percentage = str(math.floor(progress_percentage))
+        progress.save()
+
+        return JsonResponse({'success': True, 'goal': {
+            'id': new_goal.id,
+            'goal': new_goal.goal,
+            'status': new_goal.status
+        }})
+    except Progress.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Progress not found'})@method_decorator(csrf_exempt, name='dispatch')
 def send_message(request):
     if request.method == 'POST':
         content = request.POST.get('content')
@@ -159,6 +229,44 @@ def send_message(request):
         
         return JsonResponse({'status': 'success', 'message': 'Message sent successfully.'})
     return JsonResponse({'status': 'failure', 'message': 'Invalid request.'})
+
+@require_POST
+def update_goal_status(request):
+    goal_id = request.POST.get('goal_id')
+    status = request.POST.get('status')
+    
+    try:
+        goal = Goals.objects.get(id=goal_id)
+        goal.status = status
+        goal.save()
+
+        # Calculate the progress percentage
+        progress = goal.goal_id
+        total_goals = progress.session_goals.count()
+        completed_goals = progress.session_goals.filter(status='Completed').count()
+        
+        if total_goals == 0:
+            progress_percentage = 0
+        else:
+            progress_percentage = (completed_goals / total_goals) * 100
+        
+        progress.progress_percentage = str(math.floor(progress_percentage))
+        progress.save()
+
+        return JsonResponse({'success': True})
+    except Goals.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Goal not found'})
+@require_POST
+def delete_goal(request):
+    goal_id = request.POST.get('goal_id')
+    
+    try:
+        goal = Goals.objects.get(id=goal_id)
+        goal.delete()
+        return JsonResponse({'success': True})
+    except Goals.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Goal not found'})
+
 @login_required
 @transaction.atomic
 def schedule(request):

@@ -158,7 +158,8 @@ class Evaluation(models.Model):
 
 # New Model
 class MenteeChallenge(models.Model):
-    mentee = models.ForeignKey(User, on_delete=models.CASCADE)
+    mentee = models.ForeignKey(User,  related_name="mentee", on_delete=models.CASCADE)
+    mentor = models.ForeignKey(User, default="14" ,related_name="mentor", on_delete=models.CASCADE)
     challenge = models.CharField(max_length=255)
     session_no = models.CharField(max_length=255)
     details = models.TextField()

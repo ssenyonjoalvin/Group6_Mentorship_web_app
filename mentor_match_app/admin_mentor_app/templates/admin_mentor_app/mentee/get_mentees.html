@@ -1,25 +1,25 @@
-{% extends 'admin_mentor_app/fixed/base.html'  %}
-{% block content  %}
+{% extends 'admin_mentor_app/fixed/base.html' %}
+{% block content %}
 
 <div class="container mt-5">
-    <h2 class="mb-4">Mentees  <span style="font-size: 20px;">/List</span>
-    </h2>
+    <h2 class="mb-4">Mentees  <span style="font-size: 20px;">/List</span></h2>
     <div class="row mb-4">
         <div class="col-md-6 d-flex align-items-start">
             <select name="mentee_category" id="mentee_category" class="form-select" data-live-search="true">
-                <option data-tokens="pending">Pending</option>
-                <option data-tokens="completed">Completed</option>
-                <option data-tokens="request">Requesting</option>
+                <option value="all">All</option>
+                <option value="pending">Pending Requests</option>
+                <option value="rejected">Rejected</option>
+                <option value="accepted">Accepted</option>
             </select>
         </div>
         <div class="col-md-5 d-flex justify-content-end align-items-end">
             <input type="text" class="form-control me-2" name="search_mentees" id="search_mentees" placeholder="Search">
         </div>
-        <div class="col-md-1 d-flex justify-content-end align-items-end">
-            <button class="btn btn-primary">
+        <!-- <div class="col-md-1 d-flex justify-content-end align-items-end">
+            <button id="search_button" class="btn btn-primary">
                 <i class="bi bi-search"></i>
             </button>
-        </div>
+        </div> -->
     </div>
     <div class="row">
         <table class="table table-hover table-bordered">
@@ -31,30 +31,75 @@
                     <th>Gender</th>
                     <th>Address</th>
                     <th>Contact</th>
+                    <th>Request Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
-            <tbody>
-                {% for mentee in my_mentees %}
-                    <tr>
+            <tbody id="mentees_table_body">
+                {% for match in mentees_with_matches %}
+                    <tr data-status="{{ match.match.status }}">
                         <td>{{ forloop.counter }}</td>
-                        <td>{{ mentee.first_name }} {{ mentee.last_name }}</td>
-                        <td>{{ mentee.email }}</td>
-                        <td>{{ mentee.gender }}</td>
-                        <td>{{ mentee.nationality }}</td>
-                        <td>{{ mentee.telephone }}</td>
-                        <td>
-                            <a href="{% url 'preview_mentee' mentee.id %}" class="btn btn-sm btn-outline-primary align-items-centre">Preview</a>
+                        <td>{{ match.mentee.first_name }} {{ match.mentee.last_name }}</td>
+                        <td>{{ match.mentee.email }}</td>
+                        <td>{{ match.mentee.gender }}</td>
+                        <td>{{ match.mentee.nationality }}</td>
+                        <td>{{ match.mentee.telephone }}</td>
+                        <td>{{ match.match.status }}</td>
+                        <td class="d-flex justify-content-end align-items-end">
+                            {% if match.match.status == 'pending' or match.match.status == 'rejected' %}
+                            <a href="{% url 'accept_mentee' match.match.id %}" class="btn btn-sm btn-success align-items-centre  m-1">Accept</a>
+                            {% endif %}
+                            {% if match.match.status != 'rejected' %}
+                            <a href="{% url 'reject_mentee' match.match.id %}" class="btn btn-sm btn-danger align-items-centre m-1">Reject</a>
+                            {% endif %}
+                            <a href="{% url 'preview_mentee' match.mentee.id %}" class="btn btn-sm btn-primary align-items-centre m-1">Preview</a>
                         </td>
                     </tr>
                 {% endfor %}
             </tbody>
-            
-              
-            </tbody>
         </table>
     </div>
-
 </div>
 
-{% endblock content  %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function () {
+    function filterTable() {
+        var searchQuery = $("#search_mentees").val().toLowerCase();
+        var selectedStatus = $("#mentee_category").val().toLowerCase();
+        
+        $("#mentees_table_body tr").each(function () {
+            var row = $(this);
+            var name = row.find("td:nth-child(2)").text().toLowerCase();
+            var status = row.data("status").toLowerCase();
+            
+            var matchesSearch = name.includes(searchQuery);
+            var matchesStatus = selectedStatus === "all" || status === selectedStatus;
+
+            if (matchesSearch && matchesStatus) {
+                row.show();
+            } else {
+                row.hide();
+            }
+        });
+    }
+
+    // Event listener for search input
+    $("#search_mentees").on("keyup", function () {
+        filterTable();
+    });
+
+    // Event listener for category selection
+    $("#mentee_category").on("change", function () {
+        filterTable();
+    });
+
+    // Optional: Add click event to the search button if needed
+    $("#search_button").on("click", function (e) {
+        e.preventDefault();
+        filterTable();
+    });
+});
+</script>
+
+{% endblock content %}
