@@ -25,10 +25,11 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css"
       rel="stylesheet"
     />
+
     <link
-      rel="stylesheet"
-      href="{% static 'admin_mentor_app/css/evaluation.css' %}"
-    />
+    rel="stylesheet"
+    href="{% static 'admin_mentor_app/css/evaluation.css' %}"
+  />
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
@@ -98,7 +99,7 @@
                     <span class="m-2">Welcome {{ user.email }}</span>
                     <i
                       class="bi bi-bell"
-                      style="{% if unread_notifications > 0 %} color:red;{% endif %}"
+                      
                       id="dropdownMenuButton"
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
@@ -194,7 +195,7 @@
               >
             </p>
             <p class="menu-list-items">
-              <a class="listitem" href="#"
+              <a class="listitem" href="{% url 'evaluation' %}"
                 ><i class="fas fa-layer-group"></i>&nbsp; <span>Evaluation</span></a
               >
             </p>
