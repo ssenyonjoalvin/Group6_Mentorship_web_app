@@ -34,7 +34,7 @@ admin.site.register(User, UserAdmin)
 
 admin.site.register(MentorshipMatch)
 admin.site.register(Message)
-admin.site.register(Notification)
+admin.site.register(Notification)                                                                                                               
 admin.site.register(Schedule)
 admin.site.register(Progress)
 admin.site.register(Evaluation)
