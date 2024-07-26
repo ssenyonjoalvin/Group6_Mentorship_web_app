@@ -116,86 +116,36 @@
 
 
 
-    <!-- Mentors Section -->
+   <!-- Mentors Section -->
 <div class="page-section bg-light">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10">
-                <h2 class="text-center">Find a mentor</h2>
+                <h2 class="text-center">Meet Our Mentors</h2>
                 <div class="row">
-
-
-                    <div class="col-md-6 col-lg-4 py-3">
-                        <div class="card-mentor">
-                            <div class="header">
-                                <img src="{% static 'mentees_app/images/mentor_1.jpeg' %}" alt="Mentor 1">
-                                <div class="meta">
-                                    <a href="#"><span class="mai-call"></span></a>
-                                    <a href="#"><span class="mai-logo-whatsapp"></span></a>
-                                </div>
-                            </div>
-                            <div class="body">
-                                <p class="text-xl mb-0">Mentor 1</p>
-                                <span class="text-sm text-grey">Data Science</span>
+                    {% for mentor in mentors %}
+                    <div class="col-md-4 mt-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ mentor.first_name }} {{ mentor.last_name }}</h5>
+                                <p class="card-text"><strong>Interests:</strong> {{ mentor.interests }}</p>
+                                <p class="card-text"><strong>Expertise:</strong> {{ mentor.expertise }}</p>
+                                <p class="card-text"><strong>Availability:</strong> {{ mentor.availability }}</p>
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#requestModal" data-mentor-id="{{ mentor.id }}">
+                                    Send Request
+                                </button>
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-md-6 col-lg-4 py-3">
-                        <div class="card-mentor">
-                            <div class="header">
-                                <img src="{% static 'mentees_app/images/mentor_2.jpeg' %}" alt="Mentor 1">
-                                <div class="meta">
-                                    <a href="#"><span class="mai-call"></span></a>
-                                    <a href="#"><span class="mai-logo-whatsapp"></span></a>
-                                </div>
-                            </div>
-                            <div class="body">
-                                <p class="text-xl mb-0">Mentor 1</p>
-                                <span class="text-sm text-grey">Machine Learning</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-lg-4 py-3">
-                        <div class="card-mentor">
-                            <div class="header">
-                                <img src="{% static 'mentees_app/images/mentor_3.jpeg' %}" alt="Mentor 1">
-                                <div class="meta">
-                                    <a href="#"><span class="mai-call"></span></a>
-                                    <a href="#"><span class="mai-logo-whatsapp"></span></a>
-                                </div>
-                            </div>
-                            <div class="body">
-                                <p class="text-xl mb-0">Mentor 1</p>
-                                <span class="text-sm text-grey">Data Analysis</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-lg-4 py-3">
-                        <div class="card-mentor">
-                            <div class="header">
-                                <img src="{% static 'mentees_app/images/mentor_4.jpeg' %}" alt="Mentor 1">
-                                <div class="meta">
-                                    <a href="#"><span class="mai-call"></span></a>
-                                    <a href="#"><span class="mai-logo-whatsapp"></span></a>
-                                </div>
-                            </div>
-                            <div class="body">
-                                <p class="text-xl mb-0">Mentor 1</p>
-                                <span class="text-sm text-grey">Artificial Intelligence</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Repeat for other mentors -->
-
-
+                    {% empty %}
+                    <p>No mentors available at the moment.</p>
+                    {% endfor %}
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 
     <!-- Bootstrap JS and dependencies -->

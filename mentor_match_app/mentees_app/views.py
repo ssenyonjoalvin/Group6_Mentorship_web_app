@@ -12,8 +12,13 @@ from .models import MenteeChallenge
 def mentee_home(request):
     # Dummy data for new message count
     new_message_count = 2  # Replace with actual count from the database
+
+    # Fetch all mentors
+    role_mentor = '2'  # Assuming '2' represents the mentor role
+    all_mentors = User.objects.filter(role=role_mentor)
     context = {
         'new_message_count': new_message_count,
+        'mentors': all_mentors,
     }
     return render(request, 'mentees_app/home/mentee_home.html', context)
 
