@@ -1,6 +1,6 @@
-{% extends 'admin_mentor_app/fixed/base.html'  %}
+{% extends 'admin_mentor_app/fixed/base.html' %}
 
-{% block content  %}
+{% block content %}
     <style>
         .table-container {
             padding: 20px;
@@ -16,9 +16,8 @@
             background-color: #ffc107; /* Yellow */
         }
         .status-due {
-    background-color: #17a2b8; /* Teal */
-}
-
+            background-color: #17a2b8; /* Teal */
+        }
         .status-completed {
             background-color: #28a745; /* Green */
         }
@@ -51,12 +50,13 @@
             </div>
             <div class="col-md-6 mb-3">
                 <label for="statusFilter" class="form-label">Filter by Status</label>
-            <select id="statusFilter" class="form-select">
-                <option value="all">All</option>
-                <option value="Pending">Pending</option>
-                <option value="Due">Due</option>
-                <option value="Completed">Completed</option>
-            </select>
+                <select id="statusFilter" class="form-select">
+                    <option value="all">All</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Due">Due</option>
+                    <option value="Completed">Completed</option>
+                </select>
+            </div>
         </div>
         <table class="table table-bordered table-hover">
             <thead class="table-light">
@@ -70,110 +70,61 @@
                 </tr>
             </thead>
             <tbody>
-                <tr data-mentee-id="1" data-status="Pending">
-                    <td>John Doe</td>
-                    <td>01/15/1980</td>
-                    <td>Kyengera</td>
-                    <td class="appointment-details" data-appointment-date="" data-appointment-time="">Not Scheduled</td>
-                    <td><span class="status-badge status-pending">Pending</span></td>
-                    <td class="action-btns">
-                        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#scheduleModal" data-mentee-id="1" data-mentee-name="John Doe">Schedule</button>
-                        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#editModal" data-mentee-id="1" data-mentee-name="John Doe" data-appointment-date="" data-appointment-time="">Edit</button>
-                        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#viewModal" data-mentee-id="1" data-mentee-name="John Doe">View</button>
-                        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#deleteModal" data-mentee-id="1">Delete</button>
-                        <button class="btn btn-success mark-completed hidden" data-mentee-id="1">Mark Completed</button>
-                    </td>
-                </tr>
-                
-                <!-- Add more mentees as needed -->
-                <tr data-mentee-id="3" data-status="Pending">
-                    <td>Masaba Jackson</td>
-                    <td>08/10/1992</td>
-                    <td>Kyanja</td>
-                    <td class="appointment-details" data-appointment-date="" data-appointment-time="">Not Scheduled</td>
-                    <td><span class="status-badge status-pending">Pending</span></td>
-                    <td class="action-btns">
-                        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#scheduleModal" data-mentee-id="3" data-mentee-name="Masaba Jackson">Schedule</button>
-                        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#editModal" data-mentee-id="3" data-mentee-name="Masaba Jackson" data-appointment-date="" data-appointment-time="">Edit</button>
-                        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#viewModal" data-mentee-id="3" data-mentee-name="Masaba Jackson">View</button>
-                        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#deleteModal" data-mentee-id="3">Delete</button>
-                        <button class="btn btn-success mark-completed hidden" data-mentee-id="3">Mark Completed</button>
-                    </td>
-                </tr>
-                <tr data-mentee-id="4" data-status="Pending">
-                    <td>Nara Smith</td>
-                    <td>04/20/1999</td>
-                    <td>Nansana</td>
-                    <td class="appointment-details" data-appointment-date="" data-appointment-time="">Not Scheduled</td>
-                    <td><span class="status-badge status-pending">Pending</span></td>
-                    <td class="action-btns">
-                        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#scheduleModal" data-mentee-id="4" data-mentee-name="Nara Smith">Schedule</button>
-                        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#editModal" data-mentee-id="4" data-mentee-name="Nara Smith" data-appointment-date="" data-appointment-time="">Edit</button>
-                        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#viewModal" data-mentee-id="4" data-mentee-name="Nara Smith">View</button>
-                        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#deleteModal" data-mentee-id="4">Delete</button>
-                        <button class="btn btn-success mark-completed hidden" data-mentee-id="4">Mark Completed</button>
-                    </td>
-                </tr>
-                <tr data-mentee-id="5" data-status="Pending">
-                    <td>Christina Nalubega</td>
-                    <td>05/5/2000</td>
-                    <td>Masaka</td>
-                    <td class="appointment-details" data-appointment-date="" data-appointment-time="">Not Scheduled</td>
-                    <td><span class="status-badge status-pending">Pending</span></td>
-                    <td class="action-btns">
-                        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#scheduleModal" data-mentee-id="5" data-mentee-name="Christina Nalubega">Schedule</button>
-                        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#editModal" data-mentee-id="5" data-mentee-name="Christina Nalubega" data-appointment-date="" data-appointment-time="">Edit</button>
-                        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#viewModal" data-mentee-id="5" data-mentee-name="Christina Nalubega">View</button>
-                        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#deleteModal" data-mentee-id="5">Delete</button>
-                        <button class="btn btn-success mark-completed hidden" data-mentee-id="5">Mark Completed</button>
-                    </td>
-                </tr>
-                <tr data-mentee-id="1" data-status="Pending">
-                    <td>Ankunda Patience</td>
-                    <td>08/22/1995</td>
-                    <td>Jinja</td>
-                    <td class="appointment-details" data-appointment-date="" data-appointment-time="">Not Scheduled</td>
-                    <td><span class="status-badge status-pending">Pending</span></td>
-                    <td class="action-btns">
-                        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#scheduleModal" data-mentee-id="6" data-mentee-name="Ankunda Patience">Schedule</button>
-                        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#editModal" data-mentee-id="6" data-mentee-name="Ankunda Patience" data-appointment-date="" data-appointment-time="">Edit</button>
-                        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#viewModal" data-mentee-id="6" data-mentee-name="Ankunda Patience">View</button>
-                        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#deleteModal" data-mentee-id="6">Delete</button>
-                        <button class="btn btn-success mark-completed hidden" data-mentee-id="6">Mark Completed</button>
-                    </td>
-                </tr>
+                {% for schedule in schedule_list %}
+                    <tr>
+                        <td>{{ schedule.first_name }} {{ schedule.last_name }}</td>
+                        <td>{{ schedule.gender }}</td>
+                        <td>{{ schedule.dob }}</td>
+                        <td>{{ schedule.appointment_date|default:"Not Scheduled" }}</td>
+                        <td>
+                            <!-- Status Badge -->
+                            <span class="status-badge {% if schedule.status == 'scheduled' %}status-pending{% elif schedule.status == 'confirmed' %}status-due{% elif schedule.status == 'completed' %}status-completed{% endif %}">
+                                {{ schedule.status|title }}
+                            </span>
+                        </td>
+                        <td class="action-btns">
+                            <!-- Actions -->
+                            <button type="button" class="btn btn-primary btn-custom" data-bs-toggle="modal" data-bs-target="#scheduleModal" data-mentee-id="{{ schedule.mentee.id }}" data-mentee-name="{{ schedule.mentee.full_name }}">Schedule</button>
+                            <button type="button" class="btn btn-secondary btn-custom" data-bs-toggle="modal" data-bs-target="#editModal" data-mentee-id="{{ schedule.mentee.id }}" data-mentee-name="{{ schedule.mentee.full_name }}" data-appointment-date="{{ schedule.appointment_date }}" data-appointment-time="{{ schedule.appointment_time }}">Edit</button>
+                            <button type="button" class="btn btn-danger btn-custom" data-bs-toggle="modal" data-bs-target="#deleteModal" data-mentee-id="{{ schedule.mentee.id }}">Delete</button>
+                            <button type="button" class="btn btn-info btn-custom" data-bs-toggle="modal" data-bs-target="#viewModal" data-mentee-id="{{ schedule.mentee.id }}" data-mentee-name="{{ schedule.mentee.full_name }}" data-dob="{{ schedule.mentee.dob }}" data-address="{{ schedule.mentee.address }}" data-appointment-date="{{ schedule.appointment_date }}" data-appointment-time="{{ schedule.appointment_time }}" data-status="{{ schedule.status }}">View</button>
+                        </td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
 
     <!-- Schedule Appointment Modal -->
-    <div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="scheduleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="scheduleModalLabel">Schedule Appointment</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="scheduleForm" data-mentee-id="">
-                        <div class="mb-3">
-                            <label for="menteeName" class="form-label">Mentee Name</label>
-                            <input type="text" class="form-control" id="menteeName" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="appointmentDate" class="form-label">Appointment Date</label>
-                            <input type="date" class="form-control" id="appointmentDate" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="appointmentTime" class="form-label">Appointment Time</label>
-                            <input type="time" class="form-control" id="appointmentTime" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Schedule</button>
-                    </form>
-                </div>
+<div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="scheduleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="scheduleModalLabel">Schedule Appointment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="scheduleForm" method="POST" action="{% url 'schedule' %}">
+                    {% csrf_token %}
+                    <input type="hidden" id="menteeId" name="mentee_id">
+                    <div class="mb-3">
+                        <label for="menteeName" class="form-label">Mentee Name</label>
+                        <input type="text" class="form-control" id="menteeName" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="appointmentDate" class="form-label">Appointment Date</label>
+                        <input type="date" class="form-control" id="appointmentDate" name="appointment_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="appointmentTime" class="form-label">Appointment Time</label>
+                        <input type="time" class="form-control" id="appointmentTime" name="appointment_time" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Schedule</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
     <!-- Edit Appointment Modal -->
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
@@ -223,30 +174,47 @@
         </div>
     </div>
 
-   <!-- View Appointment Modal -->
-<div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="viewModalLabel">View Mentee Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p><strong>Mentee Name:</strong> <span id="viewMenteeName">Loading...</span></p>
-                <p><strong>Date of Birth:</strong> <span id="viewDOB">Loading...</span></p>
-                <p><strong>Address:</strong> <span id="viewAddress">Loading...</span></p>
-                <p><strong>Appointment Date & Time:</strong> <span id="viewAppointmentDateTime">Not Scheduled</span></p>
-                <p><strong>Status:</strong> <span id="viewStatus">Loading...</span></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    <!-- View Appointment Modal -->
+    <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewModalLabel">View Appointment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="viewMenteeName" class="form-label">Mentee Name</label>
+                        <input type="text" class="form-control" id="viewMenteeName" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="viewDOB" class="form-label">Date of Birth</label>
+                        <input type="text" class="form-control" id="viewDOB" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="viewAddress" class="form-label">Address</label>
+                        <input type="text" class="form-control" id="viewAddress" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="viewAppointmentDate" class="form-label">Appointment Date</label>
+                        <input type="text" class="form-control" id="viewAppointmentDate" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="viewAppointmentTime" class="form-label">Appointment Time</label>
+                        <input type="text" class="form-control" id="viewAppointmentTime" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="viewStatus" class="form-label">Status</label>
+                        <input type="text" class="form-control" id="viewStatus" readonly>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+{% endblock %}
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
  
    
     <script>
@@ -323,29 +291,61 @@
                 });
             });
     
-                  // Schedule Form Submission
-                  document.getElementById('scheduleForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const menteeId = this.getAttribute('data-mentee-id');
-                const date = document.getElementById('appointmentDate').value;
-                const time = document.getElementById('appointmentTime').value;
+          //schedule model
+            document.addEventListener('DOMContentLoaded', function() {
+    const scheduleModal = new bootstrap.Modal(document.getElementById('scheduleModal'));
+
+    document.querySelectorAll('.btn-custom').forEach(button => {
+        button.addEventListener('click', function() {
+            const menteeId = this.getAttribute('data-mentee-id');
+            const menteeName = this.getAttribute('data-mentee-name');
+            
+            if (this.hasAttribute('data-bs-target') && this.getAttribute('data-bs-target') === '#scheduleModal') {
+                document.getElementById('menteeName').value = menteeName;
+                document.getElementById('menteeId').value = menteeId;
+                scheduleModal.show();
+            }
+        });
+    });
+
+    document.getElementById('scheduleForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+
+        fetch(this.getAttribute('action'), {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Update the table with the new appointment date and time
+                const menteeId = formData.get('mentee_id');
+                const date = formData.get('appointment_date');
+                const time = formData.get('appointment_time');
                 const formattedTime = new Date(`2024-01-01T${time}:00`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
                 const row = document.querySelector(`tr[data-mentee-id="${menteeId}"]`);
-    
+                
                 row.querySelector('.appointment-details').textContent = `${date} ${formattedTime}`;
                 row.querySelector('.appointment-details').setAttribute('data-appointment-date', date);
                 row.querySelector('.appointment-details').setAttribute('data-appointment-time', time);
-    
-                row.setAttribute('data-status', 'Due');
-                row.querySelector('.status-badge').textContent = 'Due';
+                
+                row.setAttribute('data-status', 'scheduled');
+                row.querySelector('.status-badge').textContent = 'Scheduled';
                 row.querySelector('.status-badge').classList.remove('status-pending');
-                row.querySelector('.status-badge').classList.add('status-due');
-    
-                // Show Mark Completed Button
-                row.querySelector('.mark-completed').classList.remove('hidden');
-    
+                row.querySelector('.status-badge').classList.add('status-scheduled');
+                
                 scheduleModal.hide();
-            });
+            } else {
+                alert('Error scheduling appointment: ' + data.message);
+            }
+        });
+    });
+});
     
             // Edit Form Submission
             document.getElementById('editForm').addEventListener('submit', function(e) {
@@ -393,7 +393,7 @@
     
     
 
-    {% endblock content  %}
+    
 
 
 

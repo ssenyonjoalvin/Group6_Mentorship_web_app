@@ -58,15 +58,17 @@ ROOT_URLCONF = "mentor_match_proj.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [os.path.join(BASE_DIR, 'templates')],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+                "admin_mentor_app.context_processors.global_data",
             ],
         },
     },
@@ -82,6 +84,9 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
+         'OPTIONS': {
+            'timeout': 60,
+        }
     }
 }
 
@@ -134,4 +139,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 LOGIN_REDIRECT_URL = "dashboard"
 LOGIN_URL = "login"
-
+AUTH_USER_MODEL = "admin_mentor_app.User"
+AUTHENTICATION_BACKENDS = [
+    "admin_mentor_app.backends.EmailBackend",
+]

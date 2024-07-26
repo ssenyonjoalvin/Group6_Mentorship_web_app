@@ -7,7 +7,7 @@ from .models import User, MentorshipMatch, Message, Notification, Schedule, Prog
 admin.site.register(User)
 admin.site.register(MentorshipMatch)
 admin.site.register(Message)
-admin.site.register(Notification)
+admin.site.register(Notification)                                                                                                               
 admin.site.register(Schedule)
 admin.site.register(Progress)
 admin.site.register(Evaluation)
