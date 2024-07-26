@@ -53,6 +53,7 @@ def login_view(request):
             user = authenticate(request, email=email, password=password)
             
             if user is not None:
+                print(user)
                 auth_login(request, user)
                 print(f"User role: {user.role}")  # Debug print
 

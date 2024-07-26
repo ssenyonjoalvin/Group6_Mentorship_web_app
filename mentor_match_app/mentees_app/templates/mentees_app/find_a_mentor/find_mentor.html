@@ -1,4 +1,3 @@
-
 {% extends "mentees_app/fixed/base.html" %}
 
 {% block title %}Find a Mentor{% endblock %}
@@ -7,13 +6,21 @@
 
 {% block content %}
 <div class="container mt-5">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
     <div class="row">
         <div class="col-md-12">
-            <form method="get" action="">
+            <form method="get" action="{% url 'mentees_app:find_mentor' %}">
                 <label for="search" class="form-label">Find mentor by name, interest or expertise</label>
                 <input type="text" name="search" placeholder="Search by name, interests, or expertise" value="{{ query }}" class="form-control" />
                 <button type="submit" class="btn btn-primary mt-2">Search</button>
             </form>
+            <!--Display list for filtered mentors-->
             <div class="mt-5">
                 <h3>Mentor Results</h3>
                 {% if mentors %}
@@ -22,14 +29,13 @@
                             <div class="col-md-4 mt-3">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h5 class="card-title">{{ mentor.name }}</h5>
+                                        <h5 class="card-title">{{ mentor.first_name }} {{ mentor.last_name }}</h5>
                                         <p class="card-text"><strong>Interests:</strong> {{ mentor.interests }}</p>
                                         <p class="card-text"><strong>Expertise:</strong> {{ mentor.expertise }}</p>
                                         <p class="card-text"><strong>Availability:</strong> {{ mentor.availability }}</p>
-                                        <form method="post" action="">
-                                            {% csrf_token %}
-                                            <button type="submit" class="btn btn-success">Send Request</button>
-                                        </form>
+                                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#requestModal" data-mentor-id="{{ mentor.id }}">
+                                            Send Request
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -37,9 +43,80 @@
                     </div>
                 {% else %}
                     <p>No mentors found matching your search criteria.</p>
+                    <h3>Other mentors you might be interested in</h3>
+                    <div class="row">
+                        {% for mentor in all_mentors %}
+                            <div class="col-md-4 mt-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ mentor.first_name }} {{ mentor.last_name }}</h5>
+                                        <p class="card-text"><strong>Interests:</strong> {{ mentor.interests }}</p>
+                                        <p class="card-text"><strong>Expertise:</strong> {{ mentor.expertise }}</p>
+                                        <p class="card-text"><strong>Availability:</strong> {{ mentor.availability }}</p>
+                                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#requestModal" data-mentor-id="{{ mentor.id }}">
+                                            Send Request
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
                 {% endif %}
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="requestModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="requestModalLabel">Send Request to Mentor</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'mentees_app:send_request' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="mentor_id" id="mentor-id-input">
+                    <div class="mb-3">
+                        <label for="challenge_1" class="form-label">Challenge 1</label>
+                        <input type="text" class="form-control" id="challenge_1" name="challenge_1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="challenge_2" class="form-label">Challenge 2</label>
+                        <input type="text" class="form-control" id="challenge_2" name="challenge_2">
+                    </div>
+                    <div class="mb-3">
+                        <label for="challenge_3" class="form-label">Challenge 3</label>
+                        <input type="text" class="form-control" id="challenge_3" name="challenge_3">
+                    </div>
+                    <div class="mb-3">
+                        <label for="challenge_4" class="form-label">Challenge 4</label>
+                        <input type="text" class="form-control" id="challenge_4" name="challenge_4">
+                    </div>
+                    <div class="mb-3">
+                        <label for="challenge_5" class="form-label">Challenge 5</label>
+                        <input type="text" class="form-control" id="challenge_5" name="challenge_5">
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var requestModal = document.getElementById('requestModal')
+    requestModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget
+        var mentorId = button.getAttribute('data-mentor-id')
+        var input = document.getElementById('mentor-id-input')
+        input.value = mentorId
+    })
+</script>
 {% endblock %}

@@ -23,22 +23,38 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Home</a>
+                        <a class="nav-link" href="{% url 'mentees_app:mentee_home' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Mentors</a>
+                        <a class="nav-link" href="{% url 'mentees_app:find_mentor' %}">Mentors</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Programs</a>
+                        <a class="nav-link" href="{% url 'mentees_app:programs' %}">Programs</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Resources</a>
+                        <a class="nav-link" href="{% url 'mentees_app:resources' %}">Resources</a>
                     </li>
+                    <li class="nav-item position-relative">
+                        <a class="nav-link" href="{% url 'mentees_app:messages' %}">Messages</a>
+                        {% if new_message_count > 0 %}
+                        <span class="badge badge-danger position-absolute top-0 start-100 translate-middle">
+                            {{ new_message_count }}
+                        </span>
+                        {% endif %}
+                    </li>
+                    <li>
+                        <a href="{% url 'mentees_app:profile' %}" class="btn btn-brand ms-lg-3">Profile</a> 
+                    </li>
+                    <!--Logout form-->
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Notifications</a>
+                        <form method="post" action="{% url 'mentees_app:logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-brand ms-lg-3" style="cursor: pointer;">Logout</button>
+
+                        </form>
                     </li>
                 </ul>
-                <a href="#" class="btn btn-brand ms-lg-3">Profile</a>  
+                 
             </div>
         </div>
     </nav>

@@ -23,6 +23,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     gender = models.CharField(max_length=10)
     nationality = models.CharField(max_length=50)
+    dob = models.DateField(null=True, blank=True)  # Allow null values
+    password = models.CharField(max_length=100)
+    telephone = models.CharField(max_length=15)
     bio = models.CharField(max_length=250, null=True)
     dob = models.DateField()
     address = models.CharField(max_length=255)  # Added max_length
@@ -39,6 +42,13 @@ class User(AbstractBaseUser, PermissionsMixin):
         upload_to="profile_pictures/", blank=True, null=True
     )
     id = models.AutoField(primary_key=True)
+    last_login = models.DateTimeField(default=timezone.now)  # Added field
+    is_active = models.BooleanField(default=True)  # Added field
+    is_staff = models.BooleanField(default=False)  # Added field
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['first_name', 'last_name']  # Fields required for creating a user
+
 
     objects = CustomUserManager()
 

@@ -29,22 +29,33 @@
                 <ul class="navbar-nav ms-auto">
                     
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Home</a>
+                        <a class="nav-link" href="{% url 'mentees_app:mentee_home' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Mentors</a>
+                        <a class="nav-link" href="{% url 'mentees_app:find_mentor' %}">Mentors</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Programs</a>
+                        <a class="nav-link" href="{% url 'mentees_app:programs' %}">Programs</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Resources</a>
+                        <a class="nav-link" href="{% url 'mentees_app:resources' %}">Resources</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Notifications</a>
+                        <a class="nav-link" href="{% url 'mentees_app:messages' %}">Messages</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'mentees_app:profile' %}" class="btn btn-brand ms-lg-3">Profile</a> 
+                    </li>
+                    <!--Logout form-->
+                    <li class="nav-item">
+                        <form method="post" action="{% url 'mentees_app:logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-brand ms-lg-3" style="cursor: pointer;">Logout</button>
+
+                        </form>
                     </li>
                 </ul>
-                <a href="#" class="btn btn-brand ms-lg-3">Profile</a>  
+                
             </div>
         </div>
     </nav>
@@ -57,8 +68,8 @@
                     <div class="col-12">
                         <h6 class="text-uppercase text-white">Guidance.Growth.Success</h6>
                         <h1 class="display-2 my-3 text-white">Unlock Your Potential</h1>
-                        <a href="#" class="btn btn-brand">Find a mentor</a>
-                        <a href="#" class="btn btn-outline-light ms-md-3">Your programs</a>
+                        <a href="{% url 'mentees_app:find_mentor' %}" class="btn btn-brand">Find a mentor</a>
+                        <a href="{% url 'mentees_app:programs' %}" class="btn btn-outline-light ms-md-3">Your programs</a>
                     </div>
                 </div>
             </div>
@@ -105,86 +116,36 @@
 
 
 
-    <!-- Mentors Section -->
+   <!-- Mentors Section -->
 <div class="page-section bg-light">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10">
-                <h2 class="text-center">Find a mentor</h2>
+                <h2 class="text-center">Meet Our Mentors</h2>
                 <div class="row">
-
-
-                    <div class="col-md-6 col-lg-4 py-3">
-                        <div class="card-mentor">
-                            <div class="header">
-                                <img src="{% static 'mentees_app/images/mentor_1.jpeg' %}" alt="Mentor 1">
-                                <div class="meta">
-                                    <a href="#"><span class="mai-call"></span></a>
-                                    <a href="#"><span class="mai-logo-whatsapp"></span></a>
-                                </div>
-                            </div>
-                            <div class="body">
-                                <p class="text-xl mb-0">Mentor 1</p>
-                                <span class="text-sm text-grey">Data Science</span>
+                    {% for mentor in mentors %}
+                    <div class="col-md-4 mt-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ mentor.first_name }} {{ mentor.last_name }}</h5>
+                                <p class="card-text"><strong>Interests:</strong> {{ mentor.interests }}</p>
+                                <p class="card-text"><strong>Expertise:</strong> {{ mentor.expertise }}</p>
+                                <p class="card-text"><strong>Availability:</strong> {{ mentor.availability }}</p>
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#requestModal" data-mentor-id="{{ mentor.id }}">
+                                    Send Request
+                                </button>
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-md-6 col-lg-4 py-3">
-                        <div class="card-mentor">
-                            <div class="header">
-                                <img src="{% static 'mentees_app/images/mentor_2.jpeg' %}" alt="Mentor 1">
-                                <div class="meta">
-                                    <a href="#"><span class="mai-call"></span></a>
-                                    <a href="#"><span class="mai-logo-whatsapp"></span></a>
-                                </div>
-                            </div>
-                            <div class="body">
-                                <p class="text-xl mb-0">Mentor 1</p>
-                                <span class="text-sm text-grey">Machine Learning</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-lg-4 py-3">
-                        <div class="card-mentor">
-                            <div class="header">
-                                <img src="{% static 'mentees_app/images/mentor_3.jpeg' %}" alt="Mentor 1">
-                                <div class="meta">
-                                    <a href="#"><span class="mai-call"></span></a>
-                                    <a href="#"><span class="mai-logo-whatsapp"></span></a>
-                                </div>
-                            </div>
-                            <div class="body">
-                                <p class="text-xl mb-0">Mentor 1</p>
-                                <span class="text-sm text-grey">Data Analysis</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-lg-4 py-3">
-                        <div class="card-mentor">
-                            <div class="header">
-                                <img src="{% static 'mentees_app/images/mentor_4.jpeg' %}" alt="Mentor 1">
-                                <div class="meta">
-                                    <a href="#"><span class="mai-call"></span></a>
-                                    <a href="#"><span class="mai-logo-whatsapp"></span></a>
-                                </div>
-                            </div>
-                            <div class="body">
-                                <p class="text-xl mb-0">Mentor 1</p>
-                                <span class="text-sm text-grey">Artificial Intelligence</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Repeat for other mentors -->
-
-
+                    {% empty %}
+                    <p>No mentors available at the moment.</p>
+                    {% endfor %}
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 
     <!-- Bootstrap JS and dependencies -->
