@@ -119,7 +119,7 @@ def schedule(request):
 # Evaluation
 @login_required
 def evaluation(request):
-    mentor_id = 9  # request.user.id
+    mentor_id = request.user.id
     progress = Progress.objects.filter(mentor_id=mentor_id).values('mentee_id').distinct()
     
     mentee_progress_list = []
@@ -195,7 +195,7 @@ def get_mentee_id_by_firstname(firstname):
 def answered_form(request, firstname):
     # Get mentee_id using the firstname
     mentee_id = get_mentee_id_by_firstname(firstname)
-    mentor_id = request.user.id
+    mentor_id =request.user.id
 
     if mentee_id is None:
         # Handle the case where the mentee_id was not found
