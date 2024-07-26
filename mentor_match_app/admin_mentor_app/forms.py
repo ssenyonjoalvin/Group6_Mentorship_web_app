@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django.contrib.auth.hashers import make_password
+from .models import Schedule
 
 
 # GENDER_CHOICES = [
@@ -153,3 +154,32 @@ class ProfileUpdateForm(forms.ModelForm):
         # self.fields["type_of_user"].widget.attrs.update({"class": "form-control"})
         self.fields["dob"] = forms.DateField(required=True, widget=forms.DateInput(attrs={"type": "date"})
 )
+        
+
+class ScheduleForm(forms.ModelForm):
+    class Meta:
+        model = Schedule
+        fields = ['mentee', 'session_date', 'status']
+        widgets = {
+            'session_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'status': forms.HiddenInput(),  # We'll set this to 'scheduled' in the view
+        }
+
+
+class EditAppointmentForm(forms.ModelForm):
+    class Meta:
+        model = Schedule
+        fields = ['session_date']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['session_date'].widget = forms.DateTimeInput(
+            format='%Y-%m-%dT%H:%M',
+            attrs={'type': 'datetime-local'}
+        )
+
+    def clean_session_date(self):
+        date_time = self.cleaned_data.get('session_date')
+        if date_time:
+            return date_time
+        raise forms.ValidationError("This field is required.")        
