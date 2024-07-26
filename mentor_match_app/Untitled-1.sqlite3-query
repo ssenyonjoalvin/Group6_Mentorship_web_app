@@ -1,0 +1,5 @@
+-- database: ./db.sqlite3
+
+-- Use the ▷ button in the top right corner to run the entire file.
+
+INSERT INTO admin_mentor_app_mentorshipmatch (match_date, status,mentee_id,mentor_id) VALUES('2024-07-24 09:54:12',0,2,11)
