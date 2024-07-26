@@ -14,7 +14,6 @@ from admin_mentor_app.models import (
 )
 import time
 
-
 class Command(BaseCommand):
     help = "Populate database with fake data"
 
@@ -37,13 +36,20 @@ class Command(BaseCommand):
                         raise e
                     time.sleep(1)
 
-        # Create Users
+        # Create unique emails
+        used_emails = set()
         for _ in range(10):
+            while True:
+                email = fake.unique.email()
+                if email not in used_emails:
+                    used_emails.add(email)
+                    break
+
             create_with_retry(
                 User,
                 first_name=fake.first_name(),
                 last_name=fake.last_name(),
-                email=fake.unique.email(),  # Ensure unique email
+                email=email,  # Ensure unique email
                 gender=fake.random_element(["Male", "Female"]),
                 nationality=fake.country(),
                 dob=fake.date_of_birth(minimum_age=18, maximum_age=80),
@@ -145,7 +151,9 @@ class Command(BaseCommand):
                 create_with_retry(
                     MenteeChallenge,
                     mentee=mentee,
+                    mentor=fake.random_element(mentors),
                     challenge=fake.sentence(),
+                    session_no=str(fake.random_int(min=1, max=10)),
                     details=fake.text(),
                     created_at=fake.date_time_this_year()
                 )

@@ -29,5 +29,8 @@ urlpatterns = [
     path("login/", user_views.login_view, name="login"),
     path("logout/", user_views.logout_view, name="logout"),
     path('mentees/', include('mentees_app.urls')),
+    
+    
+    
 
 ]

@@ -51,9 +51,18 @@ def login_view(request):
             email = form.cleaned_data["email"]
             password = form.cleaned_data["password"]
             user = authenticate(request, email=email, password=password)
+            
             if user is not None:
                 auth_login(request, user)
-                return redirect("dashboard")
+                print(f"User role: {user.role}")  # Debug print
+
+                if user.role == '2':
+                    return redirect("dashboard")                    
+                elif user.role == '3':
+                    return redirect("mentees_app:mentee_home")
+                else:
+                    print(f"Unknown role: {user.role}")  # Debug print
+                
             else:
                 form.add_error(None, "Invalid email or password.")
     else:
