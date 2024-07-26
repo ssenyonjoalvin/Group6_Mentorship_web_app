@@ -8,11 +8,12 @@ from admin_mentor_app.models import (
     Notification,
     Schedule,
     Progress,
-    Evaluation,
     Goals,
+    Evaluation,
     MenteeChallenge,
 )
 import time
+import random
 
 class Command(BaseCommand):
     help = "Populate database with fake data"
@@ -49,14 +50,14 @@ class Command(BaseCommand):
                 User,
                 first_name=fake.first_name(),
                 last_name=fake.last_name(),
-                email=email,  # Ensure unique email
+                email=email,
                 gender=fake.random_element(["Male", "Female"]),
                 nationality=fake.country(),
                 dob=fake.date_of_birth(minimum_age=18, maximum_age=80),
-                password=(fake.random_int(min=12344, max=43215)),  # Convert int to string and hash
+                password=fake.password(),  # Generate a valid password
                 telephone=fake.phone_number(),
                 role=fake.random_element(["1", "2", "3"]),
-                profile_picture=None,  # No image
+                profile_picture=None,
             )
 
         users = list(User.objects.all())
@@ -74,53 +75,53 @@ class Command(BaseCommand):
 
         # Create Messages
         for _ in range(10):
+            sender = fake.random_element(users)
+            receiver = fake.random_element([u for u in users if u != sender])  # Ensure sender and receiver are different
             create_with_retry(
                 Message,
-                sender=fake.random_element(users),
-                receiver=fake.random_element(users),
+                sender=sender,
+                receiver=receiver,
                 content=fake.text(),
                 file=None,
                 sent_at=fake.date_time_this_year(),
             )
 
         # Create Notifications
-        for _ in range(2):
+        for _ in range(10):  # Increased number of notifications
+            sent_by = fake.random_element(users)
+            received_by = fake.random_element([u for u in users if u != sent_by])  # Ensure different sender and receiver
             create_with_retry(
                 Notification,
-                sent_by=fake.random_element(users),
-                received_by=fake.random_element(users),
+                sent_by=sent_by,
+                received_by=received_by,
                 message=fake.text(),
                 is_read=fake.boolean(),
                 created_at=fake.date_time_this_year(),
             )
 
         # Create Schedules
-        for _ in range(3):
+        for _ in range(10):
             create_with_retry(
                 Schedule,
                 mentor=fake.random_element(mentors),
                 mentee=fake.random_element(mentees),
                 session_date=fake.date_time_this_year(),
-                status=fake.random_element(
-                    ["scheduled", "confirmed", "completed", "canceled"]
-                ),
+                status=fake.random_element(["scheduled", "confirmed", "completed", "canceled"]),
             )
 
         # Create Progress
-        for _ in range(3):
+        for _ in range(10):
             create_with_retry(
                 Progress,
                 mentor=fake.random_element(mentors),
                 mentee=fake.random_element(mentees),
-                progress_percentage=fake.random_element(
-                    ["0%", "25%", "50%", "75%", "100%"]
-                ),
+                progress_percentage=fake.random_element(["0%", "25%", "50%", "75%", "100%"]),
             )
 
         progresses = list(Progress.objects.all())
 
         # Create Goals
-        for _ in range(3):
+        for _ in range(10):
             create_with_retry(
                 Goals,
                 goal_id=fake.random_element(progresses),

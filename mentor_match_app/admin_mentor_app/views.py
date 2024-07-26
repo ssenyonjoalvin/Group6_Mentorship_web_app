@@ -12,9 +12,7 @@ import datetime
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth import logout as auth_logout
-from .forms import LoginForm, UserRegisterForm
-
-from .forms import LoginForm, UserRegisterForm,ProfileUpdateForm
+from .forms import LoginForm, UserRegisterForm,ProfileUpdateForm,EditAppointmentForm
 import matplotlib
 from django.db import transaction, connection
 import matplotlib.pyplot as plt
@@ -27,6 +25,9 @@ from django.utils.dateparse import parse_datetime
 from django.utils.timezone import make_aware
 import pytz
 from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.http import require_POST
+from django.http import HttpResponseForbidden
 from .models import (
     User,
     MentorshipMatch,
@@ -296,16 +297,35 @@ def delete_goal(request):
         return JsonResponse({'success': False, 'error': 'Goal not found'})
 
 @login_required
-@transaction.atomic
 def schedule(request):
     if request.method == 'GET':
         # Handle GET request: render the schedule page with the list of users
-        schedule_list = User.objects.all()
+        # Get the ID of the logged-in mentor
+        loggedinmentor = request.user.id
+
+        # Fetch all schedules for the logged-in mentor with prefetching mentees
+        schedules = Schedule.objects.filter(mentor_id=loggedinmentor).select_related('mentee')
+
+        # Create a list of dictionaries with mentee details and corresponding schedule
+        schedule_list = [
+            {
+                'mentee': schedule.mentee,
+                'schedule': schedule
+            }
+            for schedule in schedules
+        ]
+
+        # Print the optimized schedule list
+        print(schedule_list)
+
         return render(request, "admin_mentor_app/schedule/schedule.html", {'schedule_list': schedule_list})
 
-    elif request.method == 'POST':
-        # Handle POST request: process the form submission for scheduling
-        mentee_id = request.POST.get('mentee_id')
+    
+    if request.method == 'POST':
+        # Retrieve form data 
+        mentor_id = request.POST.get('mentee_id')
+        scheduleId = request.POST.get('scheduleId')
+        mentee_id = request.POST.get('mentee_id_row')
         appointment_date = request.POST.get('appointment_date')
         appointment_time = request.POST.get('appointment_time')
 
@@ -313,31 +333,104 @@ def schedule(request):
         appointment_datetime_str = f"{appointment_date}T{appointment_time}:00"
         appointment_datetime = parse_datetime(appointment_datetime_str)
 
-        # Ensure the datetime is timezone-aware
-        if appointment_datetime is not None:
-            appointment_datetime = make_aware(appointment_datetime, timezone=pytz.UTC)
+    
 
-        # Find the relevant mentee and create/update the Schedule instance
-        try:
-            mentee = User.objects.get(id=mentee_id)
-        except User.DoesNotExist:
-            return JsonResponse({'status': 'error', 'message': 'Mentee not found'})
+        # Define the status
+        status = "scheduled"
 
-        # Check if there's already an existing schedule for this mentee
-        schedule, created = Schedule.objects.update_or_create(
-            mentee=mentee,
+        # Update or create the schedule appointment
+        # Update or create the schedule appointment
+        Schedule.objects.update_or_create(
+            mentor_id=mentor_id,
+            mentee_id=mentee_id,
+            id=scheduleId,
             defaults={
                 'session_date': appointment_datetime,
-                'status': 'scheduled'  # Update status as needed
+                'status': status
             }
         )
 
-        return JsonResponse({'status': 'success'})
+        
+
+        # Redirect to the schedule page
+        return redirect('schedule')  # Make sure 'schedule' is the name of the 
 
     # Handle other request methods
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
- 
+@csrf_exempt
+@login_required
+@require_http_methods(['GET'])
+def mark_complete(request, schedule_id):
+    try:
+        schedule = get_object_or_404(Schedule, id=schedule_id)
+        schedule.status = 'completed'
+        schedule.save()
+
+ # Redirect to the schedule page
+        return redirect('schedule')  # Make sure 'schedule' is the name of the 
+
+    
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)})
+    
+
+
+@require_POST
+@login_required
+def delete_appointment(request, schedule_id):
+    schedule = get_object_or_404(Schedule, id=schedule_id)
+    
+    # Check if the current user is authorized to delete this schedule
+    if request.user.id != schedule.mentor_id:
+        return HttpResponseForbidden("You are not authorized to delete this appointment.")
+    
+    schedule.delete()
+    
+    return redirect('schedule')  
+
+
+@login_required
+def schedule_list(request):
+    status_filter = request.GET.get('status', 'all')
+
+    if status_filter == 'all':
+        schedule_list = Schedule.objects.filter(mentor_id=request.user.id)
+    else:
+        schedule_list = Schedule.objects.filter(
+            mentor_id=request.user.id,
+            status=status_filter.lower()  # Adjust based on your status field
+        )
+
+    if request.is_ajax():  # Check if the request is an AJAX request
+        data = {'schedule_list': [{'name': schedule.name, 'status': schedule.status} for schedule in schedule_list]}
+        return JsonResponse(data)
+    else:
+        return render(request, 'schedule.html', {'schedule_list': schedule_list})
+@csrf_exempt
+@login_required
+def edit_appointment(request):
+    if request.method == 'POST':
+        form = EditAppointmentForm(request.POST)
+        if form.is_valid():
+            mentee_id = request.POST.get('mentee_id')
+            appointment_date = form.cleaned_data['appointment_date']
+            appointment_time = form.cleaned_data['appointment_time']
+            
+            appointment_datetime_str = f"{appointment_date}T{appointment_time}:00"
+            appointment_datetime = parse_datetime(appointment_datetime_str)
+
+            # Update the schedule
+            schedule = get_object_or_404(Schedule, mentee_id=mentee_id)
+            schedule.session_date = appointment_datetime
+            schedule.status = 'scheduled'
+            schedule.save()
+
+            return JsonResponse({'status': 'success'})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Form is invalid'})
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 # Evaluation
 @login_required
 @transaction.atomic
@@ -386,4 +479,20 @@ def generate_charts():
 
 def reports(request):
     chart_paths = generate_charts()
-    return render(request, 'admin_mentor_app/reports/reports.html', {'chart_paths': chart_paths})
+    
+    
+     status_filter = request.GET.get('status', 'all')
+
+    if status_filter == 'all':
+        schedule_list = Schedule.objects.filter(mentor_id=request.user.id)
+    else:
+        schedule_list = Schedule.objects.filter(
+            mentor_id=request.user.id,
+            status=status_filter.lower()  # Adjust based on your status field
+        )
+
+    if request.is_ajax():  # Check if the request is an AJAX request
+        data = {'schedule_list': [{'name': schedule.name, 'status': schedule.status} for schedule in schedule_list]}
+        return JsonResponse(data)
+    else:
+        return render(request, 'admin_mentor_app/reports/reports.html', {'chart_paths': chart_paths, 'schedule_list':schedule_list})
