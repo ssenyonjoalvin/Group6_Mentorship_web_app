@@ -1,6 +1,5 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
-<<<<<<< HEAD
 *.py[cod]
 *$py.class
 
@@ -126,7 +125,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-=======
 # Ignore Python compiled files
 *.py[cod]
 __pycache__/
@@ -149,4 +147,5 @@ env/
 # Ignore system files
 .DS_Store
 Thumbs.db
->>>>>>> derrick_task2
+
+db.sqlite3
