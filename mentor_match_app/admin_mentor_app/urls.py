@@ -5,9 +5,13 @@ urlpatterns = [
     # path('', views.index, name='login'),
 
     path('register/', views.register, name='register'),
+    path('', views.login_view, name='login'),
 
     #  Dashboard
-    path('', views.dashboard, name='dashboard'),
+    path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
+    path('mentor-dashboard/', views.mentor_dashboard, name='mentor_dashboard'),
+    path('mentee-dashboard/', views.mentee_dashboard, name='mentee_dashboard'),
+
     path('profile/', views.profile, name='profile'),
 
     # Mentees

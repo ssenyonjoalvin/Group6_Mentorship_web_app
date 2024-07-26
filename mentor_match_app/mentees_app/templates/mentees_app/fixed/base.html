@@ -42,9 +42,19 @@
                         </span>
                         {% endif %}
                     </li>
-                    
+                    <li>
+                        <a href="{% url 'mentees_app:profile' %}" class="btn btn-brand ms-lg-3">Profile</a> 
+                    </li>
+                    <!--Logout form-->
+                    <li class="nav-item">
+                        <form method="post" action="{% url 'mentees_app:logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-brand ms-lg-3" style="cursor: pointer;">Logout</button>
+
+                        </form>
+                    </li>
                 </ul>
-                <a href="{% url 'mentees_app:profile' %}" class="btn btn-brand ms-lg-3">Profile</a>  
+                 
             </div>
         </div>
     </nav>

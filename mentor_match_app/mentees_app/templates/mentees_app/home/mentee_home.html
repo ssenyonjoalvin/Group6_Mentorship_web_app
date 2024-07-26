@@ -43,8 +43,19 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'mentees_app:messages' %}">Messages</a>
                     </li>
+                    <li>
+                        <a href="{% url 'mentees_app:profile' %}" class="btn btn-brand ms-lg-3">Profile</a> 
+                    </li>
+                    <!--Logout form-->
+                    <li class="nav-item">
+                        <form method="post" action="{% url 'mentees_app:logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-brand ms-lg-3" style="cursor: pointer;">Logout</button>
+
+                        </form>
+                    </li>
                 </ul>
-                <a href="{% url 'mentees_app:profile' %}" class="btn btn-brand ms-lg-3">Profile</a>  
+                
             </div>
         </div>
     </nav>
@@ -57,8 +68,8 @@
                     <div class="col-12">
                         <h6 class="text-uppercase text-white">Guidance.Growth.Success</h6>
                         <h1 class="display-2 my-3 text-white">Unlock Your Potential</h1>
-                        <a href="#" class="btn btn-brand">Find a mentor</a>
-                        <a href="#" class="btn btn-outline-light ms-md-3">Your programs</a>
+                        <a href="{% url 'mentees_app:find_mentor' %}" class="btn btn-brand">Find a mentor</a>
+                        <a href="{% url 'mentees_app:programs' %}" class="btn btn-outline-light ms-md-3">Your programs</a>
                     </div>
                 </div>
             </div>
