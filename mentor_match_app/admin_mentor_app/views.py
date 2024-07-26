@@ -1,5 +1,7 @@
+from urllib import request
 from django.shortcuts import render, redirect,get_object_or_404
 from django.http import HttpResponse
+from urllib import request
 from django.db.models import Q
 import math
 from django.http import JsonResponse
@@ -12,6 +14,7 @@ from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth import logout as auth_logout
 from .forms import LoginForm, UserRegisterForm
 
+from .forms import LoginForm, UserRegisterForm,ProfileUpdateForm
 import matplotlib
 from django.db import transaction, connection
 import matplotlib.pyplot as plt
@@ -19,6 +22,11 @@ import seaborn as sns
 import os
 from django.conf import settings
 from django import db
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.dateparse import parse_datetime
+from django.utils.timezone import make_aware
+import pytz
+from django.http import JsonResponse
 from .models import (
     User,
     MentorshipMatch,
@@ -75,6 +83,7 @@ def dashboard(request):
         pending_count = total_progress_count - completed_count
         users = User.objects.all()
         progresses = Progress.objects.all()
+        print(pending_count)
 
         return render(
             request,
@@ -92,9 +101,18 @@ def dashboard(request):
     finally:
         db.connections.close_all()
         connection.close()
-@login_required
+@login_required        
 def profile(request):
-    return render(request, "admin_mentor_app/dashboard/profile.html")
+    user = request.user  # Get the currently logged-in user
+    if request.method == "POST":
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect("profile")
+    else:
+        form = ProfileUpdateForm(instance=user)
+
+    return render(request, "admin_mentor_app/dashboard/profile.html", {"form": form})
 
 @login_required
 @transaction.atomic
@@ -270,11 +288,47 @@ def delete_goal(request):
 @login_required
 @transaction.atomic
 def schedule(request):
-    try:
-        return render(request, "admin_mentor_app/schedule/schedule.html")
-    finally:
-        connection.close()
+    if request.method == 'GET':
+        # Handle GET request: render the schedule page with the list of users
+        schedule_list = User.objects.all()
+        return render(request, "admin_mentor_app/schedule/schedule.html", {'schedule_list': schedule_list})
 
+    elif request.method == 'POST':
+        # Handle POST request: process the form submission for scheduling
+        mentee_id = request.POST.get('mentee_id')
+        appointment_date = request.POST.get('appointment_date')
+        appointment_time = request.POST.get('appointment_time')
+
+        # Combine date and time into a single datetime object
+        appointment_datetime_str = f"{appointment_date}T{appointment_time}:00"
+        appointment_datetime = parse_datetime(appointment_datetime_str)
+
+        # Ensure the datetime is timezone-aware
+        if appointment_datetime is not None:
+            appointment_datetime = make_aware(appointment_datetime, timezone=pytz.UTC)
+
+        # Find the relevant mentee and create/update the Schedule instance
+        try:
+            mentee = User.objects.get(id=mentee_id)
+        except User.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Mentee not found'})
+
+        # Check if there's already an existing schedule for this mentee
+        schedule, created = Schedule.objects.update_or_create(
+            mentee=mentee,
+            defaults={
+                'session_date': appointment_datetime,
+                'status': 'scheduled'  # Update status as needed
+            }
+        )
+
+        return JsonResponse({'status': 'success'})
+
+    # Handle other request methods
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
+ 
+# Evaluation
 @login_required
 @transaction.atomic
 def evaluation(request):

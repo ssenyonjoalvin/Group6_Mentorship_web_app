@@ -1,326 +1,58 @@
-{% extends 'admin_mentor_app/fixed/base.html' %} {% block content %}
+{% extends 'admin_mentor_app/fixed/base.html' %} 
+{% block content %} 
+{% load static %}
 
 <style>
-  .chat-window {
-    max-width: 600px;
+  .profile-container {
+    max-width: 800px;
     margin: auto;
+    padding: 20px;
     border: 1px solid #ddd;
     border-radius: 10px;
-    overflow: hidden;
-  }
-  .chat-header {
-    padding: 10px;
-    font-size: 1.2rem;
-  }
-  .chat-body {
-    height: 400px;
-    overflow-y: auto;
-    padding: 15px;
     background-color: #f8f7f6;
   }
-  .chat-message {
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    max-width: 45%;
+  .profile-header {
+    text-align: center;
+    margin-bottom: 20px;
   }
-  .message-sent {
-    background-color: #dcf8c6;
-    text-align: right;
+  .profile-img-container {
+    text-align: center;
   }
-  .message-received {
-    background-color: white;
-    margin-left: 50%;
-    max-width: 45%;
+  .profile-img {
+    border-radius: 50%;
+    border: 3px solid #ddd;
   }
-  .chat-footer {
-    padding: 10px;
-    display: flex;
+  .profile-form {
+    margin-top: 20px;
   }
-  .chat-footer input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
+  .profile-form .form-group {
+    margin-bottom: 15px;
+  }
+  .profile-form .form-control {
     border-radius: 5px;
   }
-  .chat-footer button {
+  .btn-primary {
     background-color: #075e54;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    margin-left: 10px;
-    border-radius: 5px;
+    border-color: #075e54;
   }
 </style>
 
-<div class="container mt-1">
-  <div class="container row mt-1">
-    <h2 class="mb-4">Mentee <span style="font-size: 20px">/Preview</span></h2>
-    <div class="col">
-      <!-- Navigation Tabs -->
-      <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-          <a
-            class="nav-link active"
-            id="profile-tab"
-            data-bs-toggle="tab"
-            href="#profile"
-            role="tab"
-            aria-controls="profile"
-            aria-selected="true"
-            >Profile</a
-          >
-        </li>
-        <li class="nav-item" role="presentation">
-          <a
-            class="nav-link"
-            id="goals-tab"
-            data-bs-toggle="tab"
-            href="#goals"
-            role="tab"
-            aria-controls="goals"
-            aria-selected="false"
-            >Mentor's Goals</a
-          >
-        </li>
-        <li class="nav-item" role="presentation">
-          <a
-            class="nav-link active"
-            id="chat-tab"
-            data-bs-toggle="tab"
-            href="#chat"
-            role="tab"
-            aria-controls="chat"
-            aria-selected="false"
-            >Chat</a
-          >
-        </li>
-      </ul>
-      <!-- Tab Content -->
-      <div class="tab-content" id="myTabContent">
-        <div
-          class="tab-pane fade show active"
-          id="profile"
-          role="tabpanel"
-          aria-labelledby="profile-tab"
-        >
-          <div class="container mt-5">
-            <div class="row">
-              <div class="col-md-4">
-                <div class="card">
-                  <img
-                    src="https://via.placeholder.com/350x350"
-                    class="card-img-top"
-                    alt="Profile Image"
-                  />
-                  <div class="card-body text-center">
-                    <h5 class="card-title">Ahaabwe Derrick</h5>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-8">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Mentee Details</h5>
-                    <form>
-                      <div class="row">
-                        <div class="col-6 mb-1">
-                          <label for="name" class="form-label">Name</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="name"
-                            value="John Doe"
-                          />
-                        </div>
-                        <div class="col-6 mb-1">
-                          <label for="email" class="form-label">Email</label>
-                          <input
-                            type="email"
-                            class="form-control"
-                            id="email"
-                            value="john.doe@example.com"
-                          />
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-6 mb-1">
-                          <label for="gender" class="form-label">Gender</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="gender"
-                            value="John Doe"
-                          />
-                        </div>
-                        <div class="col-6 mb-1">
-                          <label for="birthdate" class="form-label"
-                            >Date Of Birth</label
-                          >
-                          <input
-                            type="date"
-                            class="form-control"
-                            id="birthdate"
-                            placeholder="Select birthdate"
-                          />
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-6 mb-1">
-                          <label for="address" class="form-label"
-                            >Address</label
-                          >
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="address"
-                            value="123 Main Street, Anytown"
-                          />
-                        </div>
-                        <div class="col-6 mb-1">
-                          <label for="contact" class="form-label"
-                            >Contact</label
-                          >
-                          <input
-                            type="tel"
-                            class="form-control"
-                            id="contact"
-                            value="+1234567890"
-                          />
-                        </div>
-                      </div>
-                      <div class="mb-1">
-                        <label for="bio" class="form-label">Bio</label>
-                        <textarea class="form-control" id="bio" rows="3">
-Short bio about the mentee.
-                            </textarea
-                        >
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          class="tab-pane fade"
-          id="goals"
-          role="tabpanel"
-          aria-labelledby="goals-tab"
-        >
-          <div class="row">
-            <div class="col">
-              <div class="list-group mt-2">
-                <ul class="list-group-item list-group-item-primary">
-                  <li class="list-unstyled">Mentee Goals</li>
-                </ul>
-                <ol class="list-group list-group-numbered">
-                  <li class="list-group-item border-0">Goal 1</li>
-                  <li class="list-group-item border-0">Goal 2</li>
-                  <li class="list-group-item border-0">Goal 3</li>
-                  <li class="list-group-item border-0">Goal 4</li>
-                  <li class="list-group-item border-0">Goal 5</li>
-                </ol>
-              </div>
-            </div>
-            <div class="col">
-              <div class="list-group mt-2">
-                <ul
-                  class="list-group-item list-group-item-primary d-flex justify-content-between align-items-center"
-                >
-                  <li class="list-unstyled">
-                    Mentors Measurable Achievement Goals
-                  </li>
-                </ul>
-                <ol class="list-group list-group-numbered">
-                  <li
-                    class="list-group-item d-flex justify-content-between align-items-center border-0"
-                  >
-                    <div>
-                      <input type="checkbox" class="me-2" />
-                      Achieve Public Speaking
-                    </div>
-                    <span>
-                      <button class="btn btn-sm btn-primary me-1">Edit</button>
-                      <button class="btn btn-sm btn-danger">Delete</button>
-                    </span>
-                  </li>
-                  <li
-                    class="list-group-item d-flex justify-content-between align-items-center border-0"
-                  >
-                    <div>
-                      <input type="checkbox" class="me-2" />
-                      Ability to read and write
-                    </div>
-                    <span>
-                      <button class="btn btn-sm btn-primary me-1">Edit</button>
-                      <button class="btn btn-sm btn-danger">Delete</button>
-                    </span>
-                  </li>
-                </ol>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          class="tab-pane fade"
-          id="chat"
-          role="tabpanel"
-          aria-labelledby="chat-tab"
-        >
-          <div class="chat-window mt-3">
-            <div class="chat-header">Mentee Name</div>
-            <div class="chat-body">
-              <div class="chat-message message-received">Hi! How are you?</div>
-              <div class="chat-message message-sent">
-                I'm good, thank you! How about you?
-              </div>
-              <div class="chat-message message-received">
-                I'm doing well, thanks!
-              </div>
-              <div class="chat-message message-sent">
-                I'm good, thank you! How about you?
-              </div>
-              <div class="chat-message message-received">
-                I'm doing well, thanks!
-              </div>
-              <div class="chat-message message-sent">
-                I'm good, thank you! How about you?
-              </div>
-              <div class="chat-message message-received">
-                I'm doing well, thanks!
-              </div>
-              <div class="chat-message message-sent">
-                I'm good, thank you! How about you?
-              </div>
-              <div class="chat-message message-received">
-                I'm doing well, thanks!
-              </div>
-            </div>
-            <div class="chat-footer">
-              <input type="text" placeholder="Type a message" />
-              <button>Send</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row"></div>
-    </div>
+{% load crispy_forms_tags %}
+<div class="profile-container">
+  <div class="profile-header">
+    <h2>Mentor Profile</h2>
+  </div>
+  <div class="profile-img-container">
+    <img src="{% static 'admin_mentor_app/images/user.png' %}"
+ class="profile-img" height="150px" alt="Profile Image" />
+  </div>
+  <div class="profile-form">
+    <form action="" method="post" enctype="multipart/form-data" id="profile_form">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <button type="submit" class="btn btn-primary">Change Profile</button>
+    </form>
   </div>
 </div>
 
-<script>
-  $(document).ready(function () {
-    $("#myTab a").on("click", function (event) {
-      event.preventDefault();
-      $(this).tab("show");
-    });
-
-    $('a[data-bs-toggle="tab"]').on("shown.bs.tab", function (e) {
-      $(".tab-pane").removeClass("show active");
-      $($(e.target).attr("href")).addClass("show active");
-    });
-  });
-</script>
 {% endblock content %}

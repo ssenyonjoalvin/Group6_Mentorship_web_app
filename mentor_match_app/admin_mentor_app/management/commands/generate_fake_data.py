@@ -38,7 +38,7 @@ class Command(BaseCommand):
                     time.sleep(1)
 
         # Create Users
-        for _ in range(3):
+        for _ in range(10):
             create_with_retry(
                 User,
                 first_name=fake.first_name(),
@@ -58,7 +58,7 @@ class Command(BaseCommand):
         mentees = list(User.objects.filter(role="3"))
 
         # Create MentorshipMatches
-        for _ in range(3):
+        for _ in range(10):
             create_with_retry(
                 MentorshipMatch,
                 mentor=fake.random_element(mentors),
@@ -67,7 +67,7 @@ class Command(BaseCommand):
             )
 
         # Create Messages
-        for _ in range(3):
+        for _ in range(10):
             create_with_retry(
                 Message,
                 sender=fake.random_element(users),
@@ -78,7 +78,7 @@ class Command(BaseCommand):
             )
 
         # Create Notifications
-        for _ in range(3):
+        for _ in range(2):
             create_with_retry(
                 Notification,
                 sent_by=fake.random_element(users),
@@ -124,7 +124,7 @@ class Command(BaseCommand):
 
         # Create Evaluations
         matches = list(MentorshipMatch.objects.all())
-        for _ in range(3):
+        for _ in range(10):
             create_with_retry(
                 Evaluation,
                 mentorship_match=fake.random_element(matches),
