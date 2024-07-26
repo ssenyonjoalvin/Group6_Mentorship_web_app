@@ -78,6 +78,7 @@ def dashboard(request):
         pending_count = total_progress_count - completed_count
         users = User.objects.all()
         progresses = Progress.objects.all()
+        print(pending_count)
 
         return render(
             request,
