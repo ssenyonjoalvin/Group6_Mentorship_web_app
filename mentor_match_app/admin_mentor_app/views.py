@@ -481,7 +481,7 @@ def reports(request):
     chart_paths = generate_charts()
     
     
-     status_filter = request.GET.get('status', 'all')
+    status_filter = request.GET.get('status', 'all')
 
     if status_filter == 'all':
         schedule_list = Schedule.objects.filter(mentor_id=request.user.id)
