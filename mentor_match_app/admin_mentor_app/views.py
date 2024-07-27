@@ -571,19 +571,18 @@ def generate_charts():
 def reports(request):
     chart_paths = generate_charts()
     
-    
     status_filter = request.GET.get('status', 'all')
-
     if status_filter == 'all':
         schedule_list = Schedule.objects.filter(mentor_id=request.user.id)
     else:
         schedule_list = Schedule.objects.filter(
             mentor_id=request.user.id,
-            status=status_filter.lower()  # Adjust based on your status field
+            status=status_filter.lower()
         )
-
-    if request.is_ajax():  # Check if the request is an AJAX request
+    
+    is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+    if is_ajax:
         data = {'schedule_list': [{'name': schedule.name, 'status': schedule.status} for schedule in schedule_list]}
         return JsonResponse(data)
     else:
-        return render(request, 'admin_mentor_app/reports/reports.html', {'chart_paths': chart_paths, 'schedule_list':schedule_list})
+        return render(request, 'admin_mentor_app/reports/reports.html', {'chart_paths': chart_paths, 'schedule_list': schedule_list})
