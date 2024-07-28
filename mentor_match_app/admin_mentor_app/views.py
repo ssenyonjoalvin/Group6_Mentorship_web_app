@@ -87,6 +87,7 @@ def register(request):
 @transaction.atomic
 def dashboard(request):
     try:
+        mentor_id = request.user.id
         unread_notifications = Notification.objects.count()
         total_progress_count = Progress.objects.count()
         schedules = Schedule.objects.all()
@@ -94,6 +95,9 @@ def dashboard(request):
         pending_count = total_progress_count - completed_count
         users = User.objects.all()
         progresses = Progress.objects.all()
+        total_mentee_req = MentorshipMatch.objects.filter(
+            mentor_id=mentor_id,
+        ).count()
         print(pending_count)
 
         return render(
@@ -107,6 +111,7 @@ def dashboard(request):
                 "users": users,
                 "schedules": schedules,
                 "unread_notifications": unread_notifications,
+                'total_mentee_req':total_mentee_req,
             },
         )
     finally:
@@ -146,7 +151,14 @@ def get_mentees(request):
         connection.close()
 @login_required
 @transaction.atomic
-def accept_mentee(request, match_id):
+def accept_mentee(request, match_id, mentee_id):
+    logged_in_user = request.user.id
+    Schedule.objects.update_or_create(
+        mentor_id=logged_in_user,
+        mentee_id = mentee_id,
+        status = 'confirmed',
+        session_date=datetime.datetime.now()
+    )
     mentorship_match = get_object_or_404(MentorshipMatch, id=match_id)
     mentorship_match.status = 'accepted'
     mentorship_match.save()
@@ -339,7 +351,6 @@ def schedule(request):
         status = "scheduled"
 
         # Update or create the schedule appointment
-        # Update or create the schedule appointment
         Schedule.objects.update_or_create(
             mentor_id=mentor_id,
             mentee_id=mentee_id,
@@ -407,6 +418,7 @@ def schedule_list(request):
         return JsonResponse(data)
     else:
         return render(request, 'schedule.html', {'schedule_list': schedule_list})
+    
 @csrf_exempt
 @login_required
 def edit_appointment(request):
@@ -437,101 +449,41 @@ def edit_appointment(request):
 #Answered form
 def get_mentee_id_by_firstname(firstname):
     try:
-        # Retrieve the User object with the given firstname
-        user = User.objects.get(first_name=firstname)
-        return user.id
-    except ObjectDoesNotExist:
-        # Handle the case where the User with the given firstname does not exist
-        return None
-
-@login_required
-def answered_form(request, firstname):
-    # Get mentee_id using the firstname
-    mentee_id = get_mentee_id_by_firstname(firstname)
-    mentor_id =request.user.id
-
-    if mentee_id is None:
-        # Handle the case where the mentee_id was not found
-        return render(request, 'admin_mentor_app/evaluation/error.html', {'message': 'Mentee not found.'})
+        loggedin_mentor = request.user.id
         
-    # Filter evaluations based on the mentee_id
-    # mentor_id=3
-    evaluations = Evaluation.objects.filter(mentee_id=mentee_id, mentor_id=mentor_id)
+        # Fetch evaluations for the logged-in mentor
+        evaluations = Evaluation.objects.filter(mentor_id=loggedin_mentor).select_related('mentee')
+        
+        # Create a list of dictionaries with mentee details and corresponding evaluation
+        evaluations_with_mentees = [
+            {
+                'evaluation': evaluation,
+                'mentee': evaluation.mentee
+            }
+            for evaluation in evaluations
+        ]
 
-    if request.method == 'POST':
-        for evaluation in evaluations:
-            evaluation.support = request.POST.get(f'support_{evaluation.id}')
-            evaluation.communication = request.POST.get(f'communication_{evaluation.id}')
-            evaluation.confidence = request.POST.get(f'confidence_{evaluation.id}')
-            evaluation.career = request.POST.get(f'career_{evaluation.id}')
-            evaluation.understanding = request.POST.get(f'understanding_{evaluation.id}')
-            evaluation.comfort = request.POST.get(f'comfort_{evaluation.id}')
-            evaluation.goals = request.POST.get(f'goals_{evaluation.id}')
-            evaluation.recommend = request.POST.get(f'recommend_{evaluation.id}')
-            evaluation.resources = request.POST.get(f'resources_{evaluation.id}')
-            evaluation.comments = request.POST.get(f'comments_{evaluation.id}')
-            evaluation.save()  # Save each evaluation
-            
-        return redirect('thank_you')  # Adjust the redirect URL as needed
+        # Render the template with evaluations and mentee details
+        return render(request, "admin_mentor_app/evaluation/evaluation.html", {
+            'evaluations_with_mentees': evaluations_with_mentees
+        })
+    finally:
+        db.connections.close_all()
+        connection.close()
+        
+def evaluation_report(request):
+    try:
+        return render(request, "admin_mentor_app/evaluation/evaluation_form.html")
+    finally:
+        db.connections.close_all()
+        connection.close()
+        
 
-    return render(request, 'admin_mentor_app/evaluation/answered_form.html', {'evaluations': evaluations})
-
-# Evaluation
-@login_required
-def evaluation(request):
-    mentor_id = request.user.id
-    progress = Progress.objects.filter(mentor_id=mentor_id).values('mentee_id').distinct()
+def previewEvaluation(request, mentee_id):
+    loggedin_mentor = request.user.id
+    evaluation_form = Evaluation.objects.filter(mentee_id=mentee_id, mentor_id=loggedin_mentor).first()
     
-    mentee_progress_list = []
-
-    for record in progress:
-        mentee_id = record['mentee_id']
-        progress_percentage = Progress.objects.filter(mentor_id=mentor_id, mentee_id=mentee_id).values('progress_percentage').last().get('progress_percentage')
-        
-        mentee = User.objects.get(id=mentee_id)
-        first_name = mentee.first_name
-        last_name = mentee.last_name
-        
-        mentee_progress = {
-            'mentee_id': mentee_id,
-            'first_name': first_name,
-            'last_name': last_name,
-            'progress_percentage': progress_percentage
-        }
-        
-        mentee_progress_list.append(mentee_progress)
-            
-    return render(request, 'admin_mentor_app/evaluation/evaluation.html', {'mentees': mentee_progress_list})
-
-#EvaluationForm
-@login_required
-def evaluation_form(request):
-    return render(request, 'admin_mentor_app/evaluation/evaluation_form.html')
-
-def answers(request):
-    if request.method == 'POST':
-        
-        evaluation = Evaluation(
-            support=request.POST.get('support'),
-            communication=request.POST.get('communication'),
-            confidence=request.POST.get('confidence'),
-            career=request.POST.get('career'),
-            understanding=request.POST.get('understanding'),
-            comfort=request.POST.get('comfort'),
-            goals=request.POST.get('goals'),
-            recommend=request.POST.get('recommend'),
-            resources=request.POST.get('resources'),
-            comments=request.POST.get('comments'),  # Consolidated comments field
-            mentee_id=2,
-            mentor_id=3,
-            mentorship_match_id=4
-            # Set the `mentor`, `mentee`, and `mentorship_match` fields as needed
-        )
-        evaluation.save()
-        return redirect('thank_you')  # Redirect to the thank you view
-    return render(request, 'admin_mentor_app/evaluation/evaluation_form.html')
-def thank_you(request):
-    return render(request, 'admin_mentor_app/evaluation/thanks.html')
+    return render(request, "admin_mentor_app/evaluation/evaluation_preview.html", {'evaluation_form': evaluation_form})
 def generate_charts():
     try:
         matplotlib.use('Agg')

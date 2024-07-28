@@ -22,39 +22,9 @@ def mentee_home(request):
     }
     return render(request, 'mentees_app/home/mentee_home.html', context)
 
-def find_mentor(request):
-    query = request.GET.get('search', '')
-    role_mentor = '2'
-    filtered_mentors = []
-    if query:
-        filtered_mentors = User.objects.filter(
-            Q(first_name__icontains=query) | 
-            Q(last_name__icontains=query), 
-            # Q(interests__icontains=query) | 
-            # Q(expertise__icontains=query),
-            role=role_mentor
-        )
-        
-    else:
-        filtered_mentors = User.objects.filter(role=role_mentor)
-    all_mentors = User.objects.filter(role=role_mentor)  # Get all mentors
-
-    # mentee challenge form
-    if request.method == 'POST':
-        form = MenteeChallengeForm(request.POST)
-        if form.is_valid():
-            challenge = form.save(commit=False)
-            challenge.mentee = request.user  # Assuming the user is logged in
-            challenge.mentor = User.objects.get(id=request.POST.get('mentor_id'))
-            challenge.save()
-            messages.success(request, 'A request has been successfully sent to the mentor.')
-            return redirect('mentees_app:find_mentor')
-
-    else:
-        form = MenteeChallengeForm()
-
-
-    return render(request, 'mentees_app/find_a_mentor/find_mentor.html', {'mentors': filtered_mentors, 'all_mentors': all_mentors, 'form': form, 'query': query})
+def schedules(request):
+    
+    return render(request, 'mentees_app/schedules/schedules.html')
 
 #save data from mentees_challenge form
 def send_request(request):

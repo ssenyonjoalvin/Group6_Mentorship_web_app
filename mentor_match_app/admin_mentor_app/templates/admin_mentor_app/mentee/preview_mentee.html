@@ -256,8 +256,11 @@ Short bio about the mentee.</textarea
                   </li>
                 </ul>
                 <ol class="list-group list-group-numbered" id="goals-list">
+
+                  {%if progresses|length%}
+
                   {% for progress in progresses %}
-                  <h5>Session {{ forloop.counter }}: {{ progress.progress_percentage }} {{ progress.session_number }}</h5>
+                  <h5>Session {{ forloop.counter }}: {{ progress.progress_percentage }}</h5>
                   {% for goal in progress.goals %}
                   <li class="list-group-item border-0" data-goal-id="{{ goal.id }}">
                       <div class="row form-check d-flex align-items-center">
@@ -293,6 +296,26 @@ Short bio about the mentee.</textarea
                   </div>
               
                   {% endfor %}
+
+                  {% else %}
+
+                  <div class="row mt-3">
+                    <div class="col-10 d-flex justify-content-center align-items-center">
+                        <input
+                            type="text"
+                            id="new-goal-input-{{ progress.session_number }}"
+                            class="form-control new-goal-input"
+                            placeholder="Enter New Goal"
+                            data-goal_id_id="{{ progress.session_number }}"
+                        />
+                    </div>
+                    <div class="col-2">
+                        <button class="btn btn-primary add-goal-btn" data-progress-id="{{ progress.session_number }}">
+                            Add
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
               </ol>
             </div>
             

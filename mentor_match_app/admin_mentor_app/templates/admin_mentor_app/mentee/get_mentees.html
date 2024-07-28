@@ -47,7 +47,7 @@
                         <td>{{ match.match.status }}</td>
                         <td class="d-flex justify-content-end align-items-end">
                             {% if match.match.status == 'pending' or match.match.status == 'rejected' %}
-                            <a href="{% url 'accept_mentee' match.match.id %}" class="btn btn-sm btn-success align-items-centre  m-1">Accept</a>
+                            <a href="{% url 'accept_mentee' match.match.id match.mentee.id %}" class="btn btn-sm btn-success align-items-centre  m-1">Accept</a>
                             {% endif %}
                             {% if match.match.status != 'rejected' %}
                             <a href="{% url 'reject_mentee' match.match.id %}" class="btn btn-sm btn-danger align-items-centre m-1">Reject</a>
