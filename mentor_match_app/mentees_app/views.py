@@ -12,51 +12,42 @@ from admin_mentor_app.models import MentorshipMatch
 
 # mentees home page
 def mentee_home(request):
-    # Dummy data for new message count
-    new_message_count = 2  # Replace with actual count from the database
 
-    # Fetch all mentors
-    role_mentor = '2'  # Assuming '2' represents the mentor role
-    all_mentors = User.objects.filter(role=role_mentor)
-    context = {
-        'new_message_count': new_message_count,
-        'mentors': all_mentors,
-    }
-    return render(request, 'mentees_app/home/mentee_home.html', context)
+    mentee_id = request.user.id
+    mentor = None
 
-def find_mentor(request):
-    query = request.GET.get('search', '')
-    role_mentor = '2'
-    filtered_mentors = []
-    if query:
-        filtered_mentors = User.objects.filter(
-            Q(first_name__icontains=query) | 
-            Q(last_name__icontains=query), 
-            # Q(interests__icontains=query) | 
-            # Q(expertise__icontains=query),
-            role=role_mentor
+    # Fetch the specific mentor for the logged-in mentee
+    try:
+        mymentor = MentorshipMatch.objects.get(mentee_id=mentee_id)
+        mentor_id = mymentor.mentor_id
+        mentor = User.objects.get(id=mentor_id)
+        print(mentor)
+    except MentorshipMatch.DoesNotExist:
+        mentor = None
+    except User.DoesNotExist:
+        mentor = None
+
+    # Handle the search functionality for available mentors
+    search_query = request.GET.get('search', '')
+
+    if search_query:
+        available_mentors = User.objects.filter(
+            Q(role=3) & 
+            (Q(first_name__icontains=search_query) | Q(last_name__icontains=search_query))
         )
+    else:
+        available_mentors = User.objects.filter(role=3)
+
+    context = {
+        'mentor': mentor,
+        'available_mentors': available_mentors,
         
-    else:
-        filtered_mentors = User.objects.filter(role=role_mentor)
-    all_mentors = User.objects.filter(role=role_mentor)  # Get all mentors
+    }
+    return render(request, 'mentees_app/home/mentee_home.html', context,)
 
-    # mentee challenge form
-    if request.method == 'POST':
-        form = MenteeChallengeForm(request.POST)
-        if form.is_valid():
-            challenge = form.save(commit=False)
-            challenge.mentee = request.user  # Assuming the user is logged in
-            challenge.mentor = User.objects.get(id=request.POST.get('mentor_id'))
-            challenge.save()
-            messages.success(request, 'A request has been successfully sent to the mentor.')
-            return redirect('mentees_app:find_mentor')
-
-    else:
-        form = MenteeChallengeForm()
-
-
-    return render(request, 'mentees_app/find_a_mentor/find_mentor.html', {'mentors': filtered_mentors, 'all_mentors': all_mentors, 'form': form, 'query': query})
+def schedules(request):
+    
+    return render(request, 'mentees_app/schedules/schedules.html')
 
 #save data from mentees_challenge form
 def send_request(request):
@@ -168,7 +159,8 @@ def mentor(request):
     try:
         mymentor = MentorshipMatch.objects.get(mentee_id=mentee_id)
         mentor_id = mymentor.mentor_id
-        mentor = User.objects.get(id=mentor_id)
+        mentors = User.objects.get(id=mentor_id)
+        print(mentors)
     except MentorshipMatch.DoesNotExist:
         mentor = None
     except User.DoesNotExist:
@@ -192,6 +184,9 @@ def mentor(request):
     return render(request, 'mentees_app/mentor/mentor.html', context)
 
 
+#EvaluationForm
+def evaluation_form(request):
+    return render(request, 'mentees_app/evaluation/evaluation_form.html')
    
 
       

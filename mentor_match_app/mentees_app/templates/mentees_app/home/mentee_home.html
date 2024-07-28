@@ -1,166 +1,97 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mentee Home</title>
-    {% load static %}
-    <!-- Bootstrap CSS -->
-    <link href="{% static 'mentees_app/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="{% static 'mentees_app/css/styles.css' %}" rel="stylesheet">
-    <style>
-        :root {
-            --background-image-url: url("{% static 'mentees_app/images/image1.jpeg' %}");
-        }
-    </style>
-    
-</head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
-        <div class="container">
-            <a class="navbar-brand" href="#">Mentorship App<span>.</span></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'mentees_app:mentee_home' %}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'mentees_app:find_mentor' %}">Mentors</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'mentees_app:programs' %}">Programs</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'mentees_app:resources' %}">Resources</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'mentees_app:messages' %}">Messages</a>
-                    </li>
-                    <li>
-                        <a href="{% url 'mentees_app:profile' %}" class="btn btn-brand ms-lg-3">Profile</a> 
-                    </li>
-                    <!--Logout form-->
-                    <li class="nav-item">
-                        <form method="post" action="{% url 'mentees_app:logout' %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-brand ms-lg-3" style="cursor: pointer;">Logout</button>
-
-                        </form>
-                    </li>
-                </ul>
-                
+{% extends 'mentees_app/fixed/base.html' %} {% block content %} 
+{% load static %}
+<!-- Bootstrap JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<style>
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+  }
+  .main-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .content {
+    flex: 1;
+  }
+  .profile-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+  .profile-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .profile-info {
+    flex-grow: 1;
+    margin-left: 15px;
+  }
+  .mentor-section,
+  .available-section {
+    /* border: 1px solid #ddd; */
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+</style>
+<div class="container-fluid mt-2">
+  <div class="row">
+    <div class="col-md-8 mentor-section" style="padding-right: 100px">
+      <h2>My Mentor</h2>
+      {% if mentor %}
+      <div class="profile-container">
+        <img
+          src="{% static 'mentees_app/images/mentor_2.jpeg' %}"
+          alt="Mentor Image"
+          class="profile-img"
+        />
+        <div class="profile-info"></div>
+        <button class="btn btn-outline-primary btn-sm">Preview</button>
+      </div>
+      {% else %}
+      <p>No mentor found for this mentee.</p>
+      {% endif %}
+      <div class="form-container mt-4">
+        <h3>Evaluation</h3>
+        <button type="submit" class="btn btn-success">Evaluation Form</button>
+      </div>
+    </div>
+    <div class="col-md-4 available-section" style="border: 1px solid #ddd">
+        <h2>Available Mentors</h2>
+        <form method="GET">
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              name="search"
+              class="form-control"
+              placeholder="Search..."
+            />
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="submit">
+                Search
+              </button>
             </div>
+          </div>
+        </form>
+        {% for mentor in available_mentors %}
+        <div class="profile-container">
+          <img
+            src="{% static 'mentees_app/images/mentor_2.jpeg' %}"
+            alt="Mentor Image"
+            class="profile-img"
+          />
+          <div class="profile-info">
+            <span>{{ mentor.first_name }} {{ mentor.last_name }}</span>
+          </div>
         </div>
-    </nav>
-
-    <!-- Slogan and Motto -->
-    <div class="slider-wrapper">
-        <div class="slide1 min-vh-100 bg-cover d-flex align-items-center">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <h6 class="text-uppercase text-white">Guidance.Growth.Success</h6>
-                        <h1 class="display-2 my-3 text-white">Unlock Your Potential</h1>
-                        <a href="{% url 'mentees_app:find_mentor' %}" class="btn btn-brand">Find a mentor</a>
-                        <a href="{% url 'mentees_app:programs' %}" class="btn btn-outline-light ms-md-3">Your programs</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 
-    <!-- Enrolled Programs -->
-<!-- Enrolled Programs -->
-<div class="page-section bg-light">
-    <div class="container">
-        <h2 class="text-center">Programs You Are Enrolled In</h2>
-        <div class="row">
-            <div class="col-md-6 col-lg-4 py-3">
-                <div class="card-program">
-                    <h4>Program 1</h4>
-                    <p class="text-sm text-grey">Progress: 60%</p>
-                    <div class="progress">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4 py-3">
-                <div class="card-program">
-                    <h4>Program 2</h4>
-                    <p class="text-sm text-grey">Progress: 45%</p>
-                    <div class="progress">
-                        <div class="progress-bar bg-warning" role="progressbar" style="width: 45%;" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4 py-3">
-                <div class="card-program">
-                    <h4>Program 3</h4>
-                    <p class="text-sm text-grey">Progress: 80%</p>
-                    <div class="progress">
-                        <div class="progress-bar bg-info" role="progressbar" style="width: 80%;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+  </div>
 </div>
-
-
-
-
-   <!-- Mentors Section -->
-<div class="page-section bg-light">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <h2 class="text-center">Meet Our Mentors</h2>
-                <div class="row">
-                    {% for mentor in mentors %}
-                    <div class="col-md-4 mt-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ mentor.first_name }} {{ mentor.last_name }}</h5>
-                                <p class="card-text"><strong>Interests:</strong> {{ mentor.interests }}</p>
-                                <p class="card-text"><strong>Expertise:</strong> {{ mentor.expertise }}</p>
-                                <p class="card-text"><strong>Availability:</strong> {{ mentor.availability }}</p>
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#requestModal" data-mentor-id="{{ mentor.id }}">
-                                    Send Request
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    {% empty %}
-                    <p>No mentors available at the moment.</p>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-    <!-- Bootstrap JS and dependencies -->
-    <script src="{% static 'mentees_app/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-
-
-    <!-- Footer -->
-<footer class="footer">
-    <div class="container text-center">
-        <p>&copy; 2024 Mentorship App. All rights reserved.</p>
-        <p>
-            <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
-        </p>
-    </div>
-</footer>
-
-</body>
-</html>
+{% endblock content %}
