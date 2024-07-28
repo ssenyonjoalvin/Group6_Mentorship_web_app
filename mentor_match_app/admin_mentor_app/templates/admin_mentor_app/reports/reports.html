@@ -130,15 +130,14 @@
                 </tr>
             </thead>
             <tbody>
-                {% for schedule in schedule_list %}
-                    <tr data-mentee_id_row="{{ schedule.mentee.id }}" data-schedule_id="{{ schedule.schedule.id }}" data-status="{{ schedule.schedule.status|lower }}">
-                        <td>{{ schedule.mentee.first_name }} {{ schedule.last_name }}</td>
-                        <td>{{ schedule.mentee.gender }}</td>
-                        <td>{{ schedule.mentee.dob }}</td>
-                        <td >{{ schedule.schedule.session_date|date:"Y-m-d H:i" }}</td>
-                        <td >{{ schedule.schedule.status|title  }}</td>                       
-                    </tr>
-                {% endfor %}
+                   
+                <tr>
+                    <th>Mentee Name</th>
+                    <th>Gender</th>
+                    <th>Date Of Birth</th>
+                    <th>Appointment Date & Time</th>
+                    <th>Status</th>
+                </tr>
             </tbody>
         </table>
     </div>
