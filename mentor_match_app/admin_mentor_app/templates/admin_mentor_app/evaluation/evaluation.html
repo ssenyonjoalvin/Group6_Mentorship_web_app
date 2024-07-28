@@ -1,49 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    {% load static %}
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Evaluation</title>
+
+{% extends 'admin_mentor_app/fixed/base.html' %}
+{% block content %}
+{% load static %}
     <link
-      rel="stylesheet"
-      href="{% static 'admin_mentor_app/css/evaluation.css' %}"
+        rel="stylesheet"
+        href="{% static 'admin_mentor_app/css/evaluation.css' %}"
     />
     <style>
-      .name-link {
-        text-decoration: none;
-        color: black; /* Adjust the color to match your design */
-        cursor: pointer;
-      }
+        .name-link {
+            text-decoration: none;
+            color: black; /* Adjust the color to match your design */
+            cursor: pointer;
+        }
 
-      .name-link:hover {
-        text-decoration: underline;
-      }
+        .name-link:hover {
+            text-decoration: underline;
+        }
     </style>
     <script src="{% static 'Mentorshipapp/mentorship.js' %}"></script>
-  </head>
-  <body>
+
     <h2>Evaluation of Mentees</h2>
 
     <div>
-      <table>
-        <thead>
-          <tr>
-            <th>No.</th>
-            <th>Name</th>
-            <th>Address</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for mentee in mentees %}
-          <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ mentee.name }}</td>
-            <td>{{ mentee.address }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+        <table>
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>FirstName</th>
+                    <th>LastName</th>
+                    <th>Progress</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mentee in mentees %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><a href="{% url 'answered_form' mentee.first_name %}" class="name-link">{{ mentee.first_name }}</a></td>
+                        <td>{{ mentee.last_name }}</td>
+                        <td>{{ mentee.progress_percentage }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-  </body>
-</html>
+{% endblock content %}

@@ -149,8 +149,19 @@ class Goals(models.Model):
         return f"Goal: {self.goal}, Status: {self.status}, Session Number: {self.goal_id.session_number if self.goal_id else 'N/A'}"
 
 class Evaluation(models.Model):
-    mentorship_match = models.ForeignKey(
-        MentorshipMatch, on_delete=models.CASCADE)
+    MENTORSHIP_RATINGS = [
+        ('VG', 'Very Good'),
+        ('G', 'Good'),
+        ('B', 'Bad'),
+        ('VB', 'Very Bad'),
+    ]
+
+    YES_NO_CHOICES = [
+        ('Y', 'Yes'),
+        ('N', 'No'),
+    ]
+
+    mentorship_match = models.ForeignKey(MentorshipMatch, on_delete=models.CASCADE)
     mentor = models.ForeignKey(
         User, related_name="mentor_evaluations", on_delete=models.CASCADE
     )
@@ -158,16 +169,23 @@ class Evaluation(models.Model):
         User, related_name="mentee_evaluations", on_delete=models.CASCADE
     )
     evaluation_date = models.DateTimeField(auto_now_add=True)
-    technical_skills = models.PositiveSmallIntegerField()
-    communication_skills = models.PositiveSmallIntegerField()
-    problem_solving_skills = models.PositiveSmallIntegerField()
-    time_management = models.PositiveSmallIntegerField()
-    team_collaboration = models.PositiveSmallIntegerField()
+
+    # Categorical ratings
+    support = models.CharField(max_length=2, choices=MENTORSHIP_RATINGS)
+    communication = models.CharField(max_length=2, choices=MENTORSHIP_RATINGS)
+    confidence = models.CharField(max_length=2, choices=MENTORSHIP_RATINGS)
+    career = models.CharField(max_length=2, choices=MENTORSHIP_RATINGS)
+    understanding = models.CharField(max_length=2, choices=MENTORSHIP_RATINGS)
+    comfort = models.CharField(max_length=2, choices=MENTORSHIP_RATINGS)
+    goals = models.CharField(max_length=2, choices=MENTORSHIP_RATINGS)
+    recommend = models.CharField(max_length=2, choices=YES_NO_CHOICES)
+    resources = models.CharField(max_length=2, choices=YES_NO_CHOICES)
+    
+    # Comments field should be a TextField for detailed feedback
     comments = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f"Evaluation: {self.mentor} evaluated {self.mentee} on {self.evaluation_date}"
-
 # New Model
 class MenteeChallenge(models.Model):
     mentee = models.ForeignKey(User,  related_name="mentee", on_delete=models.CASCADE)

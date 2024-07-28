@@ -6,6 +6,8 @@ from django.db.models import Q
 from .forms import MenteeChallengeForm
 from django.contrib import messages
 from .models import MenteeChallenge
+from admin_mentor_app.models import MentorshipMatch
+
 
 
 # mentees home page
@@ -158,3 +160,38 @@ def mentee_programs(request):
 # mentees resources
 def mentee_resources(request):
     return render(request, 'mentees_app/resources/resources.html')
+def mentor(request):
+    mentee_id = request.user.id
+    mentor = None
+
+    # Fetch the specific mentor for the logged-in mentee
+    try:
+        mymentor = MentorshipMatch.objects.get(mentee_id=mentee_id)
+        mentor_id = mymentor.mentor_id
+        mentor = User.objects.get(id=mentor_id)
+    except MentorshipMatch.DoesNotExist:
+        mentor = None
+    except User.DoesNotExist:
+        mentor = None
+
+    # Handle the search functionality for available mentors
+    search_query = request.GET.get('search', '')
+
+    if search_query:
+        available_mentors = User.objects.filter(
+            Q(role=3) & 
+            (Q(first_name__icontains=search_query) | Q(last_name__icontains=search_query))
+        )
+    else:
+        available_mentors = User.objects.filter(role=3)
+
+    context = {
+        'mentor': mentor,
+        'available_mentors': available_mentors,
+    }
+    return render(request, 'mentees_app/mentor/mentor.html', context)
+
+
+   
+
+      

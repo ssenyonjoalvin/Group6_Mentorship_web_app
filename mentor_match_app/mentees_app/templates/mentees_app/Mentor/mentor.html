@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentor Page</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        .main-container {
+            min-height: 100vh; /* Full viewport height */
+            display: flex;
+            flex-direction: column;
+        }
+        .content {
+            flex: 1; /* This makes the content expand to fill the remaining space */
+        }
+        .mentor-section, .available-section {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .mentor-img, .available-img {
+            width: 90px; /* Increased size of profile picture */
+            height: 90px; /* Increased size of profile picture */
+            border-radius: 50%;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+            margin-top: 20px;
+        }
+        .form-container {
+            margin-top: 20px;
+        }
+        .profile-container {
+            margin-bottom: 20px; /* Add space between profile containers */
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid main-container">
+        <div class="container content">
+            <h1 class="my-4">Mentor Page</h1>
+            <div class="row">
+                <div class="col-md-6 mentor-section">
+                    <h2>My Mentor</h2>
+                    {% if mentor %}
+                        <div class="profile-container d-flex align-items-center">
+                            <img src="{% static 'mentees_app/images/mentor_2.jpeg' %}" alt="Mentor Image" class="mentor-img">
+                            <span class="ml-3">{{ mentor.first_name }} {{ mentor.last_name }}</span>
+                            <button class="btn btn-primary ml-auto">Preview</button>
+                        </div>
+                    {% else %}
+                        <p>No mentor found for this mentee.</p>
+                    {% endif %}
+                    <div class="form-container mt-4">
+                        <h3>Evaluation</h3>
+                        <form action="{% url 'evaluation_form' %}">
+                            <button type="submit" class="btn btn-success">Evaluation Form</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-6 available-section">
+                    <h2>Available Mentors</h2>
+                    <form method="GET">
+                        <div class="input-group mb-3">
+                            <input type="text" name="search" class="form-control" placeholder="Search...">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="submit">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                    {% for mentor in available_mentors %}
+                        <div class="profile-container d-flex align-items-center">
+                            <img src="{% static 'mentees_app/images/mentor_2.jpeg' %}" alt="Mentor Image" class="available-img">
+                            <span class="ml-3">{{ mentor.first_name }} {{ mentor.last_name }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            Footer Content
+        </div>
+    </div>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
