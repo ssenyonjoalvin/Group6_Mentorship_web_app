@@ -149,26 +149,25 @@ class Goals(models.Model):
         return f"Goal: {self.goal}, Status: {self.status}, Session Number: {self.goal_id.session_number if self.goal_id else 'N/A'}"
 
 class Evaluation(models.Model):
-    mentorship_match = models.ForeignKey(
-        MentorshipMatch, on_delete=models.CASCADE)
-    mentor = models.ForeignKey(
-        User, related_name="mentor_evaluations", on_delete=models.CASCADE
-    )
-    mentee = models.ForeignKey(
-        User, related_name="mentee_evaluations", on_delete=models.CASCADE
-    )
+    mentorship_match = models.ForeignKey(MentorshipMatch, on_delete=models.CASCADE)
+    mentor = models.ForeignKey(User, related_name="mentor_evaluations", on_delete=models.CASCADE)
+    mentee = models.ForeignKey(User, related_name="mentee_evaluations", on_delete=models.CASCADE)
     evaluation_date = models.DateTimeField(auto_now_add=True)
-    technical_skills = models.PositiveSmallIntegerField()
-    communication_skills = models.PositiveSmallIntegerField()
-    problem_solving_skills = models.PositiveSmallIntegerField()
-    time_management = models.PositiveSmallIntegerField()
-    team_collaboration = models.PositiveSmallIntegerField()
-    comments = models.TextField(blank=True, null=True)
+
+    support = models.CharField(max_length=20)
+    communication = models.CharField(max_length=20)
+    confidence = models.CharField(max_length=20)
+    career = models.CharField(max_length=20)
+    understanding = models.CharField(max_length=20)
+    comfort = models.CharField(max_length=3)
+    goals = models.CharField(max_length=3)
+    recommend = models.CharField(max_length=3)
+    resources = models.CharField(max_length=3)
+    additional_resources = models.TextField(blank=True, null=True)
+    additional_comments = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"Evaluation: {self.mentor} evaluated {self.mentee} on {self.evaluation_date}"
-
-# New Model
+        return f"Evaluation: {self.mentor} evaluated {self.mentee} on {self.evaluation_date}"# New Model
 class MenteeChallenge(models.Model):
     mentee = models.ForeignKey(User,  related_name="mentee", on_delete=models.CASCADE)
     mentor = models.ForeignKey(User, default="14" ,related_name="mentor", on_delete=models.CASCADE)

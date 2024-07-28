@@ -1,49 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    {% load static %}
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Evaluation</title>
-    <link
-      rel="stylesheet"
-      href="{% static 'admin_mentor_app/css/evaluation.css' %}"
-    />
-    <style>
-      .name-link {
-        text-decoration: none;
-        color: black; /* Adjust the color to match your design */
-        cursor: pointer;
-      }
+{% extends 'admin_mentor_app/fixed/base.html' %}
 
-      .name-link:hover {
-        text-decoration: underline;
-      }
-    </style>
-    <script src="{% static 'Mentorshipapp/mentorship.js' %}"></script>
-  </head>
-  <body>
-    <h2>Evaluation of Mentees</h2>
-
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <th>No.</th>
-            <th>Name</th>
-            <th>Address</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for mentee in mentees %}
-          <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ mentee.name }}</td>
-            <td>{{ mentee.address }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+{% block content %}
+{% load static %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-8">
+      <h4>Mentee Evaluation Responses</h4>
+      <div class="row">
+        <div class="col m-1">
+          <table class="table table-responsive table-hover">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Mentee Name</th>
+                <th>Email</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in evaluations_with_mentees %}
+              <tr>
+                <th>{{ forloop.counter }}</th>
+                <td>{{ item.mentee.first_name }} {{ item.mentee.last_name }}</td>
+                <td>{{ item.mentee.email }}</td>
+                <td>
+                  <a href="{% url 'previewEvaluation' item.evaluation.mentee_id %}">
+                    <button class="btn btn-sm btn-outline-primary">Preview</button>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-  </body>
-</html>
+    <div class="col-4" style="border: 1px solid rgb(184, 184, 236); height: 100px;">
+      <h4>Report Format</h4>
+      <div class="row">
+        <div class="col m-1">
+          <a href="{% url 'evaluation-report-view' %}">View Report Template -></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
