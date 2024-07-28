@@ -35,18 +35,9 @@ urlpatterns = [
     path('schedule_list/', views.schedule_list, name='schedule_list'),
     
     # evaluation
-<<<<<<< HEAD
-    path('evaluation/', views.evaluation, name='evaluation'),
-    path('evaluation_form/', views.evaluation_form, name='evaluation_form'),
-    path('answered_form/<str:firstname>/', views.answered_form, name='answered_form'),
-    path('answers', views.answers, name='answers'),
-    path('thank_you/', views.thank_you, name='thank_you'),
-
-=======
     path("evaluation/", views.evaluation, name="evaluation"),
     path("evaluation/template-view", views.evaluation_report, name="evaluation-report-view"),
     path('evaluation/preview/<int:mentee_id>/', views.previewEvaluation, name="previewEvaluation"),
->>>>>>> origin/derrick_task2
     # reports
     path("reports/", views.reports, name="reports"),
     
