@@ -49,7 +49,7 @@ class MenteeProfileUpdateForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = "post"
         self.helper.add_input(Submit("submit", "Register"))
-        self.fields["email"].widget.attrs.update({"class": "form-control"})
+        self.fields["email"].widget.attrs.update({"class": "form-control", "readonly": "readonly"})
         self.fields["gender"].widget.attrs.update({"class": "form-control"})
         self.fields["telephone"].widget.attrs.update({"class": "form-control"})
         self.fields["nationality"].widget.attrs.update({"class": "form-control"})
