@@ -351,6 +351,7 @@ def schedule(request):
         status = "scheduled"
 
         # Update or create the schedule appointment
+        # Update or create the schedule appointment
         Schedule.objects.update_or_create(
             mentor_id=mentor_id,
             mentee_id=mentee_id,
@@ -369,24 +370,20 @@ def schedule(request):
     # Handle other request methods
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
-@csrf_exempt
-@login_required
-@require_http_methods(['GET'])
+@require_POST
 def mark_complete(request, schedule_id):
-    try:
-        schedule = get_object_or_404(Schedule, id=schedule_id)
+    # Get the schedule object
+    schedule = get_object_or_404(Schedule, id=schedule_id)
+    
+    # Check if the status is not canceled
+    if schedule.status != 'canceled':
+        # Update the status to 'completed'
         schedule.status = 'completed'
         schedule.save()
-
- # Redirect to the schedule page
-        return redirect('schedule')  # Make sure 'schedule' is the name of the 
+    return redirect('schedule')  # Make sure 'schedule' is the name of the 
 
     
-    except Exception as e:
-        return JsonResponse({'status': 'error', 'message': str(e)})
-    
-
-
+  
 @require_POST
 @login_required
 def delete_appointment(request, schedule_id):
@@ -418,31 +415,25 @@ def schedule_list(request):
         return JsonResponse(data)
     else:
         return render(request, 'schedule.html', {'schedule_list': schedule_list})
-    
-@csrf_exempt
-@login_required
+@require_POST
 def edit_appointment(request):
-    if request.method == 'POST':
-        form = EditAppointmentForm(request.POST)
-        if form.is_valid():
-            mentee_id = request.POST.get('mentee_id')
-            appointment_date = form.cleaned_data['appointment_date']
-            appointment_time = form.cleaned_data['appointment_time']
-            
-            appointment_datetime_str = f"{appointment_date}T{appointment_time}:00"
-            appointment_datetime = parse_datetime(appointment_datetime_str)
+    schedule_id = request.POST.get('schedule_id')
+    appointment_date = request.POST.get('appointment_date')
+    appointment_time = request.POST.get('appointment_time')
 
-            # Update the schedule
-            schedule = get_object_or_404(Schedule, mentee_id=mentee_id)
-            schedule.session_date = appointment_datetime
-            schedule.status = 'scheduled'
-            schedule.save()
+    # Combine date and time
+    session_date = f"{appointment_date} {appointment_time}"
 
-            return JsonResponse({'status': 'success'})
-        else:
-            return JsonResponse({'status': 'error', 'message': 'Form is invalid'})
+    # Get the schedule object
+    schedule = get_object_or_404(Schedule, id=schedule_id)
+    
+    # Update the session_date and status
+    schedule.session_date = session_date
+    schedule.status = 'scheduled'  # Update status to 'Scheduled'
+    schedule.save()
 
-    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+    # Redirect to the schedule list or another appropriate page
+    return redirect('schedule') 
 # Evaluation
 @login_required
 @transaction.atomic

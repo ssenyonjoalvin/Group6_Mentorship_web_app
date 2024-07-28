@@ -97,14 +97,14 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav ms-auto me-4">
-                <li class="nav-item active"> 
+                <li class="nav-item active">
                   <a class="nav-link" href="{% url 'mentees_app:mentee_home' %}"
                     >Mentors</a
                   >
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'mentees_app:schedules' %}"
-                    >Schedules</a
+                  <a class="nav-link" href="{% url 'mentees_app:resources' %}"
+                    >Appointments</a
                   >
                 </li>
                 <li class="nav-item">
@@ -118,9 +118,7 @@
         </div>
       </div>
       <div class="row page_content" id="" style="height: 66vh">
-        <div class="col">
-            {% block content %} {% endblock %}
-        </div>
+        <div class="col">{% block content %} {% endblock %}</div>
       </div>
       <div class="row">
         <div class="col">
@@ -140,5 +138,3 @@
     <script src="{% static 'mentees_app/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
   </body>
 </html>
-
-

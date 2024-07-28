@@ -1,12 +1,14 @@
 
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import JsonResponse
-from admin_mentor_app.models import User
+from admin_mentor_app.models import Schedule, User
 from django.db.models import Q
 from .forms import MenteeChallengeForm
 from django.contrib import messages
 from .models import MenteeChallenge
-
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 
 # mentees home page
 def mentee_home(request):
@@ -127,4 +129,58 @@ def mentee_programs(request):
 
 # mentees resources
 def mentee_resources(request):
-    return render(request, 'mentees_app/resources/resources.html')
+  
+    if request.method == 'GET':
+        # Handle GET request: render the schedule page with the list of schedules for the logged-in mentee
+        loggedin_mentee_id = request.user.id  # Assuming the logged-in user's ID represents the mentee ID
+
+        # Fetch all schedules for the logged-in mentee
+        schedules = Schedule.objects.filter(mentee_id=loggedin_mentee_id).select_related('mentor')
+        print(schedules)
+        # Create a list of dictionaries with mentor details and corresponding schedule
+        schedule_list = [
+            {
+                'mentor': schedule.mentor,
+                'schedule': schedule
+            }
+            for schedule in schedules
+        ]
+
+        return render(request, "mentees_app/resources/resources.html", {'schedule_list': schedule_list})
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
+@require_POST
+def confirm_appointment(request, schedule_id):
+    schedule = get_object_or_404(Schedule, id=schedule_id)
+    if schedule.status == 'scheduled':
+        schedule.status = 'confirmed'
+        schedule.save()
+    return redirect('mentees_app:resources') 
+
+@csrf_exempt
+@login_required
+def cancel_appointment(request, schedule_id):
+    try:
+        schedule = get_object_or_404(Schedule, id=schedule_id)
+        
+        # Check if the current user is authorized to cancel this schedule
+        if request.user.id != schedule.mentee_id:
+            return JsonResponse({'status': 'error', 'message': 'You are not authorized to cancel this appointment.'})
+
+        schedule.status = 'canceled'
+        schedule.save()
+        
+        return redirect('mentees_app:resources')  # Redirect to the schedule page
+
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)})
+    
+
+@require_POST
+def confirm_appointment(request, schedule_id):
+    schedule = get_object_or_404(Schedule, id=schedule_id)
+    if schedule.status == 'scheduled':
+        schedule.status = 'confirmed'
+        schedule.save()
+    return redirect('mentees_app:resources') 
