@@ -87,6 +87,7 @@ def register(request):
 @transaction.atomic
 def dashboard(request):
     try:
+        mentor_id = request.user.id
         unread_notifications = Notification.objects.count()
         total_progress_count = Progress.objects.count()
         schedules = Schedule.objects.all()
@@ -94,6 +95,9 @@ def dashboard(request):
         pending_count = total_progress_count - completed_count
         users = User.objects.all()
         progresses = Progress.objects.all()
+        total_mentee_req = MentorshipMatch.objects.filter(
+            mentor_id=mentor_id,
+        ).count()
         print(pending_count)
 
         return render(
@@ -107,6 +111,7 @@ def dashboard(request):
                 "users": users,
                 "schedules": schedules,
                 "unread_notifications": unread_notifications,
+                'total_mentee_req':total_mentee_req,
             },
         )
     finally:
@@ -146,7 +151,14 @@ def get_mentees(request):
         connection.close()
 @login_required
 @transaction.atomic
-def accept_mentee(request, match_id):
+def accept_mentee(request, match_id, mentee_id):
+    logged_in_user = request.user.id
+    Schedule.objects.update_or_create(
+        mentor_id=logged_in_user,
+        mentee_id = mentee_id,
+        status = 'confirmed',
+        session_date=datetime.datetime.now()
+    )
     mentorship_match = get_object_or_404(MentorshipMatch, id=match_id)
     mentorship_match.status = 'accepted'
     mentorship_match.save()
@@ -339,7 +351,6 @@ def schedule(request):
         status = "scheduled"
 
         # Update or create the schedule appointment
-        # Update or create the schedule appointment
         Schedule.objects.update_or_create(
             mentor_id=mentor_id,
             mentee_id=mentee_id,
@@ -407,6 +418,7 @@ def schedule_list(request):
         return JsonResponse(data)
     else:
         return render(request, 'schedule.html', {'schedule_list': schedule_list})
+    
 @csrf_exempt
 @login_required
 def edit_appointment(request):
@@ -437,6 +449,7 @@ def edit_appointment(request):
 #Answered form
 def get_mentee_id_by_firstname(firstname):
     try:
+<<<<<<< HEAD
         # Retrieve the User object with the given firstname
         user = User.objects.get(first_name=firstname)
         return user.id
@@ -532,6 +545,43 @@ def answers(request):
     return render(request, 'admin_mentor_app/evaluation/evaluation_form.html')
 def thank_you(request):
     return render(request, 'admin_mentor_app/evaluation/thanks.html')
+=======
+        loggedin_mentor = request.user.id
+        
+        # Fetch evaluations for the logged-in mentor
+        evaluations = Evaluation.objects.filter(mentor_id=loggedin_mentor).select_related('mentee')
+        
+        # Create a list of dictionaries with mentee details and corresponding evaluation
+        evaluations_with_mentees = [
+            {
+                'evaluation': evaluation,
+                'mentee': evaluation.mentee
+            }
+            for evaluation in evaluations
+        ]
+
+        # Render the template with evaluations and mentee details
+        return render(request, "admin_mentor_app/evaluation/evaluation.html", {
+            'evaluations_with_mentees': evaluations_with_mentees
+        })
+    finally:
+        db.connections.close_all()
+        connection.close()
+        
+def evaluation_report(request):
+    try:
+        return render(request, "admin_mentor_app/evaluation/evaluation_form.html")
+    finally:
+        db.connections.close_all()
+        connection.close()
+        
+
+def previewEvaluation(request, mentee_id):
+    loggedin_mentor = request.user.id
+    evaluation_form = Evaluation.objects.filter(mentee_id=mentee_id, mentor_id=loggedin_mentor).first()
+    
+    return render(request, "admin_mentor_app/evaluation/evaluation_preview.html", {'evaluation_form': evaluation_form})
+>>>>>>> origin/derrick_task2
 def generate_charts():
     try:
         matplotlib.use('Agg')
@@ -571,7 +621,13 @@ def generate_charts():
 def reports(request):
     chart_paths = generate_charts()
     
+<<<<<<< HEAD
     status_filter = request.GET.get('status', 'all')
+=======
+    
+    status_filter = request.GET.get('status', 'all')
+
+>>>>>>> origin/derrick_task2
     if status_filter == 'all':
         schedule_list = Schedule.objects.filter(mentor_id=request.user.id)
     else:

@@ -1,4 +1,7 @@
+{% extends 'admin_mentor_app/fixed/base.html' %}
+{% block content %}
 {% load static %}
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Evaluation</title>
     <link rel="stylesheet" href="{% static 'admin_mentor_app/css/form.css' %}" />
+=======
+
+
+>>>>>>> origin/derrick_task2
     <script>
         function onlyOne(checkbox) {
             const checkboxes = document.getElementsByName(checkbox.name);
@@ -14,6 +21,7 @@
             });
         }
     </script>
+<<<<<<< HEAD
 </head>
 <body>
     <div>
@@ -51,6 +59,73 @@
                 <input type="radio" name="support" id="support-very-bad" value="Very Bad" />
                 <label for="support-very-bad">Very Bad</label>
             </div>
+=======
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col p-2">
+          <form
+        onsubmit="return handleData()"
+        method="post"
+        action="https://postman-echo.com/post"
+      >
+        <div>
+          <h2>Evaluation of Mentorship Program</h2>
+          <p>
+            Welcome! This form is designed to help us assess the effectiveness
+            of our mentorship program. Your feedback is invaluable in helping us
+            make improvements and ensure that the program meets your needs.
+            Please take a moment to provide your insights and suggestions.
+          </p>
+        <h5>Please answer the following questions</h5>
+
+        <div class="row" style="border: 2px solid lightblue;">
+          <div class="col">
+            
+        <p>
+          How effectively did your mentor support you during the mentorship?
+        </p>
+        <div>
+          <input
+            type="checkbox"
+            name="support"
+            id="support-very-good"
+            value="Very Good"
+            
+            onclick="onlyOne(this)"
+          />
+          <label for="support-very-good">Very Good</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="support"
+            id="support-good"
+            value="Good"
+            onclick="onlyOne(this)"
+          />
+          <label for="support-good">Good</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="support"
+            id="support-bad"
+            value="Bad"
+            onclick="onlyOne(this)"
+          />
+          <label for="support-bad">Bad</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="support"
+            id="support-very-bad"
+            value="Very Bad"
+            onclick="onlyOne(this)"
+          />
+          <label for="support-very-bad">Very Bad</label>
+        </div>
+>>>>>>> origin/derrick_task2
 
             <!-- Communication -->
             <p>How was the communication with your mentor?</p>
@@ -178,6 +253,7 @@
                 <textarea id="comments" name="comments"></textarea><br /><br />
             </div>
 
+<<<<<<< HEAD
             <div>
                 <input type="submit" name="submit" value="Submit" />
             </div>
@@ -185,3 +261,31 @@
     </div>
 </body>
 </html>
+=======
+        <p>
+          Is there anything else you would like to share about your mentorship
+          experience?
+        </p>
+        <div>
+          <textarea
+            id="additional-comments"
+            name="additional-comments"
+          ></textarea
+          ><br /><br />
+        </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+          <input type="submit" class="btn btn-primary mt-2" name="submit" value="Submit" />
+          </div>
+        </div>
+      </form>
+        </div>
+      </div>
+    </div>
+  </body>
+  {% endblock content  %}
+
+>>>>>>> origin/derrick_task2

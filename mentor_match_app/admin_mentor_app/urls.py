@@ -10,7 +10,7 @@ urlpatterns = [
     # Mentees accept_mentee
     path("my-mentees/", views.get_mentees, name="mentees"),
     path( "preview_mentee/<int:mentee_id>/", views.preview_mentee, name="preview_mentee"),
-    path( "accept_mentee/<int:match_id>/", views.accept_mentee, name="accept_mentee"),
+    path( "accept_mentee/<int:match_id>/<int:mentee_id>", views.accept_mentee, name="accept_mentee"),
     path( "reject_mentee/<int:match_id>/", views.reject_mentee, name="reject_mentee"),
     # send_message
     path("send_message/", views.send_message, name="send_message"),
@@ -33,13 +33,20 @@ urlpatterns = [
     path('mark_complete/<int:schedule_id>/', views.mark_complete, name='mark_complete'),
     path('delete_appointment/<int:schedule_id>/', views.delete_appointment, name='delete_appointment'),
     path('schedule_list/', views.schedule_list, name='schedule_list'),
+    
     # evaluation
+<<<<<<< HEAD
     path('evaluation/', views.evaluation, name='evaluation'),
     path('evaluation_form/', views.evaluation_form, name='evaluation_form'),
     path('answered_form/<str:firstname>/', views.answered_form, name='answered_form'),
     path('answers', views.answers, name='answers'),
     path('thank_you/', views.thank_you, name='thank_you'),
 
+=======
+    path("evaluation/", views.evaluation, name="evaluation"),
+    path("evaluation/template-view", views.evaluation_report, name="evaluation-report-view"),
+    path('evaluation/preview/<int:mentee_id>/', views.previewEvaluation, name="previewEvaluation"),
+>>>>>>> origin/derrick_task2
     # reports
     path("reports/", views.reports, name="reports"),
     
