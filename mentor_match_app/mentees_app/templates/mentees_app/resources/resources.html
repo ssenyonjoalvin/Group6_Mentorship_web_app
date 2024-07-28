@@ -1,6 +1,177 @@
+{% extends "mentees_app/fixed/base.html" %} {% block banner_title %}My
+Appointments{% endblock %} {% block content %}
 
-{% extends "mentees_app/fixed/base.html" %}
+<!-- Include Bootstrap CSS -->
+<!-- Include jQuery library -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-{% block title %}My resources{% endblock %}
+<style>
+  .table-container {
+    padding: 20px;
+  }
+  .status-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: 600;
+  }
+  .status-pending {
+    background-color: #ffc107; /* Yellow */
+  }
+  .status-due {
+    background-color: #17a2b8; /* Teal */
+  }
+  .status-completed {
+    background-color: #28a745; /* Green */
+  }
+  .status-canceled {
+    background-color: #dc3545; /* Red */
+  }
+  .action-btns {
+    display: flex;
+    gap: 5px;
+  }
+  .action-btns button {
+    font-size: 0.8rem; /* Smaller button size */
+    padding: 0.3rem 0.5rem; /* Smaller padding */
+  }
+  .btn-custom {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+  }
+  .btn-custom:hover {
+    background-color: #e9ecef;
+  }
+  .hidden {
+    display: none;
+  }
+</style>
+<div class="container table-container">
+  <div class="row filter-container">
+    <div class="col-md-6 mb-3">
+      <label for="searchInput" class="form-label">Search Mentee</label>
+      <input
+        type="text"
+        id="searchInput"
+        class="form-control"
+        placeholder="Search by name"
+      />
+    </div>
+    <div class="col-md-6 mb-3">
+      <label for="statusFilter" class="form-label">Filter by Status</label>
+      <select id="statusFilter" class="form-select">
+        <option value="all">All</option>
+        <option value="confirmed">Confirmed</option>
+        <option value="scheduled">Scheduled</option>
+        <option value="completed">Completed</option>
+        <option value="canceled">Canceled</option>
+      </select>
+    </div>
 
-{% block banner_title %}My resources{% endblock %}
+    <script>
+      // Filter by Status
+      document
+        .getElementById("statusFilter")
+        .addEventListener("change", function () {
+          const status = this.value;
+
+          document.querySelectorAll("tbody tr").forEach((row) => {
+            const rowStatus = row.getAttribute("data-status"); // Assuming the status is stored in a data attribute
+
+            if (status === "all") {
+              row.classList.remove("hidden");
+            } else if (rowStatus && rowStatus.includes(status)) {
+              row.classList.remove("hidden");
+            } else {
+              row.classList.add("hidden");
+            }
+          });
+        });
+
+      // Search by Mentee's Name
+      document
+        .getElementById("searchInput")
+        .addEventListener("input", function () {
+          const searchTerm = this.value.toLowerCase();
+          document.querySelectorAll("tbody tr").forEach((row) => {
+            const rowName = row.textContent.toLowerCase();
+            if (rowName.includes(searchTerm)) {
+              row.classList.remove("hidden");
+            } else {
+              row.classList.add("hidden");
+            }
+          });
+        });
+    </script>
+
+    <div class="container table-container">
+      <table class="table table-bordered table-hover">
+        <thead class="table-light">
+          <tr>
+            <th>Mentor Name</th>
+            <th>Gender</th>
+            <th>Email</th>
+            <th>Appointment Date & Time</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for schedule in schedule_list %}
+          <tr
+            data-schedule_id="{{ schedule.schedule.id }}"
+            data-status="{{ schedule.schedule.status|lower }}"
+          >
+            <td>
+              {{ schedule.mentor.first_name }} {{ schedule.mentor.last_name }}
+            </td>
+            <td>{{ schedule.mentor.gender }}</td>
+            <td>{{ schedule.mentor.email }}</td>
+            <td>{{ schedule.schedule.session_date|date:"Y-m-d H:i" }}</td>
+            <td>
+              <span
+                class="status-badge {% if schedule.schedule.status == 'scheduled' %}status-pending{% elif schedule.schedule.status == 'confirmed' %}status-due{% elif schedule.schedule.status == 'completed' %}status-completed{% elif schedule.schedule.status == 'canceled' %}status-canceled{% endif %}"
+              >
+                {{ schedule.schedule.status|title }}
+              </span>
+            </td>
+            <td class="action-btns">
+              <!-- Cancel Button -->
+              {% if schedule.schedule.status != 'canceled' %}
+              <form
+                method="POST"
+                action="{% url 'mentees_app:cancel_appointment' schedule.schedule.id %}"
+                style="display: inline"
+              >
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-custom">
+                  Cancel
+                </button>
+              </form>
+              {% endif %}
+
+              <!-- Confirm Button -->
+              {% if schedule.schedule.status == 'scheduled' %}
+
+              <form
+                method="POST"
+                action="{% url 'mentees_app:confirm_appointment' schedule.schedule.id %}"
+                style="display: inline"
+              >
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary btn-custom">
+                  Confirm
+                </button>
+              </form>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% endblock %}
+  </div>
+</div>

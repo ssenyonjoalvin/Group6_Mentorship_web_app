@@ -60,9 +60,10 @@
                 <label for="statusFilter" class="form-label">Filter by Status</label>
                 <select id="statusFilter" class="form-select">
                     <option value="all">All</option>
-                    <option value="pending">Pending</option>
+                    <option value="confirmed">Confirmed</option>
                     <option value="scheduled">Scheduled</option>
                     <option value="completed">Completed</option>
+                    <option value="canceled">Canceled</option>
                 </select>
             </div>
             
@@ -125,16 +126,25 @@ document.getElementById('statusFilter').addEventListener('change', function() {
                         <td class="action-btns">
                             <!-- Actions -->
                             {% if schedule.schedule.session_date  %}
-                            
+                             
                             <!-- If session_date is present (not None or empty), show the Re-Schedule button -->
-                            <button type="button" class="btn btn-secondary btn-custom" data-bs-toggle="modal" data-bs-target="#scheduleModal" data-mentee-id="{{ schedule.mentee.id }}" data-mentee-name="{{ schedule.mentee.full_name }}">Edit</button>
-                            <a href="{% url 'mark_complete' schedule.schedule.id %}" class="btn btn-info btn-custom">
-                                <button type="button" class="btn btn-info btn-custom">Mark Complete</button>
-                            </a>
+                            <button type="button" class="btn btn-secondary btn-custom" data-bs-toggle="modal" data-bs-target="#editModal" data-schedule-id="{{ schedule.schedule.id }}" data-session-date="{{ schedule.schedule.session_date|date:'Y-m-d' }}" data-session-time="{{ schedule.schedule.session_date|date:'H:i' }}">Edit</button>
+                            {% if schedule.schedule.status != 'canceled' %}
+                            <!-- Use a form to submit a POST request -->
+                            <form method="POST" action="{% url 'mark_complete' schedule.schedule.id %}" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-info btn-custom">Mark Complete</button>
+                            </form>
+                            {% endif %}
                             
                             {% else %}
                                 <!-- If session_date is None or empty, show the Schedule button -->
                                 <button type="button" class="btn btn-primary btn-custom" data-bs-toggle="modal" data-bs-target="#scheduleModal" data-mentee-id="{{ schedule.mentee.id }}" data-mentee-name="{{ schedule.mentee.full_name }}">Schedule</button>
+                            {% endif %}
+
+                            {% if schedule.schedule.status == 'canceled' or schedule.schedule.status == 'completed' %}
+                            <!-- Show the Schedule button if status is 'canceled' or 'completed' -->
+                            <button type="button" class="btn btn-primary btn-custom" data-bs-toggle="modal" data-bs-target="#scheduleModal" data-mentee-id="{{ schedule.mentee.id }}" data-mentee-name="{{ schedule.mentee.full_name }}">Schedule</button>
                             {% endif %}
                         
                             <form method="POST" action="{% url 'delete_appointment' schedule.schedule.id %}" style="display: inline;">
@@ -145,6 +155,7 @@ document.getElementById('statusFilter').addEventListener('change', function() {
                   
                         
                         </td>
+                        
                     </tr>
                 {% endfor %}
             </tbody>
@@ -162,7 +173,7 @@ document.getElementById('statusFilter').addEventListener('change', function() {
                 <div class="modal-body">
                     <form id="scheduleForm" method="POST" action="{% url 'schedule' %}">
                         {% csrf_token %}
-                        <input type="text" id="menteeId" name="mentee_id_row" value="">
+                        <input type="hidden" id="menteeId" name="mentee_id_row" value="">
                         <input type="hidden" id="scheduleId" name="scheduleId" value="">
                         <input type="hidden" id="mentor_id" name="mentee_id" value="{{user.id}}">
                         
@@ -211,11 +222,15 @@ document.getElementById('statusFilter').addEventListener('change', function() {
             <div class="modal-body">
                 <form id="editForm" method="POST" action="{% url 'edit_appointment' %}">
                     {% csrf_token %}
-                    <input type="hidden" id="editMenteeId" name="mentee_id" value="">
+                    <input type="hidden" id="editScheduleId" name="schedule_id" value="">
                     
                     <div class="mb-3">
-                        <label for="editAppointmentDate" class="form-label">Appointment Date and Time</label>
-                        {{ form.session_date }}
+                        <label for="editAppointmentDate" class="form-label">Appointment Date</label>
+                        <input type="date" class="form-control" id="editAppointmentDate" name="appointment_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editAppointmentTime" class="form-label">Appointment Time</label>
+                        <input type="time" class="form-control" id="editAppointmentTime" name="appointment_time" required>
                     </div>
                     
                     <button type="submit" class="btn btn-primary">Update</button>
@@ -224,6 +239,23 @@ document.getElementById('statusFilter').addEventListener('change', function() {
         </div>
     </div>
 </div>
+
+<!-- JavaScript to Handle Modal Data -->
+<script>
+    $(document).ready(function() {
+        $('#editModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var scheduleId = button.data('schedule-id');
+            var sessionDate = button.data('session-date');
+            var sessionTime = button.data('session-time');
+            
+            var modal = $(this);
+            modal.find('#editScheduleId').val(scheduleId);
+            modal.find('#editAppointmentDate').val(sessionDate);
+            modal.find('#editAppointmentTime').val(sessionTime);
+        });
+    });
+</script>
 
 
     <!-- Delete Appointment Modal -->

@@ -13,5 +13,7 @@ urlpatterns = [
     path('profile/', views.mentee_profile, name='profile'),
     path('programs/', views.mentee_programs, name='programs'),
     path('resources/', views.mentee_resources, name='resources'),
+    path('cancel_appointment/<int:schedule_id>/', views.cancel_appointment, name='cancel_appointment'),
+     path('confirm_appointment/<int:schedule_id>/', views.confirm_appointment, name='confirm_appointment'),
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
 ]
