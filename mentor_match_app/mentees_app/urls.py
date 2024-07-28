@@ -15,8 +15,10 @@ urlpatterns = [
     path('resources/', views.mentee_resources, name='resources'),
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
     path('mentor/', views.mentor, name='mentor'),
-    path('evaluation_form/', views.evaluation_form, name='evaluation_form'),
-
+    # path('evaluation_form/', views.evaluation_form, name='evaluation_form'),
+    path('evaluation/form-fill/', views.fillEvaluationForm, name='fillEvaluationForm'),
+    path('evaluate/', views.evaluation_view, name='evaluation_form'),
+    path('evaluation/success/', views.evaluation_success, name='evaluation_success'),
     
     
 ]

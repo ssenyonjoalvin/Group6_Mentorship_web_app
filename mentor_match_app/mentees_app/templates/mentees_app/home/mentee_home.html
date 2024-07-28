@@ -1,12 +1,12 @@
-{% extends 'mentees_app/fixed/base.html' %} {% block content %} 
+{% extends 'mentees_app/fixed/base.html' %}
+{% block content %}
 {% load static %}
 <!-- Bootstrap JS, Popper.js, and jQuery -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <style>
-  html,
-  body {
+  html, body {
     height: 100%;
     margin: 0;
   }
@@ -34,54 +34,61 @@
   }
   .mentor-section,
   .available-section {
-    /* border: 1px solid #ddd; */
     padding: 20px;
     margin-bottom: 20px;
+  }
+  .profile-link {
+    text-decoration: none;
+    color: inherit;
   }
 </style>
 <div class="container-fluid mt-2">
   <div class="row">
     <div class="col-md-8 mentor-section" style="padding-right: 100px">
       <h2>My Mentor</h2>
-      {% if mentor %}
+      {% for mentor in mentors %}
       <div class="profile-container">
         <img
-          src="{% static 'mentees_app/images/mentor_2.jpeg' %}"
+          src= "{{ mentor.profile_picture }}"
           alt="Mentor Image"
           class="profile-img"
+    
         />
-        <div class="profile-info"></div>
-        <button class="btn btn-outline-primary btn-sm">Preview</button>
+        <div class="profile-info">{{ mentor.first_name }} {{ mentor.last_name }}</div>
+        <a href="" class="profile-link">
+          <button class="btn btn-outline-primary btn-sm">Preview</button>
+        </a>
       </div>
-      {% else %}
-      <p>No mentor found for this mentee.</p>
-      {% endif %}
+      {% endfor %}
       <div class="form-container mt-4">
         <h3>Evaluation</h3>
-        <button type="submit" class="btn btn-success">Evaluation Form</button>
+        <a href="{% url 'mentees_app:fillEvaluationForm'%}" class="profile-link">
+          <button type="submit" class="btn btn-success">Evaluation Form</button>
+        </a>
       </div>
     </div>
     <div class="col-md-4 available-section" style="border: 1px solid #ddd">
-        <h2>Available Mentors</h2>
-        <form method="GET">
-          <div class="input-group mb-3">
-            <input
-              type="text"
-              name="search"
-              class="form-control"
-              placeholder="Search..."
-            />
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="submit">
-                Search
-              </button>
-            </div>
+      <h2>Available Mentors</h2>
+      <form method="GET">
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            name="search"
+            class="form-control"
+            placeholder="Search..."
+          />
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit">
+              Search
+            </button>
           </div>
-        </form>
-        {% for mentor in available_mentors %}
+        </div>
+      </form>
+      {% for mentor in available_mentors %}
+      <a href="" class="profile-link">
         <div class="profile-container">
           <img
-            src="{% static 'mentees_app/images/mentor_2.jpeg' %}"
+            src="{{ mentor.profile_picture }}"
             alt="Mentor Image"
             class="profile-img"
           />
@@ -89,9 +96,9 @@
             <span>{{ mentor.first_name }} {{ mentor.last_name }}</span>
           </div>
         </div>
-        {% endfor %}
+      </a>
+      {% endfor %}
     </div>
-
   </div>
 </div>
 {% endblock content %}
