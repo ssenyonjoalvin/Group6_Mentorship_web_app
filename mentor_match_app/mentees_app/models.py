@@ -13,3 +13,4 @@ class MenteeChallenge(models.Model):
 
     def __str__(self):
         return f"Challenges for {self.mentee} mentored by {self.mentor}"
+    

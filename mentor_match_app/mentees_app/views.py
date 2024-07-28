@@ -3,12 +3,24 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.http import JsonResponse
 from admin_mentor_app.models import Schedule, User
 from django.db.models import Q
-from .forms import MenteeChallengeForm
+from .forms import MenteeChallengeForm,MenteeProfileUpdateForm 
 from django.contrib import messages
 from .models import MenteeChallenge
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+from django.db import transaction
+from admin_mentor_app.models import (
+    User,
+    MentorshipMatch,
+    Message,
+    Notification,
+    Schedule,
+    Progress,
+    Goals,
+    Evaluation,
+    MenteeChallenge
+)
 
 # mentees home page
 def mentee_home(request):
@@ -120,8 +132,21 @@ def get_chat_details(request, chat_id):
 
 
 # mentees profile
+#mentee profile 
+# @login_required        
 def mentee_profile(request):
-    return render(request, 'mentees_app/profile/profile.html')
+
+    user = request.user  # Get the currently logged-in user
+    if request.method == "POST":
+        form = MenteeProfileUpdateForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect("mentees_app:profile")
+    else:
+        form = MenteeProfileUpdateForm(instance=user)
+        print(form.fields)
+
+    return render(request, "mentees_app/profile/profile.html", {"form": form})
 
 # mentees programs
 def mentee_programs(request):
@@ -184,3 +209,54 @@ def confirm_appointment(request, schedule_id):
         schedule.status = 'confirmed'
         schedule.save()
     return redirect('mentees_app:resources') 
+
+@login_required
+@transaction.atomic
+def previewMentor(request, mentor_id):
+    logged_in_user = request.user.id
+    mentee = get_object_or_404(User, id=mentor_id)
+    
+    print("Mentee",logged_in_user)
+    print("Mentor:", mentor_id)
+    
+    messages = Message.objects.filter(
+        (Q(sender_id=logged_in_user) & Q(receiver_id=mentor_id)) |
+        (Q(sender_id=mentor_id) & Q(receiver_id=logged_in_user))
+    ).order_by('sent_at')  # Order messages by sent time
+    
+    menteechallenges = MenteeChallenge.objects.filter(
+        mentee_id=logged_in_user,
+        mentor_id=mentor_id
+    )
+
+    mentor_mentee_match_status = MentorshipMatch.objects.filter(
+            # mentee_id=logged_in_user,
+            # mentor_id=mentor_id,
+            status="accepted"
+        )
+
+    
+    mentor_progress_groups = Progress.objects.filter(
+        mentee_id=logged_in_user,
+        mentor_id=mentor_id
+    )
+    
+    progresses = []
+    for mentor_progress in mentor_progress_groups:
+        goals = Goals.objects.filter(
+            goal_id=mentor_progress
+        )
+        progresses.append({
+            'session_number': mentor_progress.session_number,
+            'progress_percentage': mentor_progress.progress_percentage,
+            'goals': goals,
+            # 'status': goals.status
+        })
+
+    return render(request, 'mentees_app/mentor/mentor_preview.html',  {
+        'mentee': mentee,
+        'messages': messages,
+        'menteechallenges': menteechallenges,
+        'progresses': progresses
+        ,'mentor_mentee_match_status':mentor_mentee_match_status
+    })
