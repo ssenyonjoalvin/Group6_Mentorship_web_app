@@ -4,7 +4,7 @@ from .models import MenteeChallenge
 from django.contrib.auth import get_user_model
 from django.forms import ModelForm
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
+from crispy_forms.layout import Submit, Layout, Row, Column
 
 
 GENDER_CHOICES = [
@@ -24,10 +24,8 @@ class MenteeProfileUpdateForm(forms.ModelForm):
     email = forms.EmailField()
     dob = forms.DateField()
     gender = forms.ChoiceField(choices=GENDER_CHOICES)
-    telephone = forms.CharField(max_length=50)
     nationality = forms.CharField(max_length=50)
-    # type_of_user = forms.ChoiceField(choices=TYPE_OF_USER)
-    
+
     class Meta:
         model = get_user_model()
         fields = [
@@ -41,7 +39,6 @@ class MenteeProfileUpdateForm(forms.ModelForm):
             "telephone",
             "role",
             "profile_picture",
-          
         ]
 
     def __init__(self, *args, **kwargs):
@@ -49,11 +46,39 @@ class MenteeProfileUpdateForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = "post"
         self.helper.add_input(Submit("submit", "Register"))
+        
+        # Set field attributes
+        self.fields["password"].widget.attrs.update({"class": "form-control"})
+        self.fields["first_name"].widget.attrs.update({"class": "form-control"})
+        self.fields["last_name"].widget.attrs.update({"class": "form-control"})
         self.fields["email"].widget.attrs.update({"class": "form-control", "readonly": "readonly"})
         self.fields["gender"].widget.attrs.update({"class": "form-control"})
         self.fields["telephone"].widget.attrs.update({"class": "form-control"})
         self.fields["nationality"].widget.attrs.update({"class": "form-control"})
-        # self.fields["type_of_user"].widget.attrs.update({"class": "form-control"})
-        self.fields["dob"] = forms.DateField(required=True, widget=forms.DateInput(attrs={"type": "date"})
-)
-        
+        self.fields["dob"].widget.attrs.update({"class": "form-control", "type": "date"})
+
+        # Layout with two fields per row
+        self.helper.layout = Layout(
+            Row(
+                Column('first_name', css_class='form-group col-md-6 mb-0'),
+                Column('last_name', css_class='form-group col-md-6 mb-0'),
+                css_class='form-row'
+            ),
+            Row(
+                Column('email', css_class='form-group col-md-6 mb-0'),
+                Column('password', css_class='form-group col-md-6 mb-0'),
+                css_class='form-row'
+            ),
+            Row(
+                Column('gender', css_class='form-group col-md-6 mb-0'),
+                Column('nationality', css_class='form-group col-md-6 mb-0'),
+                css_class='form-row'
+            ),
+            Row(
+                Column('dob', css_class='form-group col-md-6 mb-0'),
+                Column('telephone', css_class='form-group col-md-6 mb-0'),
+                css_class='form-row'
+            ),
+            'role',
+            'profile_picture',
+        )

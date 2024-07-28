@@ -443,11 +443,10 @@ def edit_appointment(request):
             return JsonResponse({'status': 'error', 'message': 'Form is invalid'})
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
-# Evaluation
+
 @login_required
 @transaction.atomic
-#Answered form
-def get_mentee_id_by_firstname(firstname):
+def evaluation(request):
     try:
         loggedin_mentor = request.user.id
         

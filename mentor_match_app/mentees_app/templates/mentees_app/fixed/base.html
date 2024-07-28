@@ -14,6 +14,9 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
     />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-EVSTQN3/azprG1AnmQmKyl4W5Xbq8K0XXx4tKU8mPoTK9FdJ6Cl6CZsmayS3r0" crossorigin="anonymous">
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="{% static 'Mentorshipapp/form.css' %}" />
 
@@ -96,43 +99,6 @@
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-<<<<<<< HEAD
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'mentees_app:mentee_home' %}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'mentees_app:find_mentor' %}">Mentors</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'mentees_app:programs' %}">Programs</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'mentees_app:resources' %}">Resources</a>
-                    </li>
-                    <li class="nav-item position-relative">
-                        <a class="nav-link" href="{% url 'mentees_app:messages' %}">Messages</a>
-                        {% if new_message_count > 0 %}
-                        <span class="badge badge-danger position-absolute top-0 start-100 translate-middle">
-                            {{ new_message_count }}
-                        </span>
-                        {% endif %}
-                    </li>
-                    <li>
-                        <a href="{% url 'mentees_app:profile' %}" class="btn btn-brand ms-lg-3">Profile</a> 
-                        
-                    </li>
-                    <!--Logout form-->
-                    <li class="nav-item">
-                        <form method="post" action="{% url 'mentees_app:logout' %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-brand ms-lg-3" style="cursor: pointer;">Logout</button>
-
-                        </form>
-                    </li>
-                </ul>
-                 
-=======
               <ul class="navbar-nav ms-auto me-4">
                 <li class="nav-item active"> 
                   <a class="nav-link" href="{% url 'mentees_app:mentee_home' %}"
@@ -150,12 +116,11 @@
                   >
                 </li>
               </ul>
->>>>>>> origin/derrick_task2
             </div>
           </nav>
         </div>
       </div>
-      <div class="row page_content" id="" style="height: 66vh">
+      <div class="row page_content" id="">
         <div class="col">
             {% block content %} {% endblock %}
         </div>
