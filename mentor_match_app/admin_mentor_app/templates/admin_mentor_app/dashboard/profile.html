@@ -1,6 +1,8 @@
-{% extends 'admin_mentor_app/fixed/base.html' %} 
-{% block content %} 
+{% extends 'admin_mentor_app/fixed/base.html' %}
+
+{% block content %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 <style>
   .profile-container {
@@ -17,19 +19,13 @@
   }
   .profile-img-container {
     text-align: center;
+    margin-bottom: 20px;
   }
   .profile-img {
     border-radius: 50%;
     border: 3px solid #ddd;
-  }
-  .profile-form {
-    margin-top: 20px;
-  }
-  .profile-form .form-group {
-    margin-bottom: 15px;
-  }
-  .profile-form .form-control {
-    border-radius: 5px;
+    height: 150px;
+    width: 150px;
   }
   .btn-primary {
     background-color: #075e54;
@@ -37,14 +33,12 @@
   }
 </style>
 
-{% load crispy_forms_tags %}
 <div class="profile-container">
   <div class="profile-header">
     <h2>Mentor Profile</h2>
   </div>
   <div class="profile-img-container">
-    <img src="{% static 'admin_mentor_app/images/user.png' %}"
- class="profile-img" height="150px" alt="Profile Image" />
+    <img src="{% static 'admin_mentor_app/images/user.png' %}" class="profile-img" alt="Profile Image" />
   </div>
   <div class="profile-form">
     <form action="" method="post" enctype="multipart/form-data" id="profile_form">

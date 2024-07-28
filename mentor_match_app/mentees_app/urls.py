@@ -6,7 +6,7 @@ app_name = 'mentees_app'
 
 urlpatterns = [
     path('home/', views.mentee_home, name='mentee_home'),
-    path('find_mentor/', views.find_mentor, name='find_mentor'),
+    path('schedules/', views.schedules, name='schedules'),
     path('messages/', views.mentee_messages, name='messages'),
     path('api/chats/<int:chat_id>/', views.get_chat_details, name='get_chat_details'),
     path('send_request/', views.send_request, name='send_request'),

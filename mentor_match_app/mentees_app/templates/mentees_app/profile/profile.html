@@ -1,6 +1,120 @@
+{% extends 'mentees_app/fixed/base.html' %} {% block content %} 
+{% load static%} {% load crispy_forms_tags %}
 
-{% extends "mentees_app/fixed/base.html" %}
+<style>
+  {% comment %} .profile-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f8f7f6;
+  } {% endcomment %}
+  {% comment %} .profile-header {
+    text-align: center;
+    position: relative;
+    margin-bottom: 20px;
+  } {% endcomment %}
+  .profile-img-container {
+    
+     text-align: center;
+    position: re;
+    margin-bottom: 10px;
+  }
+  .profile-img {
+    border-radius: 70%;
+    border: 3px solid #ddd;
+    max-width: 100px;
+    height: auto;
+  }
+  .profile-form {
+    margin-top: 20px;
+  }
+  .profile-form .form-group {
+    margin-bottom: 15px;
+  }
+  .profile-form .form-control {
+    border-radius: 5px;
+  }
+  .btn-primary {
+    background-color: #075e54;
+    border-color: #075e54;
+  }
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .form-group {
+    flex: 1 0 50%; /* 2 columns */
+    padding: 0 10px; /* Optional: Add padding for spacing between columns */
+    box-sizing: border-box;
+  }
+  .form-group.full-width {
+    flex: 1 0 100%; /* Full width for single-column fields */
+  }
+</style>
 
-{% block title %}profile{% endblock %}
 
-{% block banner_title %}My Profile{% endblock %}
+  <div class="profile-img-container">
+    <img
+      src="{% static 'admin_mentor_app/images/pic-6.jpg' %}"
+      class="profile-img"
+      alt="Profile Image"
+    />
+  </div>
+
+  
+    <div class="profile-form">
+      <form
+        action=""
+        method="post"
+        enctype="multipart/form-data"
+        id="profile_form"
+      >
+        {% csrf_token %}
+
+        <div class="form-row">
+          <div class="form-group">
+              {{ form.first_name.label_tag }} {{ form.first_name }}
+          </div>
+          <div class="form-group">
+           {{ form.last_name.label_tag }} {{ form.last_name }}
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">{{ form.dob.label_tag }} {{ form.dob }}</div>
+          <div class="form-group">
+             {{ form.password.label_tag }} {{ form.password }}
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            {{ form.gender.label_tag }} {{ form.gender }}
+          </div>
+          <div class="form-group">
+            {{ form.nationality.label_tag }} {{ form.nationality }}
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"> {{ form.email.label_tag }} {{ form.email }}</div>
+          <div class="form-group">
+            {{ form.telephone.label_tag }} {{ form.telephone }}
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group full-width">
+            {{ form.role.label_tag }} {{ form.role }}
+          </div>
+          <div class="form-group full-width">
+            {{ form.profile_picture.label_tag }} {{ form.profile_picture }}
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Change Profile</button>
+      </form>
+    </div>
+  </div>
+
+ {% endblock content %}
+        

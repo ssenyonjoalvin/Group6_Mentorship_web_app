@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap');
 
 body {
+    margin: 0px 2px !important;
     font-family: "Barlow", "san-serif";
     line-height: 1.7;
     color: #516171;
@@ -203,15 +204,11 @@ img {
 
 /*footer*/
 .footer {
-    background-color: #343a40; /* Same as navbar */
+    background-color: #d3e5f7; /* Same as navbar */
     color: #ffffff; /* Text color for footer */
-    padding: 20px 0; /* Add padding for spacing */
-    text-align: center;
 }
 
-.footer p {
-    margin: 0;
-}
+
 
 .footer a {
     color: #ffffff;
@@ -331,4 +328,9 @@ img {
     padding: 10px;
     background-color: #f1f1f1;
     border-radius: 5px;
+}
+
+#page_content{
+    height: 100vh;
+    min-height: 100vh;
 }
