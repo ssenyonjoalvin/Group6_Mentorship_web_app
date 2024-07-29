@@ -1,12 +1,11 @@
-{% extends 'mentees_app/fixed/base.html' %}
-{% block content %}
-{% load static %}
+{% extends 'mentees_app/fixed/base.html' %} {% block content %} {% load static%}
 <!-- Bootstrap JS, Popper.js, and jQuery -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <style>
-  html, body {
+  html,
+  body {
     height: 100%;
     margin: 0;
   }
@@ -45,7 +44,8 @@
     width: 100%;
     border-collapse: collapse;
   }
-  .borderless-table th, .borderless-table td {
+  .borderless-table th,
+  .borderless-table td {
     border: none;
     padding: 8px;
     text-align: left;
@@ -58,12 +58,17 @@
       {% for mentor in mentors %}
       <div class="profile-container">
         <img
-          src="{{ mentor.profile_picture }}"
+          src="{% static 'admin_mentor_app/images/pic-6.jpg' %}"
           alt="Mentor Image"
           class="profile-img"
         />
-        <div class="profile-info">{{ mentor.first_name }} {{ mentor.last_name }}</div>
-        <a href="{% url 'mentees_app:previewMentor' mentor.id %}" class="profile-link">
+        <div class="profile-info">
+          {{ mentor.first_name }} {{ mentor.last_name }}
+        </div>
+        <a
+          href="{% url 'mentees_app:previewMentor' mentor.id %}"
+          class="profile-link"
+        >
           <button class="btn btn-outline-primary btn-sm">Preview</button>
         </a>
       </div>
@@ -83,10 +88,18 @@
             {% for evaluation in progressed_evaluations %}
             <tr>
               <td>{{ evaluation.mentor.id }}</td>
-              <td>{{ evaluation.mentor.first_name }} {{ evaluation.mentor.last_name }}</td>
               <td>
-                <a href="{% url 'mentees_app:fillEvaluationForm'  evaluation.mentor.id %}" class="profile-link">
-                  <button type="button" class="btn btn-success btn-sm">Preview Evaluation Form</button>
+                {{ evaluation.mentor.first_name }} {{
+                evaluation.mentor.last_name }}
+              </td>
+              <td>
+                <a
+                  href="{% url 'mentees_app:fillEvaluationForm'  evaluation.mentor.id %}"
+                  class="profile-link"
+                >
+                  <button type="button" class="btn btn-success btn-sm">
+                    Preview Evaluation Form
+                  </button>
                 </a>
               </td>
             </tr>
@@ -116,7 +129,10 @@
         </div>
       </form>
       {% for mentor in available_mentors %}
-      <a href="{% url 'mentees_app:previewMentor' mentor.id %}" class="profile-link">
+      <a
+        href="{% url 'mentees_app:previewMentor' mentor.id %}"
+        class="profile-link"
+      >
         <div class="profile-container">
           <img
             src="{{ mentor.profile_picture }}"

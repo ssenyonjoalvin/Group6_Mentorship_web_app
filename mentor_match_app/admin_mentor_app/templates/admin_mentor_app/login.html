@@ -1,105 +1,112 @@
 {%load static%}
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Mentor.Social</title>
+    <script src="{% static 'admin_mentor_app/js/jquery.js' %}"></script>
+    <link
+      rel="shortcut icon"
+      href="{% static 'admin_mentor_app/images/fav.png' %}"
+      type="image/x-icon"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .container-fluid {
+        padding-top: 100px;
+        padding-bottom: 100px;
+      }
 
-<head>
-  <meta charset="utf-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, shrink-to-fit=no"
-  />
-  <title>Mentor.Social</title>
-  <script src="{% static 'admin_mentor_app/js/jquery.js' %}"></script>
-  <link
-    rel="shortcut icon"
-    href="{% static 'admin_mentor_app/images/fav.png' %}"
-    type="image/x-icon"
-  />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500&display=swap"
-    rel="stylesheet"
-  />
-  <link
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-    rel="stylesheet"
-  />
-  <style>
-    .container-fluid {
-      padding-top: 100px;
-      padding-bottom: 100px;
-    }
+      /* Additional custom styles can be added here */
+    </style>
+  </head>
+  {% load crispy_forms_tags %}
+  <body>
+    <div class="container-fluid">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-xl-10 col-lg-11">
+            <div class="login-container">
+              <div class="row">
+                <div class="col-lg-7 col-md-6">
+                  <img
+                    src="{% static 'admin_mentor_app/images/sideimg.png' %}"
+                    class="img-fluid"
+                    alt=""
+                  />
+                </div>
+                <div class="col-lg-5 col-md-6">
+                  <div class="login-box pt-5">
+                    <h5>Welcome Back!</h5>
 
-    /* Additional custom styles can be added here */
-  </style>
-</head>
-{% load crispy_forms_tags %}
-<body>
-  <div class="container-fluid">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-xl-10 col-lg-11">
-          <div class="login-container">
-            <div class="row">
-              <div class="col-lg-7 col-md-6">
-                <img
-                  src="{% static 'admin_mentor_app/images/sideimg.png' %}"
-                  class="img-fluid"
-                  alt=""
-                />
-              </div>
-              <div class="col-lg-5 col-md-6">
-                <div class="login-box pt-5">
-                  <h5>Welcome Back!</h5>
+                    <form method="post" id="login_form">
+                      {% csrf_token %} {{form|crispy}} {% comment %}
+                      <div class="login-row row forrr no-margin">
+                        <p>
+                          <input
+                            type="checkbox"
+                            id="show-password"
+                            onclick="togglePasswordVisibility()"
+                          />
+                          Show password
+                        </p>
+                      </div>
+                      {% endcomment %}
 
-                  <form method="post" id="login_form">
-                    {% csrf_token %}
-                    {{form|crispy}}
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col">
+                            <p class="">
+                              <a href="" class="text-primary"
+                                >Forgot Password?</a
+                              >
+                            </p>
+                          </div>
 
-                    {% comment %} <div class="login-row row forrr no-margin">
-                      <p>
-                        <input type="checkbox" id="show-password" onclick="togglePasswordVisibility()"> Show password
-                      </p>
-                    </div> {% endcomment %}
-
-                    <div class="form-group">
-                      <div class="row">
-                        <div class="col">
-                          <p class="">
-                            <a href="" class="text-primary">Forgot Password?</a>
-                          </p>
-                        </div>
-
-                        <div class="col">
-                          <p class="float-right">
-                            <a href="{% url 'register' %}" class="text-primary">Sign Up</a>
-                          </p>
+                          <div class="col">
+                            <p class="float-right">
+                              <a
+                                href="{% url 'register' %}"
+                                class="text-primary"
+                                >Sign Up</a
+                              >
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    <div class="form-group">
-                      <button
-                        type="submit"
-                        class="btn btn-primary"
-                        id="signup"
-                      >
-                        Login
-                      </button>
-                    </div>
-                  </form>
+                      <div class="form-group">
+                        <button
+                          type="submit"
+                          class="btn btn-primary"
+                          id="signup"
+                        >
+                          Login
+                        </button>
+                      </div>
+                    </form>
                   </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.1/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-</body>
-
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  </body>
 </html>

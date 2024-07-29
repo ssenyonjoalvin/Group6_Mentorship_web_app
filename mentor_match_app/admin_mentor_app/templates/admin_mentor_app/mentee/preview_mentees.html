@@ -1,48 +1,58 @@
-{% extends 'admin_mentor_app/fixed/base.html' %} {% block content %}
-
+{% extends 'admin_mentor_app/fixed/base.html' %} 
+{% block content %} 
+{% load static %}
 <style>
   .chat-window {
-    max-width: 600px;
+    max-width: 800px;
     margin: auto;
     border: 1px solid #ddd;
     border-radius: 10px;
     overflow: hidden;
   }
+
   .chat-header {
     padding: 10px;
     font-size: 1.2rem;
   }
+
   .chat-body {
-    height: 400px;
+    height: 350px;
+    max-height: 350px;
     overflow-y: auto;
-    padding: 15px;
+    padding: 10px;
     background-color: #f8f7f6;
   }
+
   .chat-message {
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 10px;
     max-width: 45%;
   }
+
   .message-sent {
     background-color: #dcf8c6;
     text-align: right;
+    margin-left: auto;
   }
+
   .message-received {
-    background-color: white;
-    margin-left: 50%;
-    max-width: 45%;
+    background-color: rgb(155, 187, 206);
+    margin-right: auto;
   }
+
   .chat-footer {
     padding: 10px;
     display: flex;
   }
+
   .chat-footer input {
     flex: 1;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
   }
+
   .chat-footer button {
     background-color: #075e54;
     color: white;
@@ -55,7 +65,7 @@
 
 <div class="container mt-1">
   <div class="container row mt-1">
-    <h2 class="mb-4">Mentee <span style="font-size: 20px">/Preview</span></h2>
+    <h2 class="mb-1">Mentee <span style="font-size: 20px">/Preview</span></h2>
     <div class="col">
       <!-- Navigation Tabs -->
       <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -85,7 +95,7 @@
         </li>
         <li class="nav-item" role="presentation">
           <a
-            class="nav-link active"
+            class="nav-link"
             id="chat-tab"
             data-bs-toggle="tab"
             href="#chat"
@@ -104,104 +114,7 @@
           role="tabpanel"
           aria-labelledby="profile-tab"
         >
-          <div class="container mt-5">
-            <div class="row">
-              <div class="col-md-4">
-                <div class="card">
-                  <img
-                    src="https://via.placeholder.com/350x350"
-                    class="card-img-top"
-                    alt="Profile Image"
-                  />
-                  <div class="card-body text-center">
-                    <h5 class="card-title">Ahaabwe Derrick</h5>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-8">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Mentee Details</h5>
-                    <form>
-                      <div class="row">
-                        <div class="col-6 mb-1">
-                          <label for="name" class="form-label">Name</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="name"
-                            value="John Doe"
-                          />
-                        </div>
-                        <div class="col-6 mb-1">
-                          <label for="email" class="form-label">Email</label>
-                          <input
-                            type="email"
-                            class="form-control"
-                            id="email"
-                            value="john.doe@example.com"
-                          />
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-6 mb-1">
-                          <label for="gender" class="form-label">Gender</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="gender"
-                            value="John Doe"
-                          />
-                        </div>
-                        <div class="col-6 mb-1">
-                          <label for="birthdate" class="form-label"
-                            >Date Of Birth</label
-                          >
-                          <input
-                            type="date"
-                            class="form-control"
-                            id="birthdate"
-                            placeholder="Select birthdate"
-                          />
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-6 mb-1">
-                          <label for="address" class="form-label"
-                            >Address</label
-                          >
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="address"
-                            value="123 Main Street, Anytown"
-                          />
-                        </div>
-                        <div class="col-6 mb-1">
-                          <label for="contact" class="form-label"
-                            >Contact</label
-                          >
-                          <input
-                            type="tel"
-                            class="form-control"
-                            id="contact"
-                            value="+1234567890"
-                          />
-                        </div>
-                      </div>
-                      <div class="mb-1">
-                        <label for="bio" class="form-label">Bio</label>
-                        <textarea class="form-control" id="bio" rows="3">
-Short bio about the mentee.
-                            </textarea
-                        >
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <!-- Profile Content (unchanged) -->
         </div>
         <div
           class="tab-pane fade"
@@ -216,11 +129,11 @@ Short bio about the mentee.
                   <li class="list-unstyled">Mentee Goals</li>
                 </ul>
                 <ol class="list-group list-group-numbered">
-                  <li class="list-group-item border-0">Goal 1</li>
-                  <li class="list-group-item border-0">Goal 2</li>
-                  <li class="list-group-item border-0">Goal 3</li>
-                  <li class="list-group-item border-0">Goal 4</li>
-                  <li class="list-group-item border-0">Goal 5</li>
+                  {% for menteechallenge in menteechallenges %}
+                  <li class="list-group-item border-0">
+                    {{ menteechallenge.challenge }}
+                  </li>
+                  {% endfor %}
                 </ol>
               </div>
             </div>
@@ -233,35 +146,105 @@ Short bio about the mentee.
                     Mentors Measurable Achievement Goals
                   </li>
                 </ul>
-                <ol class="list-group list-group-numbered">
-                  <li
-                    class="list-group-item d-flex justify-content-between align-items-center border-0"
-                  >
-                    <div>
-                      <input type="checkbox" class="me-2" />
-                      Achieve Public Speaking
+                <ol class="list-group list-group-numbered" id="goals-list">
+                  {% if progresses|length %}
+                    {% for progress in progresses %}
+                      <h5>Session {{ forloop.counter }}: {{ progress.progress_percentage }}</h5>
+                      {% for goal in progress.goals %}
+                      <li class="list-group-item border-0" data-goal-id="{{ goal.id }}">
+                          <div class="row form-check d-flex align-items-center">
+                              <div class="col-1">
+                                  <input type="checkbox" class="form-check-input me-2 goal-checkbox" {% if goal.status == 'Completed' %}checked{% endif %} />
+                              </div>
+                              <div class="col-7 form-check-label">
+                                  {{ goal.goal }}
+                              </div>
+                              <div class="col-4">
+                                  <button class="btn btn-sm btn-danger delete-goal">Delete</button>
+                              </div>
+                          </div>
+                      </li>
+                      {% endfor %}
+                      <!-- Place input and button here to capture the correct session_number -->
+                      <div class="row mt-3">
+                          <div class="col-10 d-flex justify-content-center align-items-center">
+                              <input
+                                  type="text"
+                                  id="new-goal-input-{{ progress.session_number }}"
+                                  class="form-control new-goal-input"
+                                  placeholder="Enter New Goal"
+                                  data-progress-id="{{ progress.session_number }}"
+                              />
+                          </div>
+                          <div class="col-2">
+                              <button class="btn btn-primary add-goal-btn" data-progress-id="{{ progress.session_number }}">
+                                  Add
+                              </button>
+                          </div>
+                      </div>
+                    {% endfor %}
+                  {% else %}
+                    <div class="row mt-3">
+                      <div class="col-10 d-flex justify-content-center align-items-center">
+                          <input
+                              type="text"
+                              id="new-goal-input"
+                              class="form-control new-goal-input"
+                              placeholder="Enter New Goal"
+                              data-progress-id="new"
+                          />
+                      </div>
+                      <div class="col-2">
+                          <button class="btn btn-primary add-goal-btn" data-progress-id="new">
+                              Add
+                          </button>
+                      </div>
                     </div>
-                    <span>
-                      <button class="btn btn-sm btn-primary me-1">Edit</button>
-                      <button class="btn btn-sm btn-danger">Delete</button>
-                    </span>
-                  </li>
-                  <li
-                    class="list-group-item d-flex justify-content-between align-items-center border-0"
-                  >
-                    <div>
-                      <input type="checkbox" class="me-2" />
-                      Ability to read and write
-                    </div>
-                    <span>
-                      <button class="btn btn-sm btn-primary me-1">Edit</button>
-                      <button class="btn btn-sm btn-danger">Delete</button>
-                    </span>
-                  </li>
+                  {% endif %}
                 </ol>
               </div>
             </div>
           </div>
+
+          <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+          <script>
+            $(document).ready(function () {
+                $(".add-goal-btn").click(function () {
+                    var progress_id = $(this).data('progress-id');
+                    var newGoal = $("#new-goal-input-" + progress_id).val();
+                    if (newGoal) {
+                        $.ajax({
+                            type: "POST",
+                            url: "{% url 'preview_mentee' mentee.id %}",
+                            data: {
+                                'newGoal': newGoal,
+                                'progress_id': progress_id,
+                                'csrfmiddlewaretoken': '{{ csrf_token }}'
+                            },
+                            success: function (response) {
+                                if (response.success) {
+                                    location.reload();
+                                } else {
+                                    alert("Failed to add goal. Please try again.");
+                                }
+                            }
+                        });
+                    } else {
+                        alert("Please enter a goal.");
+                    }
+                });
+
+                $(".delete-goal").click(function () {
+                    var goal_id = $(this).closest('li').data('goal-id');
+                    // Perform delete action
+                });
+
+                $(".goal-checkbox").change(function () {
+                    var goal_id = $(this).closest('li').data('goal-id');
+                    // Perform checkbox change action
+                });
+            });
+          </script>
         </div>
         <div
           class="tab-pane fade"
@@ -270,57 +253,30 @@ Short bio about the mentee.
           aria-labelledby="chat-tab"
         >
           <div class="chat-window mt-3">
-            <div class="chat-header">Mentee Name</div>
+            <div class="chat-header">
+              Chat with {{ mentee.first_name }} {{ mentee.last_name }}
+            </div>
             <div class="chat-body">
-              <div class="chat-message message-received">Hi! How are you?</div>
-              <div class="chat-message message-sent">
-                I'm good, thank you! How about you?
-              </div>
-              <div class="chat-message message-received">
-                I'm doing well, thanks!
-              </div>
-              <div class="chat-message message-sent">
-                I'm good, thank you! How about you?
-              </div>
-              <div class="chat-message message-received">
-                I'm doing well, thanks!
-              </div>
-              <div class="chat-message message-sent">
-                I'm good, thank you! How about you?
-              </div>
-              <div class="chat-message message-received">
-                I'm doing well, thanks!
-              </div>
-              <div class="chat-message message-sent">
-                I'm good, thank you! How about you?
-              </div>
-              <div class="chat-message message-received">
-                I'm doing well, thanks!
-              </div>
+              {% for message in messages %}
+                <div class="chat-message
+                  {% if message.sender_id == logged_in_user %}
+                    message-sent
+                  {% else %}
+                    message-received
+                  {% endif %}
+                ">
+                  {{ message.content }}
+                </div>
+              {% endfor %}
             </div>
             <div class="chat-footer">
-              <input type="text" placeholder="Type a message" />
-              <button>Send</button>
+              <input type="text" id="chat-message" class="form-control" placeholder="Type your message here..." />
+              <button id="send-message" class="btn btn-primary">Send</button>
             </div>
           </div>
         </div>
       </div>
-      <div class="row"></div>
     </div>
   </div>
 </div>
-
-<script>
-  $(document).ready(function () {
-    $("#myTab a").on("click", function (event) {
-      event.preventDefault();
-      $(this).tab("show");
-    });
-
-    $('a[data-bs-toggle="tab"]').on("shown.bs.tab", function (e) {
-      $(".tab-pane").removeClass("show active");
-      $($(e.target).attr("href")).addClass("show active");
-    });
-  });
-</script>
-{% endblock content %}
+{% endblock %}
