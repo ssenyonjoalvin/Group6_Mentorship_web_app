@@ -2,7 +2,7 @@
 @import url(https://fonts.googleapis.com/css?family=Montserrat:300,400,600,700);
 @import url(https://fonts.googleapis.com/css?family=Arimo:300,400,400italic,700,700italic);
 /* ===================================== Basic CSS ==================================== */
-* {
+/* * {
   margin: 0px;
   padding: 0px;
   list-style: none; }
@@ -224,6 +224,7 @@ body {
       padding: 10px 15px; } }
 
 /* =================== Header Style Starts Here =================== */
+/* 
 body {
   background-color: #09094c;
   background-image: url(../images/login-bg.jpg) !important; }
@@ -306,9 +307,9 @@ body {
     @media (min-width: 768px) {
       .button-36 {
         padding: 0 2.6rem;
-      }
+      } 
     }
-
-    
+*/
+     
 
 /*# sourceMappingURL=style.css.map */
