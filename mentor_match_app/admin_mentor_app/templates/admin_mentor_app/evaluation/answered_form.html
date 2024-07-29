@@ -1,0 +1,182 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> tahia2
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Evaluation</title>
+    <link rel="stylesheet" href="{% static 'admin_mentor_app/css/form.css' %}" />
+    <script>
+        function onlyOne(checkbox) {
+            const checkboxes = document.getElementsByName(checkbox.name);
+            checkboxes.forEach((item) => {
+                if (item !== checkbox) item.checked = false;
+            });
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <form method="post" >
+            {% csrf_token %}
+            <div>
+                <h2>Evaluation of Mentorship Program</h2>
+                <p>
+                    Welcome! This form is designed to help us assess the effectiveness
+                    of our mentorship program. Your feedback is invaluable in helping us
+                    make improvements and ensure that the program meets your needs.
+                    Please take a moment to provide your insights and suggestions.
+                </p>
+            </div>
+            <h4>Please answer the following questions</h4>
+
+            {% if evaluations %}
+                {% for evaluation in evaluations %}
+                <div>
+                    <p>How effectively did your mentor support you during the mentorship?</p>
+                    <div>
+                        <input type="radio" name="support" id="support-very-good" value="Very Good" {% if evaluation.support == 'Very Good' %}checked{% endif %} />
+                        <label for="support-very-good">Very Good</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="support" id="support-good" value="Good" {% if evaluation.support == 'Good' %}checked{% endif %} />
+                        <label for="support-good">Good</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="support" id="support-bad" value="Bad" {% if evaluation.support == 'Bad' %}checked{% endif %} />
+                        <label for="support-bad">Bad</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="support" id="support-very-bad" value="Very Bad" {% if evaluation.support == 'Very Bad' %}checked{% endif %} />
+                        <label for="support-very-bad">Very Bad</label>
+                    </div>
+                </div>
+
+                <p>How was the communication with your mentor?</p>
+                <div>
+                    <input type="radio" name="communication" id="communication-very-good" value="Very Good" {% if evaluation.communication == 'Very Good' %}checked{% endif %} />
+                    <label for="communication-very-good">Very Good</label>
+                </div>
+                <div>
+                    <input type="radio" name="communication" id="communication-good" value="Good" {% if evaluation.communication == 'Good' %}checked{% endif %} />
+                    <label for="communication-good">Good</label>
+                </div>
+                <div>
+                    <input type="radio" name="communication" id="communication-bad" value="Bad" {% if evaluation.communication == 'Bad' %}checked{% endif %} />
+                    <label for="communication-bad">Bad</label>
+                </div>
+                <div>
+                    <input type="radio" name="communication" id="communication-very-bad" value="Very Bad" {% if evaluation.communication == 'Very Bad' %}checked{% endif %} />
+                    <label for="communication-very-bad">Very Bad</label>
+                </div>
+
+                <p>How did the mentorship help you improve your confidence and decision-making abilities?</p>
+                <div>
+                    <input type="radio" name="confidence" id="confidence-very-good" value="Very Good" {% if evaluation.confidence == 'Very Good' %}checked{% endif %} />
+                    <label for="confidence-very-good">Very Good</label>
+                </div>
+                <div>
+                    <input type="radio" name="confidence" id="confidence-good" value="Good" {% if evaluation.confidence == 'Good' %}checked{% endif %} />
+                    <label for="confidence-good">Good</label>
+                </div>
+                <div>
+                    <input type="radio" name="confidence" id="confidence-bad" value="Bad" {% if evaluation.confidence == 'Bad' %}checked{% endif %} />
+                    <label for="confidence-bad">Bad</label>
+                </div>
+                <div>
+                    <input type="radio" name="confidence" id="confidence-very-bad" value="Very Bad" {% if evaluation.confidence == 'Very Bad' %}checked{% endif %} />
+                    <label for="confidence-very-bad">Very Bad</label>
+                </div>
+
+                <p>How has the mentorship influenced your career plans or trajectory?</p>
+                <div>
+                    <input type="radio" name="career" id="career-very-good" value="Very Good" {% if evaluation.career == 'Very Good' %}checked{% endif %} />
+                    <label for="career-very-good">Very Good</label>
+                </div>
+                <div>
+                    <input type="radio" name="career" id="career-good" value="Good" {% if evaluation.career == 'Good' %}checked{% endif %} />
+                    <label for="career-good">Good</label>
+                </div>
+                <div>
+                    <input type="radio" name="career" id="career-bad" value="Bad" {% if evaluation.career == 'Bad' %}checked{% endif %} />
+                    <label for="career-bad">Bad</label>
+                </div>
+                <div>
+                    <input type="radio" name="career" id="career-very-bad" value="Very Bad" {% if evaluation.career == 'Very Bad' %}checked{% endif %} />
+                    <label for="career-very-bad">Very Bad</label>
+                </div>
+
+                <p>How did your understanding of your field or role improve?</p>
+                <div>
+                    <input type="radio" name="understanding" id="understanding-very-good" value="Very Good" {% if evaluation.understanding == 'Very Good' %}checked{% endif %} />
+                    <label for="understanding-very-good">Very Good</label>
+                </div>
+                <div>
+                    <input type="radio" name="understanding" id="understanding-good" value="Good" {% if evaluation.understanding == 'Good' %}checked{% endif %} />
+                    <label for="understanding-good">Good</label>
+                </div>
+                <div>
+                    <input type="radio" name="understanding" id="understanding-bad" value="Bad" {% if evaluation.understanding == 'Bad' %}checked{% endif %} />
+                    <label for="understanding-bad">Bad</label>
+                </div>
+                <div>
+                    <input type="radio" name="understanding" id="understanding-very-bad" value="Very Bad" {% if evaluation.understanding == 'Very Bad' %}checked{% endif %} />
+                    <label for="understanding-very-bad">Very Bad</label>
+                </div>
+
+                <p>Did you feel comfortable discussing your challenges and progress with your mentor?</p>
+                <div>
+                    <input type="radio" name="comfort" id="comfort-yes" value="Yes" {% if evaluation.comfort == 'Yes' %}checked{% endif %} />
+                    <label for="comfort-yes">Yes</label>
+                </div>
+                <div>
+                    <input type="radio" name="comfort" id="comfort-no" value="No" {% if evaluation.comfort == 'No' %}checked{% endif %} />
+                    <label for="comfort-no">No</label>
+                </div>
+
+                <p>Were your initial goals and expectations for the mentorship met?</p>
+                <div>
+                    <input type="radio" name="goals" id="goals-yes" value="Yes" {% if evaluation.goals == 'Yes' %}checked{% endif %} />
+                    <label for="goals-yes">Yes</label>
+                </div>
+                <div>
+                    <input type="radio" name="goals" id="goals-no" value="No" {% if evaluation.goals == 'No' %}checked{% endif %} />
+                    <label for="goals-no">No</label>
+                </div>
+
+                <p>Would you participate in the mentorship program again or recommend it to others?</p>
+                <div>
+                    <input type="radio" name="recommend" id="recommend-yes" value="Yes" {% if evaluation.recommend == 'Yes' %}checked{% endif %} />
+                    <label for="recommend-yes">Yes</label>
+                </div>
+                <div>
+                    <input type="radio" name="recommend" id="recommend-no" value="No" {% if evaluation.recommend == 'No' %}checked{% endif %} />
+                    <label for="recommend-no">No</label>
+                </div>
+
+                <p>Were the resources and support provided during the mentorship adequate?</p>
+                <div>
+                    <input type="radio" name="resources" id="resources-yes" value="Yes" {% if evaluation.resources == 'Yes' %}checked{% endif %} />
+                    <label for="resources-yes">Yes</label>
+                </div>
+                <div>
+                    <input type="radio" name="resources" id="resources-no" value="No" {% if evaluation.resources == 'No' %}checked{% endif %} />
+                    <label for="resources-no">No</label>
+                </div>
+
+                <p>Is there anything else you would like to share about your mentorship experience?</p>
+                <div>
+                    <textarea id="comments" name="comments">{{ evaluation.comments }}</textarea><br /><br />
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No form has been submitted by this mentee.</p>
+            {% endif %}
+        </form>
+    </div>
+</body>
+</html>

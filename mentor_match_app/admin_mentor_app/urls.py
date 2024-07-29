@@ -29,7 +29,7 @@ urlpatterns = [
      #se
     #schedule
     path('schedule/', views.schedule, name='schedule'),
-    path('edit_appointment/', views.edit_appointment, name='edit_appointment'),
+   path('edit_appointment/', views.edit_appointment, name='edit_appointment'),
     path('mark_complete/<int:schedule_id>/', views.mark_complete, name='mark_complete'),
     path('delete_appointment/<int:schedule_id>/', views.delete_appointment, name='delete_appointment'),
     path('schedule_list/', views.schedule_list, name='schedule_list'),
@@ -38,6 +38,7 @@ urlpatterns = [
     path("evaluation/", views.evaluation, name="evaluation"),
     path("evaluation/template-view", views.evaluation_report, name="evaluation-report-view"),
     path('evaluation/preview/<int:mentee_id>/', views.previewEvaluation, name="previewEvaluation"),
+    
     # reports
     path("reports/", views.reports, name="reports"),
     

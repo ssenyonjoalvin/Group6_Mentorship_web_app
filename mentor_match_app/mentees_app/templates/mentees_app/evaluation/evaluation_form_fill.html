@@ -1,0 +1,229 @@
+{% extends 'mentees_app/fixed/base.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container mt-4">
+  <h2 class="text-center">Evaluation of Mentorship Program</h2>
+  <p class="text-center">
+    Welcome! This form is designed to help us assess the effectiveness of our mentorship program. Your feedback is invaluable in helping us make improvements and ensure that the program meets your needs. Please take a moment to provide your insights and suggestions.
+  </p>
+  <h5>Please answer the following questions</h5>
+
+  <form method="post" action="{% url 'mentees_app:submitEvaluationForm' mentor_id %}">
+    {% csrf_token %}
+    
+    <!-- Mentor Support Section -->
+    <div class="card mt-3">
+      <div class="card-header bg-primary text-white">Mentor Support</div>
+      <div class="card-body">
+        <p>How effectively did your mentor support you during the mentorship?</p>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="support" id="support-very-good" value="Very Good" {% if evaluation_form.support == 'Very Good' %}checked{% endif %}>
+          <label class="form-check-label" for="support-very-good">Very Good</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="support" id="support-good" value="Good" {% if evaluation_form.support == 'Good' %}checked{% endif %}>
+          <label class="form-check-label" for="support-good">Good</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="support" id="support-bad" value="Bad" {% if evaluation_form.support == 'Bad' %}checked{% endif %}>
+          <label class="form-check-label" for="support-bad">Bad</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="support" id="support-very-bad" value="Very Bad" {% if evaluation_form.support == 'Very Bad' %}checked{% endif %}>
+          <label class="form-check-label" for="support-very-bad">Very Bad</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Communication Section -->
+    <div class="card mt-3">
+      <div class="card-header bg-secondary text-white">Communication</div>
+      <div class="card-body">
+        <p>How was the communication with your mentor?</p>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="communication" id="communication-very-good" value="Very Good" {% if evaluation_form.communication == 'Very Good' %}checked{% endif %}>
+          <label class="form-check-label" for="communication-very-good">Very Good</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="communication" id="communication-good" value="Good" {% if evaluation_form.communication == 'Good' %}checked{% endif %}>
+          <label class="form-check-label" for="communication-good">Good</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="communication" id="communication-bad" value="Bad" {% if evaluation_form.communication == 'Bad' %}checked{% endif %}>
+          <label class="form-check-label" for="communication-bad">Bad</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="communication" id="communication-very-bad" value="Very Bad" {% if evaluation_form.communication == 'Very Bad' %}checked{% endif %}>
+          <label class="form-check-label" for="communication-very-bad">Very Bad</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confidence and Decision-Making Section -->
+    <div class="card mt-3">
+      <div class="card-header bg-success text-white">Confidence and Decision-Making</div>
+      <div class="card-body">
+        <p>How did the mentorship help you improve your confidence and decision-making abilities?</p>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="confidence" id="confidence-very-good" value="Very Good" {% if evaluation_form.confidence == 'Very Good' %}checked{% endif %}>
+          <label class="form-check-label" for="confidence-very-good">Very Good</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="confidence" id="confidence-good" value="Good" {% if evaluation_form.confidence == 'Good' %}checked{% endif %}>
+          <label class="form-check-label" for="confidence-good">Good</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="confidence" id="confidence-bad" value="Bad" {% if evaluation_form.confidence == 'Bad' %}checked{% endif %}>
+          <label class="form-check-label" for="confidence-bad">Bad</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="confidence" id="confidence-very-bad" value="Very Bad" {% if evaluation_form.confidence == 'Very Bad' %}checked{% endif %}>
+          <label class="form-check-label" for="confidence-very-bad">Very Bad</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Career Plans Section -->
+    <div class="card mt-3">
+      <div class="card-header bg-info text-white">Career Plans</div>
+      <div class="card-body">
+        <p>How has the mentorship influenced your career plans or trajectory?</p>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="career" id="career-very-good" value="Very Good" {% if evaluation_form.career == 'Very Good' %}checked{% endif %}>
+          <label class="form-check-label" for="career-very-good">Very Good</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="career" id="career-good" value="Good" {% if evaluation_form.career == 'Good' %}checked{% endif %}>
+          <label class="form-check-label" for="career-good">Good</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="career" id="career-bad" value="Bad" {% if evaluation_form.career == 'Bad' %}checked{% endif %}>
+          <label class="form-check-label" for="career-bad">Bad</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="career" id="career-very-bad" value="Very Bad" {% if evaluation_form.career == 'Very Bad' %}checked{% endif %}>
+          <label class="form-check-label" for="career-very-bad">Very Bad</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Understanding Section -->
+    <div class="card mt-3">
+      <div class="card-header bg-warning text-white">Understanding</div>
+      <div class="card-body">
+        <p>How did your understanding of your field or role improve?</p>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="understanding" id="understanding-very-good" value="Very Good" {% if evaluation_form.understanding == 'Very Good' %}checked{% endif %}>
+          <label class="form-check-label" for="understanding-very-good">Very Good</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="understanding" id="understanding-good" value="Good" {% if evaluation_form.understanding == 'Good' %}checked{% endif %}>
+          <label class="form-check-label" for="understanding-good">Good</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="understanding" id="understanding-bad" value="Bad" {% if evaluation_form.understanding == 'Bad' %}checked{% endif %}>
+          <label class="form-check-label" for="understanding-bad">Bad</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="understanding" id="understanding-very-bad" value="Very Bad" {% if evaluation_form.understanding == 'Very Bad' %}checked{% endif %}>
+          <label class="form-check-label" for="understanding-very-bad">Very Bad</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comfort Level Section -->
+    <div class="card mt-3">
+      <div class="card-header bg-danger text-white">Comfort Level</div>
+      <div class="card-body">
+        <p>How comfortable did you feel sharing your thoughts and concerns with your mentor?</p>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="comfort" id="comfort-very-good" value="Very Good" {% if evaluation_form.comfort == 'Very Good' %}checked{% endif %}>
+          <label class="form-check-label" for="comfort-very-good">Very Good</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="comfort" id="comfort-good" value="Good" {% if evaluation_form.comfort == 'Good' %}checked{% endif %}>
+          <label class="form-check-label" for="comfort-good">Good</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="comfort" id="comfort-bad" value="Bad" {% if evaluation_form.comfort == 'Bad' %}checked{% endif %}>
+          <label class="form-check-label" for="comfort-bad">Bad</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="comfort" id="comfort-very-bad" value="Very Bad" {% if evaluation_form.comfort == 'Very Bad' %}checked{% endif %}>
+          <label class="form-check-label" for="comfort-very-bad">Very Bad</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Goals Section -->
+    <div class="card mt-3">
+      <div class="card-header bg-primary text-white">Goals</div>
+      <div class="card-body">
+        <p>How well did you achieve your goals set during the mentorship?</p>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="goals" id="goals-very-good" value="Very Good" {% if evaluation_form.goals == 'Very Good' %}checked{% endif %}>
+          <label class="form-check-label" for="goals-very-good">Very Good</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="goals" id="goals-good" value="Good" {% if evaluation_form.goals == 'Good' %}checked{% endif %}>
+          <label class="form-check-label" for="goals-good">Good</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="goals" id="goals-bad" value="Bad" {% if evaluation_form.goals == 'Bad' %}checked{% endif %}>
+          <label class="form-check-label" for="goals-bad">Bad</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="goals" id="goals-very-bad" value="Very Bad" {% if evaluation_form.goals == 'Very Bad' %}checked{% endif %}>
+          <label class="form-check-label" for="goals-very-bad">Very Bad</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommendation Section -->
+    <div class="card mt-3">
+      <div class="card-header bg-secondary text-white">Recommendation</div>
+      <div class="card-body">
+        <p>Would you recommend this mentorship program to others?</p>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="recommend" id="recommend-yes" value="Yes" {% if evaluation_form.recommend == 'Yes' %}checked{% endif %}>
+          <label class="form-check-label" for="recommend-yes">Yes</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="recommend" id="recommend-no" value="No" {% if evaluation_form.recommend == 'No' %}checked{% endif %}>
+          <label class="form-check-label" for="recommend-no">No</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resources Section -->
+    <div class="card mt-3">
+      <div class="card-header bg-success text-white">Resources</div>
+      <div class="card-body">
+        <p>How useful were the resources provided during the mentorship?</p>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="resources" id="resources-very-good" value="Very Good" {% if evaluation_form.resources == 'Very Good' %}checked{% endif %}>
+          <label class="form-check-label" for="resources-very-good">Very Good</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="resources" id="resources-good" value="Good" {% if evaluation_form.resources == 'Good' %}checked{% endif %}>
+          <label class="form-check-label" for="resources-good">Good</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="resources" id="resources-bad" value="Bad" {% if evaluation_form.resources == 'Bad' %}checked{% endif %}>
+          <label class="form-check-label" for="resources-bad">Bad</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="resources" id="resources-very-bad" value="Very Bad" {% if evaluation_form.resources == 'Very Bad' %}checked{% endif %}>
+          <label class="form-check-label" for="resources-very-bad">Very Bad</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </form>
+</div>
+
+{% endblock %}
