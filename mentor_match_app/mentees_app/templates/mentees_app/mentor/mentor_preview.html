@@ -398,6 +398,17 @@ Short bio about the mentee.</textarea
       </div>
     </div>
   </div>
+
+  {%if not mentor_mentee_match_status %}
+  <div class="container row ">
+    <div class="col d-flex justify-content-center align-items-center">
+      <a href="{%url 'mentees_app:sendRequestToMentor' mentee.id%}">
+        <button class="btn btn-sm btn-primary">Send Request</button>
+      </a>
+    </div>
+  </div>
+  {%endif%}
+ 
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

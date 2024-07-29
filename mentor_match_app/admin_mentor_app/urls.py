@@ -38,6 +38,7 @@ urlpatterns = [
     path("evaluation/", views.evaluation, name="evaluation"),
     path("evaluation/template-view", views.evaluation_report, name="evaluation-report-view"),
     path('evaluation/preview/<int:mentee_id>/', views.previewEvaluation, name="previewEvaluation"),
+    
     # reports
     path("reports/", views.reports, name="reports"),
     

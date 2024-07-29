@@ -1,6 +1,135 @@
-{% extends 'mentees_app/fixed/base.html'  %}
-
-{% block content  %}
+{% extends 'mentees_app/fixed/base.html' %}
+{% block content %}
 {% load static %}
-<h1>Home Page Here</h1>
-{% endblock content  %}
+<!-- Bootstrap JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+  }
+  .main-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .content {
+    flex: 1;
+  }
+  .profile-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+  .profile-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .profile-info {
+    flex-grow: 1;
+    margin-left: 15px;
+  }
+  .mentor-section,
+  .available-section {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .profile-link {
+    text-decoration: none;
+    color: inherit;
+  }
+  .borderless-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .borderless-table th, .borderless-table td {
+    border: none;
+    padding: 8px;
+    text-align: left;
+  }
+</style>
+<div class="container-fluid mt-2">
+  <div class="row">
+    <div class="col-md-8 mentor-section" style="padding-right: 100px">
+      <h2>My Mentor</h2>
+      {% for mentor in mentors %}
+      <div class="profile-container">
+        <img
+          src="{{ mentor.profile_picture }}"
+          alt="Mentor Image"
+          class="profile-img"
+        />
+        <div class="profile-info">{{ mentor.first_name }} {{ mentor.last_name }}</div>
+        <a href="{% url 'mentees_app:previewMentor' mentor.id %}" class="profile-link">
+          <button class="btn btn-outline-primary btn-sm">Preview</button>
+        </a>
+      </div>
+      {% endfor %}
+      <div class="form-container mt-4">
+        <h4>Evaluations</h4>
+        {% if progressed_evaluations %}
+        <table class="borderless-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Mentor Name</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for evaluation in progressed_evaluations %}
+            <tr>
+              <td>{{ evaluation.mentor.id }}</td>
+              <td>{{ evaluation.mentor.first_name }} {{ evaluation.mentor.last_name }}</td>
+              <td>
+                <a href="{% url 'mentees_app:fillEvaluationForm'  evaluation.mentor.id %}" class="profile-link">
+                  <button type="button" class="btn btn-success btn-sm">Preview Evaluation Form</button>
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <p>No fillable evaluation forms yet</p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-md-4 available-section" style="border: 1px solid #ddd">
+      <h2>Available Mentors</h2>
+      <form method="GET">
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            name="search"
+            class="form-control"
+            placeholder="Search..."
+          />
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit">
+              Search
+            </button>
+          </div>
+        </div>
+      </form>
+      {% for mentor in available_mentors %}
+      <a href="{% url 'mentees_app:previewMentor' mentor.id %}" class="profile-link">
+        <div class="profile-container">
+          <img
+            src="{{ mentor.profile_picture }}"
+            alt="Mentor Image"
+            class="profile-img"
+          />
+          <div class="profile-info">
+            <span>{{ mentor.first_name }} {{ mentor.last_name }}</span>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock content %}
