@@ -136,7 +136,7 @@ class Progress(models.Model):
         max_length=255, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.session_number}, {self.mentee.id if self.mentee else 'N/A'},{self.mentor.id}, progress_percentage:{self.progress_percentage}"
+        return f"'session_number':{self.session_number}, 'mentee':{self.mentee.id if self.mentee else 'N/A'},'mentor_id:'{self.mentor.id}, progress_percentage:{self.progress_percentage}"
 
 class Goals(models.Model):
     id = models.AutoField(primary_key=True)
@@ -153,7 +153,6 @@ class Evaluation(models.Model):
     mentor = models.ForeignKey(User, related_name="mentor_evaluations", on_delete=models.CASCADE)
     mentee = models.ForeignKey(User, related_name="mentee_evaluations", on_delete=models.CASCADE)
     evaluation_date = models.DateTimeField(auto_now_add=True)
-
     support = models.CharField(max_length=20)
     communication = models.CharField(max_length=20)
     confidence = models.CharField(max_length=20)
@@ -168,6 +167,7 @@ class Evaluation(models.Model):
 
     def __str__(self):
         return f"Evaluation: {self.mentor} evaluated {self.mentee} on {self.evaluation_date}"# New Model
+
 class MenteeChallenge(models.Model):
     mentee = models.ForeignKey(User,  related_name="mentee", on_delete=models.CASCADE)
     mentor = models.ForeignKey(User, default="14" ,related_name="mentor", on_delete=models.CASCADE)

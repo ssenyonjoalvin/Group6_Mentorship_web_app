@@ -28,6 +28,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.http import require_POST
 from django.http import HttpResponseForbidden
+from django.core.exceptions import ObjectDoesNotExist
 from .models import (
     User,
     MentorshipMatch,
@@ -39,6 +40,7 @@ from .models import (
     Evaluation,
     MenteeChallenge
 )
+from .models import MentorshipMatch
 
 
 def logout_view(request):
@@ -89,7 +91,8 @@ def dashboard(request):
     try:
         mentor_id = request.user.id
         unread_notifications = Notification.objects.count()
-        total_progress_count = Progress.objects.count()
+        total_progress_count = Progress.objects.filter(mentor_id=mentor_id).count()
+        print("Count: ",total_progress_count)
         schedules = Schedule.objects.all()
         completed_count = Progress.objects.filter(progress_percentage="100%").count()
         pending_count = total_progress_count - completed_count
@@ -351,6 +354,7 @@ def schedule(request):
         status = "scheduled"
 
         # Update or create the schedule appointment
+        # Update or create the schedule appointment
         Schedule.objects.update_or_create(
             mentor_id=mentor_id,
             mentee_id=mentee_id,
@@ -369,24 +373,20 @@ def schedule(request):
     # Handle other request methods
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
-@csrf_exempt
-@login_required
-@require_http_methods(['GET'])
+@require_POST
 def mark_complete(request, schedule_id):
-    try:
-        schedule = get_object_or_404(Schedule, id=schedule_id)
+    # Get the schedule object
+    schedule = get_object_or_404(Schedule, id=schedule_id)
+    
+    # Check if the status is not canceled
+    if schedule.status != 'canceled':
+        # Update the status to 'completed'
         schedule.status = 'completed'
         schedule.save()
-
- # Redirect to the schedule page
-        return redirect('schedule')  # Make sure 'schedule' is the name of the 
+    return redirect('schedule')  # Make sure 'schedule' is the name of the 
 
     
-    except Exception as e:
-        return JsonResponse({'status': 'error', 'message': str(e)})
-    
-
-
+  
 @require_POST
 @login_required
 def delete_appointment(request, schedule_id):
@@ -418,32 +418,26 @@ def schedule_list(request):
         return JsonResponse(data)
     else:
         return render(request, 'schedule.html', {'schedule_list': schedule_list})
-    
-@csrf_exempt
-@login_required
+@require_POST
 def edit_appointment(request):
-    if request.method == 'POST':
-        form = EditAppointmentForm(request.POST)
-        if form.is_valid():
-            mentee_id = request.POST.get('mentee_id')
-            appointment_date = form.cleaned_data['appointment_date']
-            appointment_time = form.cleaned_data['appointment_time']
-            
-            appointment_datetime_str = f"{appointment_date}T{appointment_time}:00"
-            appointment_datetime = parse_datetime(appointment_datetime_str)
+    schedule_id = request.POST.get('schedule_id')
+    appointment_date = request.POST.get('appointment_date')
+    appointment_time = request.POST.get('appointment_time')
 
-            # Update the schedule
-            schedule = get_object_or_404(Schedule, mentee_id=mentee_id)
-            schedule.session_date = appointment_datetime
-            schedule.status = 'scheduled'
-            schedule.save()
+    # Combine date and time
+    session_date = f"{appointment_date} {appointment_time}"
 
-            return JsonResponse({'status': 'success'})
-        else:
-            return JsonResponse({'status': 'error', 'message': 'Form is invalid'})
+    # Get the schedule object
+    schedule = get_object_or_404(Schedule, id=schedule_id)
+    
+    # Update the session_date and status
+    schedule.session_date = session_date
+    schedule.status = 'scheduled'  # Update status to 'Scheduled'
+    schedule.save()
 
-    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
-
+    # Redirect to the schedule list or another appropriate page
+    return redirect('schedule') 
+# Evaluation
 @login_required
 @transaction.atomic
 def evaluation(request):
@@ -522,18 +516,122 @@ def generate_charts():
 def reports(request):
     chart_paths = generate_charts()
     
-    status_filter = request.GET.get('status', 'all')
-    if status_filter == 'all':
-        schedule_list = Schedule.objects.filter(mentor_id=request.user.id)
-    else:
-        schedule_list = Schedule.objects.filter(
-            mentor_id=request.user.id,
-            status=status_filter.lower()
-        )
+    def reports(request):
+        chart_paths = generate_charts()
+        return render(request, 'admin_mentor_app/reports/reports.html', {'chart_paths': chart_paths})
+
+# Evaluation
+@login_required
+def evaluation(request):
+    mentor_id = request.user.id
+    progress = Progress.objects.filter(mentor_id=mentor_id).values('mentee_id').distinct()
     
-    is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
-    if is_ajax:
-        data = {'schedule_list': [{'name': schedule.name, 'status': schedule.status} for schedule in schedule_list]}
-        return JsonResponse(data)
-    else:
-        return render(request, 'admin_mentor_app/reports/reports.html', {'chart_paths': chart_paths, 'schedule_list': schedule_list})
+    mentee_progress_list = []
+
+    for record in progress:
+        mentee_id = record['mentee_id']
+        progress_percentage = Progress.objects.filter(mentor_id=mentor_id, mentee_id=mentee_id).values('progress_percentage').last().get('progress_percentage')
+        
+        mentee = User.objects.get(id=mentee_id)
+        first_name = mentee.first_name
+        last_name = mentee.last_name
+        
+        mentee_progress = {
+            'mentee_id': mentee_id,
+            'first_name': first_name,
+            'last_name': last_name,
+            'progress_percentage': progress_percentage
+        }
+        
+        mentee_progress_list.append(mentee_progress)
+            
+    return render(request, 'admin_mentor_app/evaluation/evaluation.html', {'mentees': mentee_progress_list})
+
+#EvaluationForm
+@login_required
+def evaluation_form(request):
+    return render(request, 'admin_mentor_app/evaluation/evaluation_form.html')
+
+def answers(request):
+    if request.method == 'POST':
+        mentee_id = request.user.id  # Set the mentee_id as required
+
+        # Fetch the MentorshipMatch instance based on mentee_id
+        mentorship_match = MentorshipMatch.objects.get(mentee_id=mentee_id)
+
+        # Extract mentor_id and mentorship_match_id from the fetched MentorshipMatch instance
+        mentor_id = mentorship_match.mentor_id
+        mentorship_match_id = mentorship_match.id
+
+        # Create and save the Evaluation instance
+        evaluation = Evaluation(
+            support=request.POST.get('support'),
+            communication=request.POST.get('communication'),
+            confidence=request.POST.get('confidence'),
+            career=request.POST.get('career'),
+            understanding=request.POST.get('understanding'),
+            comfort=request.POST.get('comfort'),
+            goals=request.POST.get('goals'),
+            recommend=request.POST.get('recommend'),
+            resources=request.POST.get('resources'),
+            comments=request.POST.get('comments'),  # Consolidated comments field
+            mentee_id=mentee_id,
+            mentor_id=mentor_id,
+            mentorship_match_id=mentorship_match_id
+        )
+        evaluation.save()
+        return redirect('thank_you')  # Redirect to the thank you view
+
+    return render(request, 'admin_mentor_app/evaluation/evaluation_form.html')
+def thank_you(request):
+    return render(request, 'admin_mentor_app/evaluation/thanks.html')
+@login_required
+def reports(request):
+    chart_paths = generate_charts()
+    return render(
+        request, "admin_mentor_app/reports/reports.html", {"chart_paths": chart_paths}
+    )
+def notifications(request):
+    return render(request,"admin_mentor_app/notifications.html",{"notifications":notifications})
+
+#Answered form
+def get_mentee_id_by_firstname(firstname):
+    try:
+        # Retrieve the User object with the given firstname
+        user = User.objects.get(first_name=firstname)
+        return user.id
+    except ObjectDoesNotExist:
+        # Handle the case where the User with the given firstname does not exist
+        return None
+
+@login_required
+def answered_form(request, firstname):
+    # Get mentee_id using the firstname
+    mentee_id = get_mentee_id_by_firstname(firstname)
+    mentor_id =request.user.id
+
+    if mentee_id is None:
+        # Handle the case where the mentee_id was not found
+        return render(request, 'admin_mentor_app/evaluation/error.html', {'message': 'Mentee not found.'})
+        
+    # Filter evaluations based on the mentee_id
+    # mentor_id=3
+    evaluations = Evaluation.objects.filter(mentee_id=mentee_id, mentor_id=mentor_id)
+
+    if request.method == 'POST':
+        for evaluation in evaluations:
+            evaluation.support = request.POST.get(f'support_{evaluation.id}')
+            evaluation.communication = request.POST.get(f'communication_{evaluation.id}')
+            evaluation.confidence = request.POST.get(f'confidence_{evaluation.id}')
+            evaluation.career = request.POST.get(f'career_{evaluation.id}')
+            evaluation.understanding = request.POST.get(f'understanding_{evaluation.id}')
+            evaluation.comfort = request.POST.get(f'comfort_{evaluation.id}')
+            evaluation.goals = request.POST.get(f'goals_{evaluation.id}')
+            evaluation.recommend = request.POST.get(f'recommend_{evaluation.id}')
+            evaluation.resources = request.POST.get(f'resources_{evaluation.id}')
+            evaluation.comments = request.POST.get(f'comments_{evaluation.id}')
+            evaluation.save()  # Save each evaluation
+            
+        return redirect('thank_you')  
+
+    return render(request, 'admin_mentor_app/evaluation/answered_form.html', {'evaluations': evaluations})
