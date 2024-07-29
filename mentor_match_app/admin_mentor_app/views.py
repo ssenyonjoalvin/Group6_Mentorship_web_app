@@ -86,10 +86,10 @@ def register(request):
 @login_required
 @transaction.atomic
 def dashboard(request):
-    try:
+    try: 
         mentor_id = request.user.id
         unread_notifications = Notification.objects.count()
-        total_progress_count = Progress.objects.count()
+        total_progress_count = Progress.objects.filter(mentor_id = mentor_id).count()
         schedules = Schedule.objects.all()
         completed_count = Progress.objects.filter(progress_percentage="100%").count()
         pending_count = total_progress_count - completed_count

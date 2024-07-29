@@ -15,13 +15,14 @@ Description: This Template is created for Youtubers
 /* =================== Header Style Starts Here =================== */
 
 body{
-    background-color: #f5f5fc;
-    background-image: url(../images/login-bg.jpg) !important;
+    background-color: #3f3f94;
+    background-image: url(../images/login-bg.jpg) 
+    ;
 }
 
 .login-container{
     @include shado-1();
-    background-color: #FFF;
+    background-color: #6d1b1b;
     margin-top: 7%;
 }
 
@@ -45,7 +46,7 @@ body{
         font-weight: 600;
         margin-bottom: -15px;
         z-index: 99;
-        background-color: #FFF;
+        background-color: #472e2e;
         width: auto;
         margin-left: 13px;
 
@@ -54,7 +55,7 @@ body{
         border-radius: 0px;
         padding-top: 13px;
         padding-bottom: 5px;
-        background-color:#FFF; 
+        background-color:#c26060; 
         font-weight: 600;
     }
     p{
